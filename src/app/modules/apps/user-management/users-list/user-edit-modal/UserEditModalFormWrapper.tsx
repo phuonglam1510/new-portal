@@ -1,13 +1,13 @@
-import {useQuery} from 'react-query'
-import {UserEditModalForm} from './UserEditModalForm'
-import {isNotEmpty, QUERIES} from '../../../../../../_metronic/helpers'
-import {useListView} from '../core/ListViewProvider'
-import {getUserById} from '../core/_requests'
-import {User} from '../../../../../models/users/User.interface'
+import { useQuery } from "react-query";
+import { UserEditModalForm } from "./UserEditModalForm";
+import { isNotEmpty, QUERIES } from "../../../../../../_metronic/helpers";
+import { useListView } from "../core/ListViewProvider";
+import { getUserById } from "../core/_requests";
+import { User } from "../../../../../models/users/User.interface";
 
 const UserEditModalFormWrapper = () => {
-  const {itemIdForUpdate, setItemIdForUpdate} = useListView()
-  const enabledQuery: boolean = isNotEmpty(itemIdForUpdate)
+  const { itemIdForUpdate, setItemIdForUpdate } = useListView();
+  const enabledQuery: boolean = isNotEmpty(itemIdForUpdate);
   const {
     isLoading,
     data: user,
@@ -15,27 +15,27 @@ const UserEditModalFormWrapper = () => {
   } = useQuery(
     `${QUERIES.USERS_LIST}-user-${itemIdForUpdate}`,
     () => {
-      return getUserById(itemIdForUpdate)
+      return getUserById(itemIdForUpdate);
     },
     {
       cacheTime: 0,
       enabled: enabledQuery,
       onError: (err) => {
-        setItemIdForUpdate(undefined)
-        console.error(err)
+        setItemIdForUpdate(undefined);
+        console.error(err);
       },
     }
-  )
+  );
 
   if (!itemIdForUpdate) {
-    return <UserEditModalForm isUserLoading={isLoading} user={new User()} />
+    return <UserEditModalForm isUserLoading={isLoading} user={new User()} />;
   }
 
   if (!isLoading && !error && user) {
-    return <UserEditModalForm isUserLoading={isLoading} user={user} />
+    return <UserEditModalForm isUserLoading={isLoading} user={user} />;
   }
 
-  return null
-}
+  return null;
+};
 
-export {UserEditModalFormWrapper}
+export { UserEditModalFormWrapper };
