@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as auth from "../redux/AuthRedux";
 import { login } from "../redux/AuthCRUD";
-import { ImageUploader } from "../../../components/ImageUploader";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -79,9 +78,6 @@ export function Login() {
           <div className="alert-text font-weight-bold">{formik.status}</div>
         </div>
       )}
-
-      <ImageUploader label="Test" />
-
       {/* begin::Form group */}
       <div className="fv-row mb-10">
         <label className="form-label fs-6 fw-bolder text-dark">Email</label>
