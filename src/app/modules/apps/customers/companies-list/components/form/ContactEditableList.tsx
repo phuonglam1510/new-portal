@@ -5,6 +5,8 @@ import { ContactModel } from "../../../../../../models/customers/Contact.class";
 import { Builder } from "builder-pattern";
 import { useListView } from "../../core/ListViewProvider";
 import { useModalContext } from "../../core/ModalProvider";
+import { useCurrentUser } from "../../../../core/CurrentUserProvider";
+import { UserRole } from "../../../../../../enums/UserRole.enum";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -18,6 +20,7 @@ interface ItemProps {
   index: number;
   onEdit: () => any;
   onRemove: () => any;
+  readOnly?: boolean;
 }
 
 const ContactItemRow: React.FC<ItemProps> = ({
@@ -26,6 +29,7 @@ const ContactItemRow: React.FC<ItemProps> = ({
   index,
   onEdit,
   onRemove,
+  readOnly,
 }) => {
   return (
     <tr>
@@ -49,26 +53,28 @@ const ContactItemRow: React.FC<ItemProps> = ({
         </span>
       </td>
       <td>
-        <div className="d-flex justify-content-end flex-shrink-0">
-          <a
-            onClick={onEdit}
-            className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-          >
-            <KTSVG
-              path="/media/icons/duotune/art/art005.svg"
-              className="svg-icon-3"
-            />
-          </a>
-          <a
-            onClick={onRemove}
-            className="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
-          >
-            <KTSVG
-              path="/media/icons/duotune/general/gen027.svg"
-              className="svg-icon-3"
-            />
-          </a>
-        </div>
+        {!readOnly && (
+          <div className="d-flex justify-content-end flex-shrink-0">
+            <a
+              onClick={onEdit}
+              className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+            >
+              <KTSVG
+                path="/media/icons/duotune/art/art005.svg"
+                className="svg-icon-3"
+              />
+            </a>
+            <a
+              onClick={onRemove}
+              className="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
+            >
+              <KTSVG
+                path="/media/icons/duotune/general/gen027.svg"
+                className="svg-icon-3"
+              />
+            </a>
+          </div>
+        )}
       </td>
     </tr>
   );
@@ -79,7 +85,12 @@ let editIndex: number | null = null;
 const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
   const listItems = formik.values[name] as ContactModel[];
   const { itemIdForUpdate } = useListView();
+  const user = useCurrentUser();
   const { openModal, closeModal } = useModalContext();
+  const isAdmin = React.useMemo(
+    () => user.role === UserRole.SuperAdmin,
+    [user]
+  );
 
   const onSave = (changedContact: ContactModel) => {
     console.log(changedContact);
@@ -120,7 +131,6 @@ const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
 
   const onEdit = (index: number) => {
     const item = listItems[index];
-    console.log(index);
 
     editIndex = index;
     openModal(item, onSave);
@@ -148,7 +158,12 @@ const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
         data-kt-user-table-toolbar="base"
       >
         <a className="fw-bolder text-black fs-4">Người liên hệ</a>
-        <button type="button" className="btn btn-primary" onClick={onAdd}>
+        <button
+          disabled={isAdmin}
+          type="button"
+          className="btn btn-primary"
+          onClick={onAdd}
+        >
           <KTSVG
             path="/media/icons/duotune/arrows/arr075.svg"
             className="svg-icon-2"
@@ -176,6 +191,7 @@ const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
                 index={index}
                 onRemove={() => onRemove(index)}
                 onEdit={() => onEdit(index)}
+                readOnly={isAdmin}
               />
             ))}
           </tbody>
