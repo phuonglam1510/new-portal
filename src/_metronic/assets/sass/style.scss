@@ -8,6 +8,10 @@ $mode: default;
 // Initialize
 @import "init";
 
+// Plugins
+@import "plugins";
+
+
 // Components
 @import "./core/components/components";
 @import "components/components";

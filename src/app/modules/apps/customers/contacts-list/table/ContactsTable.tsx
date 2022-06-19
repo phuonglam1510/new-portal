@@ -4,14 +4,13 @@ import { CustomHeaderColumn } from "./columns/CustomHeaderColumn";
 import { CustomRow } from "./columns/CustomRow";
 import { usersColumns } from "./columns/_columns";
 import { UsersListLoading } from "../components/loading/UsersListLoading";
-// import {UsersListPagination} from '../components/pagination/UsersListPagination'
 import { KTCardBody } from "../../../../../../_metronic/helpers";
-import { useCustomerContext } from "../core/CustomerProvider";
-import { CompanyModel } from "../../../../../models/customers/Company.class";
+import { useContactContext } from "../core/ContactProvider";
+import { ContactModel } from "../../../../../models/customers/Contact.class";
 
-const CompaniesTable = () => {
-  const { companies, isLoading } = useCustomerContext();
-  const data = useMemo(() => companies, [companies]);
+const ContactsTable = () => {
+  const { contacts, isLoading } = useContactContext();
+  const data = useMemo(() => contacts, [contacts]);
   const columns = useMemo(() => usersColumns, []);
   const { getTableProps, getTableBodyProps, headers, rows, prepareRow } =
     useTable({
@@ -29,14 +28,14 @@ const CompaniesTable = () => {
         >
           <thead>
             <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-              {headers.map((column: ColumnInstance<CompanyModel>) => (
+              {headers.map((column: ColumnInstance<ContactModel>) => (
                 <CustomHeaderColumn key={column.id} column={column} />
               ))}
             </tr>
           </thead>
           <tbody className="text-gray-600 fw-bold" {...getTableBodyProps()}>
             {rows.length > 0 ? (
-              rows.map((row: Row<CompanyModel>, i) => {
+              rows.map((row: Row<ContactModel>, i) => {
                 prepareRow(row);
                 return <CustomRow row={row} key={`row-${i}-${row.id}`} />;
               })
@@ -52,10 +51,9 @@ const CompaniesTable = () => {
           </tbody>
         </table>
       </div>
-      {/* <UsersListPagination /> */}
       {isLoading && <UsersListLoading />}
     </KTCardBody>
   );
 };
 
-export { CompaniesTable };
+export { ContactsTable };
