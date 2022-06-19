@@ -36,8 +36,9 @@ const getContactById = (id: ID): Promise<ContactModel | undefined> => {
 const createContact = (
   contact: ContactModel
 ): Promise<ContactModel | undefined> => {
+  const { company, ...rest } = contact;
   return axios
-    .post(CONTACT_URL, contact)
+    .post(CONTACT_URL, rest)
     .then(
       (response: AxiosResponse<GenericResponse<ContactModel>>) => response.data
     )
@@ -50,16 +51,18 @@ const createContact = (
 const updateContact = (
   contact: ContactModel
 ): Promise<ContactModel | undefined> => {
+  const { company, ...rest } = contact;
+
   return axios
-    .put(`${CONTACT_URL}/${contact.id}`, contact)
+    .put(`${CONTACT_URL}/${contact.id}`, rest)
     .then(
       (response: AxiosResponse<GenericResponse<ContactModel>>) => response.data
     )
     .then((response: GenericResponse<ContactModel>) => response.data);
 };
 
-const deleteUser = (userId: ID): Promise<void> => {
-  return axios.delete(`${CONTACT_URL}/${userId}`).then(() => {});
+const deleteContact = (id: number): Promise<void> => {
+  return axios.delete(`${CONTACT_URL}/${id}`).then(() => {});
 };
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
@@ -70,7 +73,7 @@ const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
 export {
   getContacts,
   deleteSelectedUsers,
-  deleteUser,
+  deleteContact,
   updateContact,
   createContact,
   getContactById,

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { isNotEmpty } from "../../../../../../_metronic/helpers";
@@ -15,6 +15,9 @@ import { useCustomerContext } from "../../companies-list/core/CustomerProvider";
 type Props = {
   isUserLoading: boolean;
   contact: ContactModel;
+  onSubmit?: (contact: ContactModel) => void;
+  onClose?: () => void;
+  disableCompany?: boolean;
 };
 
 const editUserSchema = Yup.object().shape({
@@ -27,19 +30,29 @@ const editUserSchema = Yup.object().shape({
   company_id: Yup.string().required("Company is required"),
 });
 
-const ContactEditModalForm: FC<Props> = ({ contact, isUserLoading }) => {
+const ContactEditModalForm: FC<Props> = ({
+  contact,
+  isUserLoading,
+  onSubmit,
+  onClose,
+  disableCompany,
+}) => {
   const { setItemIdForUpdate } = useListView();
   const { refetch } = useContactContext();
-  const { companies, refetchCompanies } = useCustomerContext();
+  const { companies } = useCustomerContext();
 
-  const companyItems = React.useMemo(
-    () =>
-      companies?.map((item) => ({
-        value: item.id || 0,
-        text: item.company_name,
-      })) || [],
-    [companies]
-  );
+  const companyItems = React.useMemo(() => {
+    if (disableCompany && contact.company_id === -1) {
+      return [{ value: -1, text: "New company" }];
+    } else {
+      return (
+        companies?.map((item) => ({
+          value: item.id || 0,
+          text: item.company_name,
+        })) || []
+      );
+    }
+  }, [companies, disableCompany]);
 
   const [userForEdit] = useState<ContactModel>(
     Builder(ContactModel, {
@@ -48,6 +61,10 @@ const ContactEditModalForm: FC<Props> = ({ contact, isUserLoading }) => {
   );
 
   const cancel = (withRefresh?: boolean) => {
+    if (onClose) {
+      onClose();
+      return;
+    }
     if (withRefresh) {
       refetch();
     }
@@ -58,6 +75,10 @@ const ContactEditModalForm: FC<Props> = ({ contact, isUserLoading }) => {
     initialValues: userForEdit,
     validationSchema: editUserSchema,
     onSubmit: async (values, { setSubmitting }) => {
+      if (onSubmit) {
+        onSubmit(values);
+        return;
+      }
       setSubmitting(true);
       try {
         if (isNotEmpty(values.id)) {
@@ -99,6 +120,7 @@ const ContactEditModalForm: FC<Props> = ({ contact, isUserLoading }) => {
             items={companyItems}
             name="company_id"
             label="Công ty"
+            disabled={disableCompany}
           />
           <FormInput
             formik={formik as any}

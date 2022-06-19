@@ -27,9 +27,7 @@ const getCompanyById = (id: ID): Promise<CompanyModel | undefined> => {
     );
 };
 
-const createCompany = (
-  company: CompanyModel
-): Promise<CompanyModel | undefined> => {
+const createCompany = (company: CompanyModel): Promise<CompanyModel> => {
   return axios
     .post(COMPANIES_URL, company)
     .then(

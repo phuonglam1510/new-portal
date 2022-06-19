@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { isNotEmpty } from "../../../../../../_metronic/helpers";
@@ -6,15 +6,23 @@ import { useListView } from "../core/ListViewProvider";
 import { UsersListLoading } from "../components/loading/UsersListLoading";
 import { createCompany, updateCompany } from "../core/_requests";
 import { useCustomerContext } from "../core/CustomerProvider";
-import { CompanyModel } from "../../../../../models/customers/Company.class";
 import { FormInput } from "../../../../../components/FormInput";
 import { FormImageUploader } from "../../../../../components/FormImageUploader";
 import { uploadImage } from "../../../core/images/requests";
 import { Builder } from "builder-pattern";
+import { ContactEditableList } from "../components/form/\bContactEditableList";
+import { CompanyFormModel } from "../core/_models";
+import { useContactContext } from "../../contacts-list/core/ContactProvider";
+import {
+  createContact,
+  deleteContact,
+  updateContact,
+} from "../../contacts-list/core/_requests";
+import { ContactModel } from "../../../../../models/customers/Contact.class";
 
 type Props = {
   isUserLoading: boolean;
-  company: CompanyModel;
+  company: CompanyFormModel;
 };
 
 const editUserSchema = Yup.object().shape({
@@ -25,11 +33,12 @@ const editUserSchema = Yup.object().shape({
 });
 
 const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
-  const { setItemIdForUpdate } = useListView();
+  const { setItemIdForUpdate, itemIdForUpdate } = useListView();
   const { refetchCompanies } = useCustomerContext();
+  const { contacts, refetch } = useContactContext();
 
-  const [userForEdit] = useState<CompanyModel>(
-    Builder(CompanyModel, {
+  const [userForEdit] = useState<CompanyFormModel>(
+    Builder(CompanyFormModel, {
       ...company,
     }).build()
   );
@@ -37,11 +46,12 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
   const cancel = (withRefresh?: boolean) => {
     if (withRefresh) {
       refetchCompanies();
+      refetch();
     }
     setItemIdForUpdate(undefined);
   };
 
-  const handleImage = async (values: CompanyModel) => {
+  const handleImage = async (values: CompanyFormModel) => {
     if (!values.logoForEdit || typeof values.logoForEdit === "string") {
       return values;
     }
@@ -53,6 +63,41 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
     return values;
   };
 
+  const handleContacts = async (values: CompanyFormModel) => {
+    const { contacts } = values;
+    const newContacts = contacts
+      .filter((contact) => !contact.id)
+      .map((contact) =>
+        Builder(ContactModel, contact)
+          .company_id(values.id as number)
+          .build()
+      );
+    if (
+      newContacts.length ||
+      values.removedContactIds.length ||
+      values.changedContactIds.length
+    ) {
+      const newContacts = contacts
+        .filter((contact) => !contact.id)
+        .map((contact) =>
+          Builder(ContactModel, contact)
+            .company_id(values.id as number)
+            .build()
+        );
+      await Promise.all([
+        ...newContacts.map((contact) => createContact(contact)),
+        ...values.removedContactIds.map((id) => deleteContact(id)),
+        ...contacts
+          .filter(
+            (contact) =>
+              contact.id &&
+              values.changedContactIds.includes(contact.id as number)
+          )
+          .map((contact) => updateContact(contact)),
+      ]);
+    }
+  };
+
   const formik = useFormik({
     initialValues: userForEdit,
     validationSchema: editUserSchema,
@@ -60,12 +105,13 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
       setSubmitting(true);
       try {
         values = await handleImage(values);
-
         if (isNotEmpty(values.id)) {
           await updateCompany(values);
         } else {
-          await createCompany(values);
+          const createdCompany = await createCompany(values);
+          values.id = createdCompany.id;
         }
+        await handleContacts(values);
       } catch (ex) {
         console.error(ex);
       } finally {
@@ -74,6 +120,16 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
       }
     },
   });
+
+  React.useEffect(() => {
+    if (itemIdForUpdate && contacts && contacts.length > 0) {
+      formik.setFieldValue(
+        "contacts",
+        contacts.filter((contact) => contact.company_id === itemIdForUpdate),
+        true
+      );
+    }
+  }, [itemIdForUpdate, contacts]);
 
   return (
     <>
@@ -85,7 +141,7 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
       >
         {/* begin::Scroll */}
         <div
-          className="d-flex flex-column scroll-y me-n7 pe-7"
+          className="d-flex flex-column scroll-y me-n3 pe-5"
           id="kt_modal_add_user_scroll"
           data-kt-scroll="true"
           data-kt-scroll-activate="{default: false, lg: true}"
@@ -109,6 +165,11 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
             name="company_address"
             label="Địa chỉ công ty"
           />
+          <ContactEditableList
+            formik={formik as any}
+            name="contacts"
+            label="Người liên hệ"
+          />
         </div>
         {/* end::Scroll */}
 
@@ -121,7 +182,7 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
             data-kt-users-modal-action="cancel"
             disabled={formik.isSubmitting || isUserLoading}
           >
-            Discard
+            Huỷ
           </button>
 
           <button
@@ -135,7 +196,9 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
               !formik.touched
             }
           >
-            <span className="indicator-label">Submit</span>
+            <span className="indicator-label">
+              {itemIdForUpdate ? "Cập nhật" : "Tạo"}
+            </span>
             {(formik.isSubmitting || isUserLoading) && (
               <span className="indicator-progress">
                 Please wait...{" "}
