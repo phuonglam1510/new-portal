@@ -19,17 +19,25 @@ import {
   updateContact,
 } from "../../contacts-list/core/_requests";
 import { ContactModel } from "../../../../../models/customers/Contact.class";
+import { FormDropdown } from "../../../../../components/FormDropdown";
+import { CompanyType } from "../../../../../enums/CompanyType.enum";
 
 type Props = {
   isUserLoading: boolean;
   company: CompanyFormModel;
 };
 
+const companyType = [
+  { text: "Người Dùng Cuối", value: CompanyType.EndUser },
+  { text: "Công ty", value: CompanyType.Company },
+];
+
 const editUserSchema = Yup.object().shape({
   company_name: Yup.string()
     .min(3, "Minimum 3 symbols")
     .required("Company name is required"),
   company_address: Yup.string().required("Company address is required"),
+  type: Yup.string().required("Type is required"),
 });
 
 const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
@@ -164,6 +172,12 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
             formik={formik as any}
             name="company_address"
             label="Địa chỉ công ty"
+          />
+          <FormDropdown
+            formik={formik as any}
+            items={companyType}
+            name="type"
+            label="Loại khách hàng"
           />
           <ContactEditableList
             formik={formik as any}

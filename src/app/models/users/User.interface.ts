@@ -1,3 +1,4 @@
+import { UserGroup } from "../../enums/UserGroup.enum";
 import { UserRole } from "../../enums/UserRole.enum";
 import { UserStatus } from "../../enums/UserStatus.enum";
 import { FileUploadResponse } from "../core/FileUploadResponse.type";
@@ -19,6 +20,7 @@ export class User {
   created_at?: string;
   online?: boolean;
   password?: string;
+  group: UserGroup = UserGroup.Group1;
   initials?: {
     label: string;
     state: string;
@@ -42,5 +44,9 @@ export class User {
 
   public get avatarUrl(): string {
     return this.avatar?.file_url || "";
+  }
+
+  public get groupText(): string {
+    return "Nhóm " + this.group;
   }
 }

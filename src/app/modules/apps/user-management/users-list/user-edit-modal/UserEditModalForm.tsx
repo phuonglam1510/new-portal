@@ -14,6 +14,8 @@ import { FormSelectList } from "../../../../../components/FormSelectList";
 import { userRoles } from "../../../../../constants/userRoles.constant";
 import { FormImageUploader } from "../../../../../components/FormImageUploader";
 import { uploadImage } from "../../../core/images/requests";
+import { FormDropdown } from "../../../../../components/FormDropdown";
+import { UserGroup } from "../../../../../enums/UserGroup.enum";
 
 type Props = {
   isUserLoading: boolean;
@@ -33,7 +35,14 @@ const editUserSchema = Yup.object().shape({
   password: Yup.string()
     .min(3, "Minimum 8 symbols")
     .required("Password is required"),
+  group: Yup.number().required("Please select user group"),
 });
+
+const useGroups = [
+  { text: "Nhóm 1", value: UserGroup.Group1 },
+  { text: "Nhóm 2", value: UserGroup.Group2 },
+  { text: "Nhóm 3", value: UserGroup.Group3 },
+];
 
 const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
   const { setItemIdForUpdate } = useListView();
@@ -133,6 +142,12 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
             label="Email"
             formik={formik as any}
             disabled={isUserLoading}
+          />
+          <FormDropdown
+            formik={formik as any}
+            items={useGroups}
+            name="group"
+            label="Nhóm"
           />
           <FormInput
             name="phone"

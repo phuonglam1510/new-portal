@@ -1,3 +1,4 @@
+import { CompanyType } from "../../enums/CompanyType.enum";
 import { FileUploadResponse } from "../core/FileUploadResponse.type";
 
 export class CompanyModel {
@@ -9,8 +10,13 @@ export class CompanyModel {
   logo?: FileUploadResponse;
   "created_at": Date;
   "updated_at": Date;
+  type: CompanyType = CompanyType.Company;
 
   public get logoUrl(): string {
     return this.logo?.file_url || "";
+  }
+
+  public get typeText(): string {
+    return this.type === CompanyType.Company ? "Công ty" : "Người dùng cuối";
   }
 }

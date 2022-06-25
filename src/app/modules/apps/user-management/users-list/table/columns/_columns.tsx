@@ -59,6 +59,16 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
+        title="Nhóm"
+        className="min-w-100px"
+      />
+    ),
+    accessor: "groupText",
+  },
+  {
+    Header: (props) => (
+      <UserCustomHeader
+        tableProps={props}
         title="Joined day"
         className="min-w-125px"
       />
