@@ -1,29 +1,32 @@
-import {lazy, FC, Suspense} from 'react'
-import {Route, Routes, Navigate} from 'react-router-dom'
-import {MasterLayout} from '../../_metronic/layout/MasterLayout'
-import TopBarProgress from 'react-topbar-progress-indicator'
-import {DashboardWrapper} from '../pages/dashboard/DashboardWrapper'
-import {getCSSVariableValue} from '../../_metronic/assets/ts/_utils'
+import { lazy, FC, Suspense } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { MasterLayout } from "../../_metronic/layout/MasterLayout";
+import TopBarProgress from "react-topbar-progress-indicator";
+import { DashboardWrapper } from "../pages/dashboard/DashboardWrapper";
+import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
+import SaleContainerPage from "../modules/apps/sales/SaleContainerPage";
 
 const PrivateRoutes = () => {
   const CustomersContainerPage = lazy(
-    () => import('../modules/apps/customers/CustomersContainerPage')
-  )
-  const ProfilePage = lazy(() => import('../modules/profile/ProfilePage'))
-  const AccountPage = lazy(() => import('../modules/accounts/AccountPage'))
-  const ChatPage = lazy(() => import('../modules/apps/chat/ChatPage'))
-  const UsersPage = lazy(() => import('../modules/apps/user-management/UsersPage'))
+    () => import("../modules/apps/customers/CustomersContainerPage")
+  );
+  const ProfilePage = lazy(() => import("../modules/profile/ProfilePage"));
+  const AccountPage = lazy(() => import("../modules/accounts/AccountPage"));
+  const ChatPage = lazy(() => import("../modules/apps/chat/ChatPage"));
+  const UsersPage = lazy(
+    () => import("../modules/apps/user-management/UsersPage")
+  );
 
   return (
     <Routes>
       <Route element={<MasterLayout />}>
         {/* Redirect to Dashboard after success login/registartion */}
-        <Route path='auth/*' element={<Navigate to='/dashboard' />} />
+        <Route path="auth/*" element={<Navigate to="/dashboard" />} />
         {/* Pages */}
-        <Route path='dashboard' element={<DashboardWrapper />} />
+        <Route path="dashboard" element={<DashboardWrapper />} />
         {/* Lazy Modules */}
         <Route
-          path='crafted/pages/profile/*'
+          path="crafted/pages/profile/*"
           element={
             <SuspensedView>
               <ProfilePage />
@@ -31,7 +34,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='crafted/account/*'
+          path="crafted/account/*"
           element={
             <SuspensedView>
               <AccountPage />
@@ -39,7 +42,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='apps/chat/*'
+          path="apps/chat/*"
           element={
             <SuspensedView>
               <ChatPage />
@@ -47,7 +50,7 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='apps/user-management/*'
+          path="apps/user-management/*"
           element={
             <SuspensedView>
               <UsersPage />
@@ -55,30 +58,38 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path='apps/customers/*'
+          path="apps/customers/*"
           element={
             <SuspensedView>
               <CustomersContainerPage />
             </SuspensedView>
           }
         />
+        <Route
+          path="apps/sales/*"
+          element={
+            <SuspensedView>
+              <SaleContainerPage />
+            </SuspensedView>
+          }
+        />
         {/* Page Not Found */}
-        <Route path='*' element={<Navigate to='/error/404' />} />
+        <Route path="*" element={<Navigate to="/error/404" />} />
       </Route>
     </Routes>
-  )
-}
+  );
+};
 
-const SuspensedView: FC = ({children}) => {
-  const baseColor = getCSSVariableValue('--bs-primary')
+const SuspensedView: FC = ({ children }) => {
+  const baseColor = getCSSVariableValue("--bs-primary");
   TopBarProgress.config({
     barColors: {
-      '0': baseColor,
+      "0": baseColor,
     },
     barThickness: 1,
     shadowBlur: 5,
-  })
-  return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>
-}
+  });
+  return <Suspense fallback={<TopBarProgress />}>{children}</Suspense>;
+};
 
-export {PrivateRoutes}
+export { PrivateRoutes };
