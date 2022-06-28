@@ -11,9 +11,9 @@ const UserInfoCell: FC<Props> = ({ quote }) => (
     {/* begin:: Avatar */}
     <div className="d-flex flex-column">
       <a href="#" className="text-gray-800 text-hover-primary mb-1">
-        {quote.contact.contact_name}
+        {quote.contact?.contact_name}
       </a>
-      <span>{quote.contact.contact_phone}</span>
+      <span>{quote.contact?.contact_phone}</span>
     </div>
   </div>
 );
