@@ -9,6 +9,7 @@ export const pickBody = ({
   order_confirmation_id,
   head_signature_id,
   deliver_record_id,
+  status,
 }: QuoteFormModel) => ({
   contact_id,
   type,
@@ -18,4 +19,5 @@ export const pickBody = ({
   order_confirmation_id,
   head_signature_id,
   deliver_record_id,
+  status,
 });

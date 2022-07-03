@@ -7,17 +7,18 @@ import { Input } from "../../../../../components/Input";
 import { quoteEditSchema } from "./quoteEditSchema";
 import { useQuoteModalContext } from "../core/QuoteModalProvider";
 import { Builder } from "builder-pattern";
+import { formatMoney } from "../../../../../helpers/Number.helper";
 
 type Props = {
-  isLoading?: boolean;
-  onSave: (item: QuoteItemModel) => any
+  onSave: (item: QuoteItemModel) => any;
 };
 
+const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
+  const { close, itemForUpdate, loading } = useQuoteModalContext();
 
-const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
-  const { close, itemForUpdate } = useQuoteModalContext();
-
-  const [quoteForEdit] = useState<QuoteItemModel>(Builder(QuoteItemModel, { ...itemForUpdate }).build());
+  const [quoteForEdit] = useState<QuoteItemModel>(
+    Builder(QuoteItemModel, { ...itemForUpdate }).build()
+  );
 
   const formik = useFormik({
     initialValues: quoteForEdit,
@@ -27,7 +28,9 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
     },
   });
 
-  const { quantity, net_unit_price_no_vat } = formik.values
+  const { quantity, net_unit_price_no_vat } = formik.values;
+
+  console.log(formik);
 
   return (
     <>
@@ -56,6 +59,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
             formik={formik as any}
             name="quotation_model"
             label="Model báo giá"
+            optional
           />
           <FormInput
             formik={formik as any}
@@ -67,6 +71,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
             formik={formik as any}
             name="manufacturer"
             label="Hãng sản xuất"
+            optional
           />
           <FormInput
             formik={formik as any}
@@ -80,6 +85,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
                 formik={formik as any}
                 name="unit"
                 label="Đơn vị tính"
+                optional
               />
             </div>
             <div className="w-10px" />
@@ -88,6 +94,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
                 formik={formik as any}
                 name="quantity"
                 label="Số lượng"
+                optional
               />
             </div>
           </div>
@@ -101,11 +108,13 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
             formik={formik as any}
             name="net_unit_price_no_vat"
             label="Đơn giá net không có VAT"
+            optional
+            hasNumberHint
           />
           <Input
             label="Thành tiền giá net không có VAT"
             disabled
-            value={(quantity * (net_unit_price_no_vat || 0)).toString()}
+            value={formatMoney(quantity * (net_unit_price_no_vat || 0))}
           />
           <div className="d-flex flex-stack">
             <div className="flex-equal">
@@ -113,6 +122,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
                 formik={formik as any}
                 name="commission"
                 label="Commission (%)"
+                optional
               />
             </div>
             <div className="w-10px" />
@@ -145,7 +155,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
             onClick={close}
             className="btn btn-light me-3"
             data-kt-users-modal-action="cancel"
-            disabled={formik.isSubmitting || isLoading}
+            disabled={formik.isSubmitting || loading}
           >
             Huỷ
           </button>
@@ -154,17 +164,12 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
             type="submit"
             className="btn btn-primary"
             data-kt-users-modal-action="submit"
-            disabled={
-              isLoading ||
-              formik.isSubmitting ||
-              !formik.isValid ||
-              !formik.touched
-            }
+            disabled={loading || formik.isSubmitting || !formik.touched}
           >
             <span className="indicator-label">
               {itemForUpdate?.id ? "Cập nhật" : "Tạo"}
             </span>
-            {(formik.isSubmitting || isLoading) && (
+            {(formik.isSubmitting || loading) && (
               <span className="indicator-progress">
                 Please wait...{" "}
                 <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
@@ -173,7 +178,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ isLoading, onSave }) => {
           </button>
         </div>
       </form>
-      {(formik.isSubmitting || isLoading) && <UsersListLoading />}
+      {(formik.isSubmitting || loading) && <UsersListLoading />}
     </>
   );
 };

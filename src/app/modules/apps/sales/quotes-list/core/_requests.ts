@@ -4,9 +4,12 @@ import { GenericResponse } from "../../../../../models/core/GenericResponse.type
 import { ID } from "../../../../../models/core/ID.type";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
 import { CreateQuoteBody } from "../../../../../models/sales/CreateQuoteBody.model";
+import { CreateQuoteInfoBody } from "../../../../../models/sales/CreateQuoteInfoBody.model";
 import { CreateQuoteItemBody } from "../../../../../models/sales/CreateQuoteItemBody.model";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
+import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
+import { UpdateQuoteBody } from "../../../../../models/sales/UpdateQuoteBody.model";
 import { QuoteQueryResponse } from "./_models";
 
 const API_URL = process.env.REACT_APP_THEME_API_URL;
@@ -40,6 +43,16 @@ const createQuote = (body: CreateQuoteBody): Promise<QuoteModel> => {
     .then((response: GenericResponse<QuoteModel>) => response.data);
 };
 
+const updateQuote = (body: UpdateQuoteBody): Promise<QuoteModel> => {
+  const { id, ...rest } = body;
+  return axios
+    .put(`${URL}/${id}`, rest)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteModel>>) => response.data
+    )
+    .then((response: GenericResponse<QuoteModel>) => response.data);
+};
+
 const createQuoteItem = (
   quoteId: number,
   body: CreateQuoteItemBody
@@ -51,6 +64,46 @@ const createQuoteItem = (
         response.data
     )
     .then((response: GenericResponse<QuoteItemModel>) => response.data);
+};
+
+const updateQuoteItem = (
+  quoteId: number,
+  body: QuoteItemModel
+): Promise<QuoteItemModel> => {
+  const { id, ...options } = body;
+  return axios
+    .put(`${URL}/${quoteId}/item/${id}`, options)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteItemModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteItemModel>) => response.data);
+};
+
+const createQuoteInfo = (
+  quoteId: number,
+  body: CreateQuoteInfoBody
+): Promise<QuoteInfoModel> => {
+  return axios
+    .post(`${URL}/${quoteId}/info`, body)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+};
+
+const updateQuoteInfo = (
+  quoteId: number,
+  body: CreateQuoteInfoBody
+): Promise<QuoteInfoModel> => {
+  return axios
+    .put(`${URL}/${quoteId}/info`, body)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
 };
 
 const updateCompany = (
@@ -81,4 +134,8 @@ export {
   createQuote,
   getCompanyById,
   createQuoteItem,
+  createQuoteInfo,
+  updateQuoteItem,
+  updateQuoteInfo,
+  updateQuote,
 };

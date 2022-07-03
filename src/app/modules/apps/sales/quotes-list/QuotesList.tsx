@@ -9,6 +9,8 @@ import { CustomerProvider } from "../../customers/companies-list/core/CustomerPr
 import { ContactProvider } from "../../customers/contacts-list/core/ContactProvider";
 import { QuoteActionProvider } from "./core/QuoteActionProvider";
 import { QuoteModalProvider } from "./core/QuoteModalProvider";
+import QuoteDetailPage from "../quote-detail/QuoteDetailPage";
+import { QuoteDetailProvider } from "../quote-detail/core/QuoteDetailProvider";
 
 const QuoteList = () => {
   return (
@@ -32,6 +34,22 @@ const QuoteListWrapper = () => (
               <QuoteList />
             </ListViewProvider>
           </QuoteProvider>
+        }
+      />
+      <Route
+        path=":id/*"
+        element={
+          <CustomerProvider>
+            <ContactProvider>
+              <QuoteActionProvider>
+                <QuoteDetailProvider>
+                  <QuoteModalProvider>
+                    <QuoteDetailPage />
+                  </QuoteModalProvider>
+                </QuoteDetailProvider>
+              </QuoteActionProvider>
+            </ContactProvider>
+          </CustomerProvider>
         }
       />
       <Route

@@ -4,77 +4,11 @@ import { KTSVG } from "../../../../../../../_metronic/helpers";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useQuoteModalContext } from "../../core/QuoteModalProvider";
 import { FormFieldError } from "../../../../../../components/FormFieldError";
+import { QuoteRowItem } from "../../../shared/QuoteRowItem";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
 }
-
-interface ItemProps {
-  formik: ReturnType<typeof useFormik>;
-  index: number;
-  onEdit: () => any;
-  onRemove: () => any;
-}
-
-const QuoteItem: React.FC<ItemProps> = ({
-  formik,
-  index,
-  onEdit,
-  onRemove,
-}) => {
-  const {
-    asking_price_model,
-    quotation_model,
-    manufacturer,
-    unit,
-    quantity,
-    net_unit_price_no_vat,
-    vat,
-    commission,
-  } = (formik.values.models[index] || {}) as QuoteItemModel;
-  return (
-    <tr>
-      <td>
-        <a
-          href="#"
-          className="text-dark fw-bolder text-hover-primary mb-1 fs-6"
-        >
-          {asking_price_model}
-        </a>
-        <span className="text-muted fw-bold d-block">{quotation_model}</span>
-      </td>
-      <td className="text-muted fw-bold">{manufacturer}</td>
-      <td className="text-muted fw-bold">
-        {quantity} x {unit}
-      </td>
-      <td className="text-end fw-bold">{net_unit_price_no_vat}</td>
-      <td className="text-end fw-bold">{commission}</td>
-      <td className="text-end fw-bold">{vat}</td>
-      <td>
-        <div className="d-flex justify-content-end flex-shrink-0">
-          <a
-            onClick={onEdit}
-            className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-          >
-            <KTSVG
-              path="/media/icons/duotune/art/art005.svg"
-              className="svg-icon-3"
-            />
-          </a>
-          <a
-            onClick={onRemove}
-            className="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
-          >
-            <KTSVG
-              path="/media/icons/duotune/general/gen027.svg"
-              className="svg-icon-3"
-            />
-          </a>
-        </div>
-      </td>
-    </tr>
-  );
-};
 
 let editIndex: number | null = null;
 
@@ -149,9 +83,9 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
           </thead>
           <tbody className="text-gray-600 fw-bold">
             {models.map((item: QuoteItemModel, index: number) => (
-              <QuoteItem
+              <QuoteRowItem
                 key={item.asking_price_model}
-                formik={formik}
+                item={models[index]}
                 index={index}
                 onRemove={() => onRemove(index)}
                 onEdit={() => onEdit(index)}

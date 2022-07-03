@@ -6,15 +6,20 @@ import { quoteCreationSchemas, QuoteFormModel } from "./quoteCreationSchemas";
 import { QuoteInfoStep } from "./steps/QuoteInfoStep";
 import { useQuoteActionContext } from "../core/QuoteActionProvider";
 import { QuoteModelListStep } from "./steps/QuoteModelListStep";
+import { QuoteOrderInfoStep } from "./steps/QuoteOrderInfoStep";
+import { useNavigate } from "react-router-dom";
+import { Routing } from "../../../../../enums/Routing.enum";
 
 const NewQuote: FC = () => {
   const stepperRef = useRef<HTMLDivElement | null>(null);
   const stepper = useRef<StepperComponent | null>(null);
+  const navigate = useNavigate();
   const [currentSchema, setCurrentSchema] = useState(quoteCreationSchemas[0]);
   const [initValues] = useState<QuoteFormModel>(new QuoteFormModel());
   const [isSubmitButton, setSubmitButton] = useState(false);
 
-  const { loading, createQuote, createQuoteItems } = useQuoteActionContext();
+  const { loading, createQuote, createQuoteItems, createQuoteInfo } =
+    useQuoteActionContext();
 
   const loadStepper = () => {
     stepper.current = StepperComponent.createInsance(
@@ -51,9 +56,9 @@ const NewQuote: FC = () => {
     if (stepper.current.currentStepIndex !== stepper.current.totatStepsNumber) {
       stepper.current.goNext();
     } else {
-      stepper.current.goto(1);
-      actions.resetForm();
+      navigate(`/${Routing.SaleQuotes}`);
     }
+    actions.setSubmitting(false);
   };
 
   const handleSubmit = async (
@@ -71,6 +76,11 @@ const NewQuote: FC = () => {
       }
     } else if (stepper.current.currentStepIndex === 2) {
       const done = await createQuoteItems(values);
+      if (done) {
+        goNext(actions);
+      }
+    } else if (stepper.current.currentStepIndex === 3) {
+      const done = await createQuoteInfo(values);
       if (done) {
         goNext(actions);
       }
@@ -134,7 +144,9 @@ const NewQuote: FC = () => {
                   <QuoteModelListStep formik={formik as any} />
                 </div>
 
-                <div data-kt-stepper-element="content">{/* <Step3 /> */}</div>
+                <div data-kt-stepper-element="content">
+                  <QuoteOrderInfoStep formik={formik as any} />
+                </div>
 
                 <div className="d-flex flex-stack pt-15">
                   <div className="mr-2">

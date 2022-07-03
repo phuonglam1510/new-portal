@@ -6,6 +6,8 @@ class ContextProps {
   itemForUpdate?: QuoteItemModel;
   open: (item: QuoteItemModel, callback?: Function) => void = () => true;
   close: () => void = () => true;
+  setLoading: (value: boolean) => void = () => true;
+  loading: boolean = false;
 }
 
 const QuoteModalContext = createContext<ContextProps>(new ContextProps());
@@ -13,22 +15,28 @@ const QuoteModalContext = createContext<ContextProps>(new ContextProps());
 let onSave: any = null;
 
 const QuoteModalProvider: FC = ({ children }) => {
-  const [itemForUpdate, setItemIdForUpdate] = useState<QuoteItemModel | undefined>();
+  const [itemForUpdate, setItemIdForUpdate] = useState<
+    QuoteItemModel | undefined
+  >();
+  const [loading, setLoading] = useState(false);
 
   const open = (item: QuoteItemModel, callback?: Function) => {
     setItemIdForUpdate(item);
-    onSave = callback
-  }
+    onSave = callback;
+  };
 
   const close = () => {
     setItemIdForUpdate(undefined);
-  }
-
+  };
 
   return (
     <QuoteModalContext.Provider
       value={{
-        itemForUpdate, open, close
+        itemForUpdate,
+        open,
+        close,
+        setLoading,
+        loading,
       }}
     >
       {children}

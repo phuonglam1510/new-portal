@@ -4,25 +4,20 @@ import { useMutation, useQueryClient } from "react-query";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
 import { ID, KTSVG, QUERIES } from "../../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../../core/QuoteProvider";
-import { useListView } from "../../core/ListViewProvider";
 import { deleteUser } from "../../core/_requests";
+import { Link } from "react-router-dom";
 
 type Props = {
   id: ID;
 };
 
 const UserActionsCell: FC<Props> = ({ id }) => {
-  const { setItemIdForUpdate } = useListView();
   const { query } = useQuoteContext();
   const queryClient = useQueryClient();
 
   useEffect(() => {
     MenuComponent.reinitialization();
   }, []);
-
-  const openEditModal = () => {
-    setItemIdForUpdate(id);
-  };
 
   const deleteItem = useMutation(() => deleteUser(id), {
     // 💡 response of the mutation is passed to onSuccess
@@ -53,9 +48,9 @@ const UserActionsCell: FC<Props> = ({ id }) => {
       >
         {/* begin::Menu item */}
         <div className="menu-item px-3">
-          <a className="menu-link px-3" onClick={openEditModal}>
+          <Link to={id?.toString() || ""} className="menu-link px-3">
             Edit
-          </a>
+          </Link>
         </div>
         {/* end::Menu item */}
 

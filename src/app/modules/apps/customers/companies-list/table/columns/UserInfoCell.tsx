@@ -21,13 +21,7 @@ const UserInfoCell: FC<Props> = ({ company }) => (
             />
           </div>
         ) : (
-          <div
-            className={clsx(
-              "symbol-label fs-3"
-              // `bg-light-${company.initials?.state}`,
-              // `text-${company.initials?.state}`
-            )}
-          >
+          <div className={clsx("symbol-label fs-3")}>
             {company.company_name}
           </div>
         )}

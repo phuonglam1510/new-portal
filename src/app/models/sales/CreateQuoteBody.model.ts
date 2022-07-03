@@ -10,4 +10,5 @@ export type CreateQuoteBody = Pick<
   | "order_confirmation_id"
   | "head_signature_id"
   | "deliver_record_id"
+  | "status"
 >;

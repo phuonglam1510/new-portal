@@ -1,10 +1,19 @@
 import { FC, createContext, useContext, useState } from "react";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
+import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
+import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
 import { uploadImage } from "../../../core/images/requests";
-import { QuoteFormModel } from "../new-quote/quoteCreationSchemas";
+import {
+  QuoteFormModel,
+  QuoteInfoFormModel,
+} from "../new-quote/quoteCreationSchemas";
 import {
   createQuote as createQuoteAPI,
+  createQuoteInfo as createQuoteInfoAPI,
   createQuoteItem as createQuoteItemAPI,
+  updateQuoteInfo,
+  updateQuoteItem,
+  updateQuote,
 } from "./_requests";
 import { pickBody } from "./_util";
 
@@ -12,13 +21,32 @@ interface ContextProps {
   loading: boolean;
   quote: QuoteModel | null;
   createQuote: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  editQuote: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   createQuoteItems: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  createQuoteItem: (
+    quoteId: number,
+    quote: QuoteItemModel
+  ) => Promise<QuoteItemModel | boolean>;
+  editQuoteItem: (
+    quoteId: number,
+    quote: QuoteItemModel
+  ) => Promise<QuoteItemModel | boolean>;
+  editQuoteInfo: (
+    quoteId: number,
+    quote: QuoteInfoFormModel
+  ) => Promise<QuoteInfoModel | boolean>;
+  createQuoteInfo: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
 }
 
 const QuoteActionContext = createContext<ContextProps>({
   loading: false,
   createQuote: async () => true,
+  editQuote: async () => true,
   createQuoteItems: async () => true,
+  createQuoteInfo: async () => true,
+  createQuoteItem: async () => true,
+  editQuoteItem: async () => true,
+  editQuoteInfo: async () => true,
   quote: null,
 });
 
@@ -58,12 +86,31 @@ const QuoteActionProvider: FC = ({ children }) => {
   };
 
   const createQuote = async (
-    quote: QuoteFormModel
+    quoteForm: QuoteFormModel
   ): Promise<QuoteModel | boolean> => {
     try {
       setLoading(true);
-      quote = await handleQuoteFiles(quote);
-      const data = await createQuoteAPI(pickBody(quote));
+      quoteForm = await handleQuoteFiles(quoteForm);
+      const data = await createQuoteAPI(pickBody(quoteForm));
+      setQuote(data);
+      return data;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editQuote = async (
+    quoteForm: QuoteFormModel
+  ): Promise<QuoteModel | boolean> => {
+    try {
+      setLoading(true);
+      quoteForm = await handleQuoteFiles(quoteForm);
+      const data = await updateQuote({
+        ...pickBody(quoteForm),
+        id: quoteForm.id || 0,
+      });
       setQuote(data);
       return data;
     } catch (error) {
@@ -91,12 +138,82 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
+  const createQuoteItem = async (
+    quoteId: number,
+    quoteItem: QuoteItemModel
+  ): Promise<QuoteItemModel | boolean> => {
+    try {
+      setLoading(true);
+      const data = await createQuoteItemAPI(quoteId, quoteItem);
+      return data || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editQuoteItem = async (
+    quoteId: number,
+    quoteItem: QuoteItemModel
+  ): Promise<QuoteItemModel | boolean> => {
+    try {
+      setLoading(true);
+      const data = await updateQuoteItem(quoteId, quoteItem);
+      return data || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createQuoteInfo = async (
+    quoteForm: QuoteFormModel
+  ): Promise<QuoteModel | boolean> => {
+    try {
+      setLoading(true);
+
+      await createQuoteInfoAPI(quote?.id || 0, quoteForm.info);
+      return quote || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editQuoteInfo = async (
+    quoteId: number,
+    quoteItem: QuoteInfoFormModel
+  ): Promise<QuoteInfoModel | boolean> => {
+    try {
+      setLoading(true);
+
+      const data = await updateQuoteInfo(quoteId, quoteItem);
+      return data || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <QuoteActionContext.Provider
       value={{
         loading,
         createQuote,
         createQuoteItems,
+        createQuoteItem,
+        createQuoteInfo,
+        editQuoteItem,
+        editQuoteInfo,
+        editQuote,
         quote,
       }}
     >

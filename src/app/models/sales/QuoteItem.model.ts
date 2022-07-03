@@ -1,5 +1,5 @@
 export class QuoteItemModel {
-  id: number = -1;
+  id!: number;
   asking_price_model: string = "";
   quotation_model: string = "";
   manufacturer: string = "";

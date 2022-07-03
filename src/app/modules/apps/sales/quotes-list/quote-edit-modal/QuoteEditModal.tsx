@@ -4,7 +4,7 @@ import { QuoteEditModalForm } from "./QuoteEditModalForm";
 import { QuoteEditModalHeader } from "./QuoteEditModalHeader";
 
 interface Props {
-  onSave: (item: QuoteItemModel) => any
+  onSave: (item: QuoteItemModel) => any;
 }
 
 const QuoteEditModal: React.FC<Props> = ({ onSave }) => {
@@ -27,7 +27,7 @@ const QuoteEditModal: React.FC<Props> = ({ onSave }) => {
         <div className="modal-dialog modal-dialog-centered mw-750px">
           <div className="modal-content">
             <QuoteEditModalHeader />
-            <div className="modal-body scroll-y mx-5 mx-xl-15 my-7">
+            <div className="modal-body scroll-y mx-5 mx-xl-15">
               <QuoteEditModalForm onSave={onSave} />
             </div>
           </div>
