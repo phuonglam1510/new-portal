@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import React from "react";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { quoteOrderStatusLabel } from "../../../../../constants/quoteOrderStatusLabel.constant";
 import { OrderStatus } from "../../../../../enums/OrderStatus.enum";
@@ -84,7 +84,7 @@ export function QuoteInfoView() {
                   isDone ? "badge-success" : "badge-warning"
                 )}
               >
-                {quoteOrderStatusLabel[status]}
+                {quoteOrderStatusLabel[status || OrderStatus.DeliveryNotYetDue]}
               </span>
             }
           />

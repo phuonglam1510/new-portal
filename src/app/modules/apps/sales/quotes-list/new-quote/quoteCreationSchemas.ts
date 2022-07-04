@@ -1,5 +1,5 @@
-import { Builder } from "builder-pattern";
 import * as Yup from "yup";
+import { FileUploadResponse } from "../../../../../models/core/FileUploadResponse.type";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
@@ -10,11 +10,12 @@ export class QuoteInfoFormModel extends QuoteInfoModel {
 }
 
 export class QuoteFormModel extends QuoteModel {
-  sale_signature?: File;
-  order_confirmation?: File;
-  head_signature?: File;
+  sale_signature?: File | FileUploadResponse;
+  order_confirmation?: File | FileUploadResponse;
+  head_signature?: File | FileUploadResponse;
   models: QuoteItemModel[] = [];
   info: QuoteInfoFormModel = new QuoteInfoFormModel();
+  attachments: File[] | FileUploadResponse[] = [];
 }
 
 export const quoteCreationSchemas = [
@@ -32,4 +33,5 @@ export const quoteCreationSchemas = [
       prepay: Yup.number().max(100, "% trả trước không đc hơn 100%"),
     }),
   }),
+  Yup.object({}),
 ];

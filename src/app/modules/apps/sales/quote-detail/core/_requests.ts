@@ -17,7 +17,11 @@ const getQuoteDetail = (id: string): Promise<QuoteDetailModel> => {
     )
     .then((response: GenericResponse<QuoteDetailModel>) =>
       Builder(QuoteDetailModel, response.data)
-        .quote_info(Builder(QuoteInfoModel, response.data.quote_info).build())
+        .quote_info(
+          response.data.quote_info
+            ? Builder(QuoteInfoModel, response.data.quote_info).build()
+            : undefined
+        )
         .quote_items(
           response.data.quote_items?.map((item) =>
             Builder(QuoteItemModel, item).build()

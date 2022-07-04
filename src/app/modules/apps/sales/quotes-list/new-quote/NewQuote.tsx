@@ -9,6 +9,7 @@ import { QuoteModelListStep } from "./steps/QuoteModelListStep";
 import { QuoteOrderInfoStep } from "./steps/QuoteOrderInfoStep";
 import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../enums/Routing.enum";
+import { QuoteAttachmentsStep } from "./steps/QuoteAttachmentsStep";
 
 const NewQuote: FC = () => {
   const stepperRef = useRef<HTMLDivElement | null>(null);
@@ -18,8 +19,13 @@ const NewQuote: FC = () => {
   const [initValues] = useState<QuoteFormModel>(new QuoteFormModel());
   const [isSubmitButton, setSubmitButton] = useState(false);
 
-  const { loading, createQuote, createQuoteItems, createQuoteInfo } =
-    useQuoteActionContext();
+  const {
+    loading,
+    createQuote,
+    createQuoteItems,
+    createQuoteInfo,
+    createQuoteAttachments,
+  } = useQuoteActionContext();
 
   const loadStepper = () => {
     stepper.current = StepperComponent.createInsance(
@@ -84,6 +90,11 @@ const NewQuote: FC = () => {
       if (done) {
         goNext(actions);
       }
+    } else if (stepper.current.currentStepIndex === 4) {
+      const done = await createQuoteAttachments(values);
+      if (done) {
+        goNext(actions);
+      }
     }
   };
 
@@ -124,6 +135,9 @@ const NewQuote: FC = () => {
             <div className="stepper-item" data-kt-stepper-element="nav">
               <h3 className="stepper-title">Thông tin đơn hàng</h3>
             </div>
+            <div className="stepper-item" data-kt-stepper-element="nav">
+              <h3 className="stepper-title">Chứng từ đi kèm</h3>
+            </div>
           </div>
 
           <Formik
@@ -146,6 +160,9 @@ const NewQuote: FC = () => {
 
                 <div data-kt-stepper-element="content">
                   <QuoteOrderInfoStep formik={formik as any} />
+                </div>
+                <div data-kt-stepper-element="content">
+                  <QuoteAttachmentsStep formik={formik as any} />
                 </div>
 
                 <div className="d-flex flex-stack pt-15">

@@ -1,10 +1,13 @@
 import { Column } from "react-table";
+import clsx from "clsx";
 import { UserInfoCell } from "./UserInfoCell";
 import { UserActionsCell } from "./UserActionsCell";
 import { UserSelectionCell } from "./UserSelectionCell";
 import { UserCustomHeader } from "./UserCustomHeader";
 import { UserSelectionHeader } from "./UserSelectionHeader";
 import { QuoteModel } from "../../../../../../models/sales/Quote.model";
+import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
+import { QuoteType } from "../../../../../../enums/QuoteType.enum";
 
 const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
   {
@@ -56,6 +59,18 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       />
     ),
     accessor: "typeName",
+    Cell: ({ data, row, value }) => (
+      <div
+        className={clsx(
+          "badge",
+          data[row.index].type === QuoteType.Sale
+            ? "badge-info"
+            : "badge-success"
+        )}
+      >
+        {value}
+      </div>
+    ),
   },
   {
     Header: (props) => (
@@ -76,6 +91,18 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       />
     ),
     accessor: "statusName",
+    Cell: ({ data, row }) => (
+      <div
+        className={clsx(
+          "badge",
+          data[row.index].status === QuoteStatus.Wating
+            ? "badge-warning"
+            : "badge-success"
+        )}
+      >
+        {data[row.index].statusName}
+      </div>
+    ),
   },
   {
     Header: (props) => (

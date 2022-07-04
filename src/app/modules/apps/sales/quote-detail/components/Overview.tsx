@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import { Link } from "react-router-dom";
 import { QuoteStatus } from "../../../../../enums/QuoteStatus.enum";
+import { FileUploadResponse } from "../../../../../models/core/FileUploadResponse.type";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
@@ -15,6 +16,15 @@ const InfoRow = ({ text, value }: { text: string; value: any }) => {
   );
 };
 
+const FileLink = ({ file }: { file?: FileUploadResponse }) =>
+  file ? (
+    <a href={file?.file_url} rel="noreferrer" target="_blank">
+      {file?.file_name}
+    </a>
+  ) : (
+    <div>-</div>
+  );
+
 export function Overview() {
   const { quote } = useQuoteDetailContext();
   const {
@@ -26,6 +36,9 @@ export function Overview() {
     sale,
     package_quality,
     delivery_address,
+    sale_signature,
+    head_signature,
+    order_confirmation,
   } = quote;
   const { contact_name, contact_email, contact_position, contact_phone } =
     contact || {};
@@ -70,6 +83,18 @@ export function Overview() {
           />
           <InfoRow text="Chất lượng hàng hoá" value={package_quality || "-"} />
           <InfoRow text="Địa chỉ giao hàng" value={delivery_address || "-"} />
+          <InfoRow
+            text="Chữ ký sales"
+            value={<FileLink file={sale_signature} />}
+          />
+          <InfoRow
+            text="Chữ ký thủ trưởng đơn vị"
+            value={<FileLink file={head_signature} />}
+          />
+          <InfoRow
+            text="Xác nhận đặt hàng"
+            value={<FileLink file={order_confirmation} />}
+          />
           <InfoRow text="Ngày tạo" value={createdAtText} />
           <InfoRow text="Tạo bởi" value={name || "-"} />
         </div>

@@ -14,7 +14,15 @@ import { Routing } from "../../../../../../enums/Routing.enum";
 const QuoteInfoEditCard: React.FC = () => {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const navigate = useNavigate();
-  const { editQuoteInfo } = useQuoteActionContext();
+  const { editQuoteInfo, createQuoteInfo } = useQuoteActionContext();
+
+  const handleEditOrCreate = async (values: QuoteFormModel) => {
+    console.log(quote.quote_info);
+    if (quote.quote_info) {
+      return editQuoteInfo(quote.id || 0, values.info);
+    }
+    return createQuoteInfo(values);
+  };
 
   const [loading, setLoading] = useState(false);
   const formik = useFormik<QuoteFormModel>({
@@ -26,7 +34,7 @@ const QuoteInfoEditCard: React.FC = () => {
     onSubmit: (values) => {
       setLoading(true);
       formik.setSubmitting(true);
-      editQuoteInfo(quote.id || 0, values.info)
+      handleEditOrCreate(values)
         .then(() => {
           navigate(`/${Routing.SaleQuotes}/${quote.id}/info`);
           loadQuoteDetail(quote.id?.toString() || "");

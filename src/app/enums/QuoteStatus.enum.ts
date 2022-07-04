@@ -1,4 +1,4 @@
 export enum QuoteStatus {
   Wating = "pending",
-  Quoted = "quoted",
+  Quoted = "DONE",
 }
