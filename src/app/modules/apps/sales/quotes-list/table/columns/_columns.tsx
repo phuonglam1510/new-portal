@@ -8,6 +8,8 @@ import { UserSelectionHeader } from "./UserSelectionHeader";
 import { QuoteModel } from "../../../../../../models/sales/Quote.model";
 import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../../../../../enums/QuoteType.enum";
+import { Link } from "react-router-dom";
+import { Routing } from "../../../../../../enums/Routing.enum";
 
 const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
   {
@@ -15,6 +17,20 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
     id: "selection",
     Cell: ({ ...props }) => (
       <UserSelectionCell id={props.data[props.row.index].id} />
+    ),
+  },
+  {
+    Header: (props) => (
+      <UserCustomHeader tableProps={props} title="ID" className="min-w-60px" />
+    ),
+    accessor: "id",
+    Cell: ({ value }) => (
+      <Link
+        to={`/${Routing.SaleQuotes}/${value}`}
+        className="fs-4 text-gray-600 fw-bold"
+      >
+        #{value}
+      </Link>
     ),
   },
   {
