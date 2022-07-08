@@ -1,5 +1,4 @@
 import { KTSVG } from "../../../../../../_metronic/helpers";
-import { useListView } from "../core/ListViewProvider";
 import { useQuoteModalContext } from "../core/QuoteModalProvider";
 
 const QuoteEditModalHeader = () => {

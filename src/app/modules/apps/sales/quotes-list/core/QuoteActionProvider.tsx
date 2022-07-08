@@ -1,5 +1,4 @@
 import { FC, createContext, useContext, useState } from "react";
-import { FileUploadResponse } from "../../../../../models/core/FileUploadResponse.type";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
@@ -16,6 +15,7 @@ import {
   updateQuoteItem,
   updateQuote,
   addQuoteAttachment,
+  removeAttachment,
 } from "./_requests";
 import { fileKeyMap, pickBody } from "./_util";
 
@@ -41,6 +41,10 @@ interface ContextProps {
   createQuoteAttachments: (
     quote: QuoteFormModel
   ) => Promise<QuoteModel | boolean>;
+  removeQuoteAttachment: (
+    quoteId: number,
+    attachmentId: number
+  ) => Promise<boolean>;
 }
 
 const QuoteActionContext = createContext<ContextProps>({
@@ -53,6 +57,7 @@ const QuoteActionContext = createContext<ContextProps>({
   editQuoteItem: async () => true,
   editQuoteInfo: async () => true,
   createQuoteAttachments: async () => true,
+  removeQuoteAttachment: async () => true,
   quote: null,
 });
 
@@ -203,6 +208,24 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
+  const removeQuoteAttachment = async (
+    quoteId: number,
+    attachmentId: number
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+
+      await removeAttachment(quoteId, attachmentId);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const createQuoteAttachments = async (
     quoteForm: QuoteFormModel
   ): Promise<QuoteModel | boolean> => {
@@ -249,6 +272,7 @@ const QuoteActionProvider: FC = ({ children }) => {
         editQuoteInfo,
         editQuote,
         createQuoteAttachments,
+        removeQuoteAttachment,
         quote,
       }}
     >

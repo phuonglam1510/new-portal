@@ -1,11 +1,14 @@
 {
   "folders": [
-	{
-		"path": "../../.."
-	},
-	{
-		"path": "../../../../../../Downloads/pitesco_api-stage"
-	}
-],
+    {
+      "path": "../../.."
+    },
+    {
+      "path": "../../../../../../Downloads/pitesco_api-stage"
+    },
+    {
+      "path": "../../../../../../Downloads/metronic_v8.1.0_html_demo7/demo7"
+    }
+  ],
   "settings": {}
 }

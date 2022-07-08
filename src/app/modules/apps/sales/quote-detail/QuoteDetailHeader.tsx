@@ -190,6 +190,32 @@ const QuoteDetailHeader: React.FC = () => {
                 Thông tin đơn hàng
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname.startsWith(
+                    `/${Routing.SaleQuotes}/${id}/attachments`
+                  ) && "active")
+                }
+                to={`/${Routing.SaleQuotes}/${id}/attachments`}
+              >
+                Chứng từ đi kèm
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname.startsWith(
+                    `/${Routing.SaleQuotes}/${id}/warranty`
+                  ) && "active")
+                }
+                to={`/${Routing.SaleQuotes}/${id}/warranty`}
+              >
+                Đơn bảo hành
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

@@ -119,6 +119,19 @@ const addQuoteAttachment = (
     .then((response: GenericResponse<QuoteInfoModel>) => response.data);
 };
 
+const removeAttachment = (
+  quoteId: number,
+  attachment_id: number
+): Promise<QuoteInfoModel> => {
+  return axios
+    .delete(`${URL}/${quoteId}/attachment/${attachment_id}`)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+};
+
 const updateCompany = (
   company: CompanyModel
 ): Promise<CompanyModel | undefined> => {
@@ -152,4 +165,5 @@ export {
   updateQuoteInfo,
   updateQuote,
   addQuoteAttachment,
+  removeAttachment,
 };
