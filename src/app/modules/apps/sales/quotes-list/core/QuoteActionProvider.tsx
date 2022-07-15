@@ -2,6 +2,8 @@ import { FC, createContext, useContext, useState } from "react";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
+import { QuoteTermModel } from "../../../../../models/sales/QuoteTermModel";
+import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
 import { uploadImage } from "../../../core/images/requests";
 import {
   QuoteFormModel,
@@ -16,50 +18,65 @@ import {
   updateQuote,
   addQuoteAttachment,
   removeAttachment,
+  exportQuotePdf,
+  addQuoteWarranty,
+  updateQuoteWarranty,
+  deleteQuoteWarranty,
+  addQuoteTerm,
+  updateQuoteTerm,
 } from "./_requests";
 import { fileKeyMap, pickBody } from "./_util";
 
-interface ContextProps {
-  loading: boolean;
-  quote: QuoteModel | null;
-  createQuote: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
-  editQuote: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
-  createQuoteItems: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
-  createQuoteItem: (
+class ContextProps {
+  loading: boolean = false;
+  quote: QuoteModel | null = null;
+  exportPdf!: (quoteId: number) => Promise<boolean>;
+  createQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  editQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  createQuoteItems!: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  createQuoteWarranty!: (
+    quoteId: number,
+    warranty: QuoteWarrantyModel
+  ) => Promise<QuoteWarrantyModel | boolean>;
+  editQuoteWarranty!: (
+    quoteId: number,
+    warranty: QuoteWarrantyModel
+  ) => Promise<QuoteWarrantyModel | boolean>;
+  removeQuoteWarranty!: (
+    quoteId: number,
+    warrantyId: number
+  ) => Promise<boolean>;
+  createQuoteItem!: (
     quoteId: number,
     quote: QuoteItemModel
   ) => Promise<QuoteItemModel | boolean>;
-  editQuoteItem: (
+  editQuoteItem!: (
     quoteId: number,
     quote: QuoteItemModel
   ) => Promise<QuoteItemModel | boolean>;
-  editQuoteInfo: (
+  editQuoteInfo!: (
     quoteId: number,
     quote: QuoteInfoFormModel
   ) => Promise<QuoteInfoModel | boolean>;
-  createQuoteInfo: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
-  createQuoteAttachments: (
+  createQuoteInfo!: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
+  editQuoteTerm!: (
+    quoteId: number,
+    quote: QuoteTermModel
+  ) => Promise<QuoteTermModel | boolean>;
+  createQuoteTerm!: (
+    quoteId: number,
+    quote: QuoteTermModel
+  ) => Promise<QuoteTermModel | boolean>;
+  createQuoteAttachments!: (
     quote: QuoteFormModel
   ) => Promise<QuoteModel | boolean>;
-  removeQuoteAttachment: (
+  removeQuoteAttachment!: (
     quoteId: number,
     attachmentId: number
   ) => Promise<boolean>;
 }
 
-const QuoteActionContext = createContext<ContextProps>({
-  loading: false,
-  createQuote: async () => true,
-  editQuote: async () => true,
-  createQuoteItems: async () => true,
-  createQuoteInfo: async () => true,
-  createQuoteItem: async () => true,
-  editQuoteItem: async () => true,
-  editQuoteInfo: async () => true,
-  createQuoteAttachments: async () => true,
-  removeQuoteAttachment: async () => true,
-  quote: null,
-});
+const QuoteActionContext = createContext<ContextProps>(new ContextProps());
 
 const QuoteActionProvider: FC = ({ children }) => {
   const [quote, setQuote] = useState<QuoteModel | null>(null);
@@ -100,6 +117,18 @@ const QuoteActionProvider: FC = ({ children }) => {
       const data = await createQuoteAPI(pickBody(quoteForm));
       setQuote(data);
       return data;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const exportPdf = async (quoteId: number): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const data = await exportQuotePdf(quoteId);
+      return true;
     } catch (error) {
       return false;
     } finally {
@@ -208,6 +237,38 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
+  const createQuoteTerm = async (
+    quoteId: number,
+    quoteTerm: QuoteTermModel
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      await addQuoteTerm(quoteId || quote?.id || 0, quoteTerm);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editQuoteTerm = async (
+    quoteId: number,
+    quoteTerm: QuoteTermModel
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      await updateQuoteTerm(quoteId || quote?.id || 0, quoteTerm);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const removeQuoteAttachment = async (
     quoteId: number,
     attachmentId: number
@@ -260,6 +321,54 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
+  const createQuoteWarranty = async (
+    quoteId: number,
+    warranty: QuoteWarrantyModel
+  ): Promise<QuoteWarrantyModel | boolean> => {
+    try {
+      setLoading(true);
+      const data = await addQuoteWarranty(quoteId, warranty);
+      return data || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editQuoteWarranty = async (
+    quoteId: number,
+    warranty: QuoteWarrantyModel
+  ): Promise<QuoteWarrantyModel | boolean> => {
+    try {
+      setLoading(true);
+      const { id, ...options } = warranty;
+      const data = await updateQuoteWarranty(quoteId, warranty.id, options);
+      return data || false;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+  const removeQuoteWarranty = async (
+    quoteId: number,
+    warrantyId: number
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      await deleteQuoteWarranty(quoteId, warrantyId);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <QuoteActionContext.Provider
       value={{
@@ -273,6 +382,12 @@ const QuoteActionProvider: FC = ({ children }) => {
         editQuote,
         createQuoteAttachments,
         removeQuoteAttachment,
+        createQuoteWarranty,
+        editQuoteWarranty,
+        removeQuoteWarranty,
+        createQuoteTerm,
+        editQuoteTerm,
+        exportPdf,
         quote,
       }}
     >

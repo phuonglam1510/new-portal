@@ -2,13 +2,14 @@ import React from "react";
 import { Navigate, Outlet, Route, Routes, useParams } from "react-router-dom";
 import { PageLink, PageTitle } from "../../../../../_metronic/layout/core";
 import { Routing } from "../../../../enums/Routing.enum";
-import { UsersListLoading } from "../quotes-list/components/loading/UsersListLoading";
 import { QuoteInfoEditCard } from "./components/info/QuoteInfoEditCard";
 import { ModelsView } from "./components/models/ModelsView";
 import { Overview } from "./components/Overview";
 import { QuoteOverviewEditCard } from "./components/overview/QuoteOverviewEditCard";
 import { QuoteAttachmentsView } from "./components/QuoteAttachmentsView";
 import { QuoteInfoView } from "./components/QuoteInfoView";
+import { QuoteTermView } from "./components/QuoteTermView";
+import { QuoteTermEditCard } from "./components/term/QuoteTermEditCard";
 import { WarrantyListView } from "./components/WarrantyListView";
 import { useQuoteDetailContext } from "./core/QuoteDetailProvider";
 import { QuoteDetailHeader } from "./QuoteDetailHeader";
@@ -154,6 +155,30 @@ const QuoteDetailPage: React.FC = () => {
                 Đơn bảo hành
               </PageTitle>
               <WarrantyListView />
+            </>
+          }
+        />
+        <Route
+          path="term"
+          element={
+            <>
+              <QuoteDetailHeader />
+              <PageTitle breadcrumbs={accountBreadCrumbs}>
+                Điều Khoản & Bảo Hành
+              </PageTitle>
+              <QuoteTermView />
+            </>
+          }
+        />
+        <Route
+          path="term/edit"
+          element={
+            <>
+              <QuoteDetailHeader />
+              <PageTitle breadcrumbs={accountBreadCrumbs}>
+                Điều Khoản & Bảo Hành
+              </PageTitle>
+              <QuoteTermEditCard />
             </>
           }
         />

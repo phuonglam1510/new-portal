@@ -6,22 +6,43 @@ import { FormInput } from "../../../../../../components/FormInput";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { UsersListLoading } from "../../../quotes-list/components/loading/UsersListLoading";
 import { quoteSchema } from "./quoteSchema";
+import { FormDropdown } from "../../../../../../components/FormDropdown";
+import { QuoteWarrantyStatus } from "../../../../../../enums/QuoteWarrantyStatus.enum";
+import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
 
 type Props = {
   onClose: () => any;
+  item: QuoteWarrantyModel;
 };
 
-const EditWarrantyModalForm: React.FC<Props> = ({ onClose }) => {
-  const { loading } = useQuoteActionContext();
+const statusItems = [
+  { text: "Chờ xử lý", value: QuoteWarrantyStatus.Pending },
+  { text: "Đã xong", value: QuoteWarrantyStatus.Done },
+];
+
+const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
+  const { loading, createQuoteWarranty, editQuoteWarranty } =
+    useQuoteActionContext();
+  const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const [quoteForEdit] = useState<QuoteWarrantyModel>(
-    Builder(QuoteWarrantyModel, {}).build()
+    Builder(QuoteWarrantyModel, { ...item }).build()
   );
 
   const formik = useFormik({
     initialValues: quoteForEdit,
     validationSchema: quoteSchema,
     onSubmit: async (values) => {
-      // onSave(values);
+      if (item.id) {
+        editQuoteWarranty(quote.id || 0, values).then(() => {
+          loadQuoteDetail(quote.id?.toString() || "");
+          onClose();
+        });
+      } else {
+        createQuoteWarranty(quote.id || 0, values).then(() => {
+          loadQuoteDetail(quote.id?.toString() || "");
+          onClose();
+        });
+      }
     },
   });
 
@@ -45,88 +66,45 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose }) => {
         >
           <FormInput
             formik={formik as any}
-            name="asking_price_model"
-            label="Model hỏi giá"
+            name="time_start_warranty"
+            label="Thời gian tiếp nhận bảo hành"
           />
           <FormInput
             formik={formik as any}
-            name="quotation_model"
-            label="Model báo giá"
+            name="issue"
+            label="Tình trạng"
             optional
           />
           <FormInput
             formik={formik as any}
-            name="series_number"
-            label="Số series"
+            name="technical_in_charge"
+            label="Kỹ thuật phụ trách"
             optional
           />
           <FormInput
             formik={formik as any}
-            name="manufacturer"
-            label="Hãng sản xuất"
+            name="errors"
+            label="Lỗi"
             optional
           />
           <FormInput
             formik={formik as any}
-            name="origin"
-            label="Xuất xứ"
+            name="warranty_process_time"
+            label="Thời gian xử lý bảo hành"
             optional
           />
-          <div className="d-flex flex-stack">
-            <div className="flex-equal">
-              <FormInput
-                formik={formik as any}
-                name="unit"
-                label="Đơn vị tính"
-                optional
-              />
-            </div>
-            <div className="w-10px" />
-            <div className="flex-equal">
-              <FormInput
-                formik={formik as any}
-                name="quantity"
-                label="Số lượng"
-                optional
-              />
-            </div>
-          </div>
-          <FormInput
+          <FormDropdown
+            items={statusItems}
             formik={formik as any}
-            name="inter"
-            label="Inter"
+            name="status"
+            label="Trạng thái"
             optional
           />
           <FormInput
             formik={formik as any}
-            name="net_unit_price_no_vat"
-            label="Đơn giá net không có VAT"
-            optional
+            name="cost_incurred"
+            label="Phí phát sinh"
             hasNumberHint
-          />
-          <div className="d-flex flex-stack">
-            <div className="flex-equal">
-              <FormInput
-                formik={formik as any}
-                name="commission"
-                label="Commission (%)"
-                optional
-              />
-            </div>
-            <div className="w-10px" />
-            <div className="flex-equal">
-              <FormInput
-                formik={formik as any}
-                name="vat"
-                label="VAT (%)"
-                optional
-              />
-            </div>
-          </div>
-          <FormInput
-            formik={formik as any}
-            name="delivery_time"
-            label="Thời gian giao hàng"
             optional
           />
           <FormInput
@@ -137,7 +115,7 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose }) => {
           />
         </div>
 
-        <div className="text-center pt-15">
+        <div className="text-center pt-7">
           <button
             type="reset"
             onClick={onClose}

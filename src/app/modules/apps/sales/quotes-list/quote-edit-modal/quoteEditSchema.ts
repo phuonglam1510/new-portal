@@ -6,4 +6,9 @@ export const quoteEditSchema = Yup.object().shape({
   quantity: Yup.number().typeError("Chỉ nhập số").nullable(),
   commission: Yup.number().typeError("Chỉ nhập số").nullable(),
   vat: Yup.number().typeError("Chỉ nhập số").nullable(),
+  corporate_tax: Yup.number()
+    .min(20, "Thuế TNDN chỉ từ 20 đến 25%")
+    .max(25, "Thuế TNDN chỉ từ 20 đến 25%")
+    .typeError("Chỉ nhập số")
+    .nullable(),
 });

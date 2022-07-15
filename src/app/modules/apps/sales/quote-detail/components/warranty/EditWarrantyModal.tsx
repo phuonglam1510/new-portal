@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { QuoteWarrantyModel } from "../../../../../../models/sales/QuoteWarranty.model";
 import { EditWarrantyModalForm } from "./EditWarrantyModalForm";
 
 interface Props {
   onClose: () => void;
+  item: QuoteWarrantyModel;
 }
 
-const EditWarrantyModal: React.FC<Props> = ({ onClose }) => {
+const EditWarrantyModal: React.FC<Props> = ({ onClose, item }) => {
   useEffect(() => {
     document.body.classList.add("modal-open");
     return () => {
@@ -40,7 +42,9 @@ const EditWarrantyModal: React.FC<Props> = ({ onClose }) => {
                 />
               </div>
             </div>
-            <EditWarrantyModalForm onClose={onClose} />
+            <div className="modal-body scroll-y mx-5 my-2">
+              <EditWarrantyModalForm onClose={onClose} item={item} />
+            </div>
           </div>
         </div>
       </div>

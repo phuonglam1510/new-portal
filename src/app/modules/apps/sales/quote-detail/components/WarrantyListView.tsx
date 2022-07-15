@@ -1,8 +1,11 @@
+import clsx from "clsx";
 import React from "react";
 import { KTSVG } from "../../../../../../_metronic/helpers";
+import { QuoteWarrantyStatus } from "../../../../../enums/QuoteWarrantyStatus.enum";
 import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
 import { useQuoteActionContext } from "../../quotes-list/core/QuoteActionProvider";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
+import { EditWarrantyModal } from "./warranty/EditWarrantyModal";
 
 interface ItemProps {
   item: QuoteWarrantyModel;
@@ -41,7 +44,18 @@ export const RowItem: React.FC<ItemProps> = ({
       <td className="text-muted fw-bold">{errors}</td>
       <td className="text-end fw-bold">{warranty_process_time}</td>
       <td className="text-end fw-bold">{cost_incurred}</td>
-      <td className="text-end fw-bold">{status}</td>
+      <td className="text-end fw-bold">
+        <div
+          className={clsx(
+            "badge",
+            status === QuoteWarrantyStatus.Pending
+              ? "badge-info"
+              : "badge-success"
+          )}
+        >
+          {status === QuoteWarrantyStatus.Pending ? "Chờ xử lý" : "Đã xong"}
+        </div>
+      </td>
       <td>
         <div className="d-flex justify-content-end flex-shrink-0">
           <a
@@ -70,17 +84,23 @@ export const RowItem: React.FC<ItemProps> = ({
 
 export function WarrantyListView() {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
+  const { removeQuoteWarranty } = useQuoteActionContext();
   const { quote_warranty } = quote;
   const [visible, setVisible] = React.useState(false);
-  const { editQuoteItem, createQuoteItem } = useQuoteActionContext();
+  const [editItem, setEditItem] = React.useState<QuoteWarrantyModel>(
+    new QuoteWarrantyModel()
+  );
 
   const onEdit = (index: number) => {
     const item = quote_warranty[index];
+    setEditItem(item);
     setVisible(true);
   };
 
   const onRemove = (index: number) => {
-    // delete model
+    removeQuoteWarranty(quote.id || 0, quote_warranty[index].id).then(() => {
+      loadQuoteDetail(quote.id?.toString() || "");
+    });
   };
 
   const onAdd = () => {
@@ -91,7 +111,7 @@ export function WarrantyListView() {
     <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
       <div className="card-header cursor-pointer">
         <div className="card-title m-0">
-          <h3 className="fw-bolder m-0">Models báo giá</h3>
+          <h3 className="fw-bolder m-0">Đơn bảo hành</h3>
         </div>
 
         <button type="button" className="btn btn-primary m-4" onClick={onAdd}>
@@ -108,12 +128,12 @@ export function WarrantyListView() {
           <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
             <thead>
               <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                <th className="p-0 min-w-120px">Model</th>
-                <th className="p-0 min-w-100px">Hãng sản xuất</th>
-                <th className="p-0 min-w-110px">Số lượng</th>
-                <th className="p-0 min-w-50px">Đơn giá</th>
-                <th className="p-0 min-w-50px">Commision (%)</th>
-                <th className="p-0 min-w-50px">VAT (%)</th>
+                <th className="p-0 min-w-120px">Thời gian tạo / Tình trạng</th>
+                <th className="p-0 min-w-100px">Kỹ thuật viên</th>
+                <th className="p-0 min-w-110px">Lỗi</th>
+                <th className="p-0 min-w-50px">Thời gian xử lý</th>
+                <th className="p-0 min-w-50px">Phí phát sinh</th>
+                <th className="p-0 min-w-50px">Tình trạng</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 fw-bold">
@@ -135,6 +155,9 @@ export function WarrantyListView() {
           )}
         </div>
       </div>
+      {visible && (
+        <EditWarrantyModal onClose={() => setVisible(false)} item={editItem} />
+      )}
     </div>
   );
 }

@@ -9,6 +9,8 @@ import { CreateQuoteItemBody } from "../../../../../models/sales/CreateQuoteItem
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
+import { QuoteTermModel } from "../../../../../models/sales/QuoteTermModel";
+import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
 import { UpdateQuoteBody } from "../../../../../models/sales/UpdateQuoteBody.model";
 import { QuoteQueryResponse } from "./_models";
 
@@ -57,8 +59,9 @@ const createQuoteItem = (
   quoteId: number,
   body: CreateQuoteItemBody
 ): Promise<QuoteItemModel> => {
+  const { notes, ...rest } = body;
   return axios
-    .post(`${URL}/${quoteId}/item`, body)
+    .post(`${URL}/${quoteId}/item`, rest)
     .then(
       (response: AxiosResponse<GenericResponse<QuoteItemModel>>) =>
         response.data
@@ -70,7 +73,7 @@ const updateQuoteItem = (
   quoteId: number,
   body: QuoteItemModel
 ): Promise<QuoteItemModel> => {
-  const { id, ...options } = body;
+  const { id, notes, ...options } = body;
   return axios
     .put(`${URL}/${quoteId}/item/${id}`, options)
     .then(
@@ -106,6 +109,32 @@ const updateQuoteInfo = (
     .then((response: GenericResponse<QuoteInfoModel>) => response.data);
 };
 
+const addQuoteTerm = (
+  quoteId: number,
+  body: Omit<QuoteTermModel, "id">
+): Promise<QuoteTermModel> => {
+  return axios
+    .post(`${URL}/${quoteId}/term`, body)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteTermModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteTermModel>) => response.data);
+};
+
+const updateQuoteTerm = (
+  quoteId: number,
+  body: Omit<QuoteTermModel, "id">
+): Promise<QuoteTermModel> => {
+  return axios
+    .put(`${URL}/${quoteId}/term`, body)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteTermModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteTermModel>) => response.data);
+};
+
 const addQuoteAttachment = (
   quoteId: number,
   attachment_id: number
@@ -117,6 +146,46 @@ const addQuoteAttachment = (
         response.data
     )
     .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+};
+
+const addQuoteWarranty = (
+  quoteId: number,
+  warranty: QuoteWarrantyModel
+): Promise<QuoteWarrantyModel> => {
+  return axios
+    .post(`${URL}/${quoteId}/warranty`, warranty)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteWarrantyModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data);
+};
+
+const updateQuoteWarranty = (
+  quoteId: number,
+  warrantyId: number,
+  warranty: Omit<QuoteWarrantyModel, "id">
+): Promise<QuoteWarrantyModel> => {
+  return axios
+    .put(`${URL}/${quoteId}/warranty/${warrantyId}`, warranty)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteWarrantyModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data);
+};
+
+const deleteQuoteWarranty = (
+  quoteId: number,
+  warrantyId: number
+): Promise<QuoteWarrantyModel> => {
+  return axios
+    .delete(`${URL}/${quoteId}/warranty/${warrantyId}`)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteWarrantyModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data);
 };
 
 const removeAttachment = (
@@ -147,6 +216,10 @@ const deleteUser = (userId: ID): Promise<void> => {
   return axios.delete(`${URL}/${userId}`).then(() => {});
 };
 
+const exportQuotePdf = (quoteId: ID): Promise<void> => {
+  return axios.get(`${URL}/${quoteId}/export/pdf`);
+};
+
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
   const requests = userIds.map((id) => axios.delete(`${URL}/${id}`));
   return axios.all(requests).then(() => {});
@@ -166,4 +239,10 @@ export {
   updateQuote,
   addQuoteAttachment,
   removeAttachment,
+  exportQuotePdf,
+  addQuoteWarranty,
+  updateQuoteWarranty,
+  deleteQuoteWarranty,
+  addQuoteTerm,
+  updateQuoteTerm,
 };

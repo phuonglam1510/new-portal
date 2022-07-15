@@ -9,6 +9,7 @@ import { Routing } from "../../../../enums/Routing.enum";
 import { useQuoteDetailContext } from "./core/QuoteDetailProvider";
 import { QuoteStatus } from "../../../../enums/QuoteStatus.enum";
 import { formatMoney } from "../../../../helpers/Number.helper";
+import { useQuoteActionContext } from "../quotes-list/core/QuoteActionProvider";
 
 const SummaryCard = ({ text, value }: { text: string; value: string }) => {
   return (
@@ -27,6 +28,7 @@ const QuoteDetailHeader: React.FC = () => {
   const location = useLocation();
   const id = params.id as string;
   const { quote } = useQuoteDetailContext();
+  const { exportPdf } = useQuoteActionContext();
   const { quote_info, quote_items, status, contact } = quote;
   const { prepay, total_selling_price_vat } = quote_info || {};
   const { contact_name, contact_email, contact_position } = contact || {};
@@ -108,25 +110,17 @@ const QuoteDetailHeader: React.FC = () => {
                     <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                   </span>
                 </a>
-                <a
-                  href="#"
-                  className="btn btn-sm btn-primary me-3"
-                  data-bs-toggle="modal"
-                  data-bs-target="#kt_modal_offer_a_deal"
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary me-2"
+                  onClick={() => exportPdf(Number(id) || 0)}
                 >
-                  Tạo đơn bảo hành
-                </a>
-                {/* <div className="me-0">
-                  <button
-                    className="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
-                    data-kt-menu-flip="top-end"
-                  >
-                    <i className="bi bi-three-dots fs-3"></i>
-                  </button>
-                  <Dropdown1 />
-                </div> */}
+                  <KTSVG
+                    path="/media/icons/duotune/arrows/arr078.svg"
+                    className="svg-icon-2"
+                  />
+                  Export
+                </button>
               </div>
             </div>
 
@@ -214,6 +208,19 @@ const QuoteDetailHeader: React.FC = () => {
                 to={`/${Routing.SaleQuotes}/${id}/warranty`}
               >
                 Đơn bảo hành
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                className={
+                  `nav-link text-active-primary me-6 ` +
+                  (location.pathname.startsWith(
+                    `/${Routing.SaleQuotes}/${id}/term`
+                  ) && "active")
+                }
+                to={`/${Routing.SaleQuotes}/${id}/term`}
+              >
+                Điều Khoản & Bảo Hành
               </Link>
             </li>
           </ul>
