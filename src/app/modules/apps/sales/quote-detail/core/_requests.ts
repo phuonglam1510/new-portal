@@ -3,6 +3,7 @@ import { Builder } from "builder-pattern";
 import { GenericResponse } from "../../../../../models/core/GenericResponse.type";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteItemModel } from "../../../../../models/sales/QuoteItem.model";
+import { QuoteTermModel } from "../../../../../models/sales/QuoteTermModel";
 import { QuoteDetailModel } from "./_models";
 
 const API_URL = process.env.REACT_APP_THEME_API_URL;
@@ -26,6 +27,11 @@ const getQuoteDetail = (id: string): Promise<QuoteDetailModel> => {
           response.data.quote_items?.map((item) =>
             Builder(QuoteItemModel, item).build()
           ) || []
+        )
+        .quote_term(
+          response.data.quote_term
+            ? Builder(QuoteTermModel, response.data.quote_term).build()
+            : undefined
         )
         .build()
     );

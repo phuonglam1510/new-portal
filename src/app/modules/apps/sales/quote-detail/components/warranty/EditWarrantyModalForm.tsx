@@ -9,6 +9,7 @@ import { quoteSchema } from "./quoteSchema";
 import { FormDropdown } from "../../../../../../components/FormDropdown";
 import { QuoteWarrantyStatus } from "../../../../../../enums/QuoteWarrantyStatus.enum";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
+import { FormDatePicker } from "../../../../../../components/FormDatePicker";
 
 type Props = {
   onClose: () => any;
@@ -64,7 +65,8 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
           data-kt-scroll-wrappers="#kt_modal_add_user_scroll"
           data-kt-scroll-offset="300px"
         >
-          <FormInput
+          <FormDatePicker
+            key="time_start_warranty"
             formik={formik as any}
             name="time_start_warranty"
             label="Thời gian tiếp nhận bảo hành"
@@ -72,7 +74,7 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
           <FormInput
             formik={formik as any}
             name="issue"
-            label="Tình trạng"
+            label="Thông tin tiếp nhận"
             optional
           />
           <FormInput
@@ -84,13 +86,13 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
           <FormInput
             formik={formik as any}
             name="errors"
-            label="Lỗi"
+            label="Hiện trạng lỗi"
             optional
           />
           <FormInput
             formik={formik as any}
             name="warranty_process_time"
-            label="Thời gian xử lý bảo hành"
+            label="Thời gian xử lý bảo hành (ngày)"
             optional
           />
           <FormDropdown

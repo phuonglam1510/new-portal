@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { VaxInclude } from "../../../../../enums/VaxInclude.enum";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
@@ -16,8 +17,14 @@ const InfoRow = ({ text, value }: { text: string; value: any }) => {
 export function QuoteTermView() {
   const { quote } = useQuoteDetailContext();
   const { quote_term } = quote;
-  const { quote_effect, warranty_condition, payment_term, bank_info } =
-    quote_term || {};
+  const {
+    quoteEffectText,
+    warranty_condition,
+    payment_term,
+    bank_info,
+    trade_condition,
+    vat_include,
+  } = quote_term || {};
 
   return (
     <>
@@ -33,12 +40,19 @@ export function QuoteTermView() {
         </div>
 
         <div className="card-body p-9">
-          <InfoRow text="Hiệu lực báo giá" value={quote_effect || "-"} />
+          <InfoRow text="Hiệu lực báo giá" value={quoteEffectText || "-"} />
           <InfoRow
             text="Thời gian và điều kiện bảo hành"
             value={warranty_condition || "-"}
           />
-          <InfoRow text="Điều kiện thương mại" value={payment_term || "-"} />
+          <InfoRow
+            text="Thuế VAT"
+            value={
+              vat_include === VaxInclude.Include ? "Bao gồm" : "Không bao gồm"
+            }
+          />
+          <InfoRow text="Điều kiện thương mại" value={trade_condition || "-"} />
+          <InfoRow text="Điều khoản thanh toán" value={payment_term || "-"} />
           <InfoRow
             text="Thông tin ngân hàng"
             value={<p dangerouslySetInnerHTML={{ __html: bank_info || "-" }} />}

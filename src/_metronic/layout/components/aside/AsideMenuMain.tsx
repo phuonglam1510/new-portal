@@ -53,7 +53,7 @@ export function AsideMenuMain() {
           title="Báo giá"
           hasBullet={true}
         />
-        <AsideMenuItem to={Routing.SaleQuotes} title="CSKH" hasBullet={true} />
+        {/* <AsideMenuItem to={Routing.SaleQuotes} title="CSKH" hasBullet={true} /> */}
       </AsideMenuItemWithSub>
 
       {/* <AsideMenuSubHeader title="Crafted" />

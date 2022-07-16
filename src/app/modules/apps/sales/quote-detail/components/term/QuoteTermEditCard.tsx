@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../../enums/Routing.enum";
 import { QuoteTermModel } from "../../../../../../models/sales/QuoteTermModel";
 import { FormInput } from "../../../../../../components/FormInput";
+import { DatePicker } from "../../../../../../components/DatePicker";
+import { FormDatePicker } from "../../../../../../components/FormDatePicker";
 
 const QuoteTermEditCard: React.FC = () => {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
@@ -60,10 +62,11 @@ const QuoteTermEditCard: React.FC = () => {
           <div className="card-body border-top p-9">
             <div className="d-flex flex-column" style={{ flex: 1 }}>
               <div className="pt-2">
-                <FormInput
+                <FormDatePicker
                   formik={formik as any}
                   name="quote_effect"
                   label="Hiệu lực báo giá"
+                  key="quote_effect"
                   optional
                 />
                 <FormInput
@@ -74,8 +77,20 @@ const QuoteTermEditCard: React.FC = () => {
                 />
                 <FormInput
                   formik={formik as any}
-                  name="payment_term"
+                  name="trade_condition"
                   label="Điều kiện thương mại"
+                  optional
+                />
+                <FormInput
+                  formik={formik as any}
+                  name="payment_term"
+                  label="Điều khoản thanh toán"
+                  optional
+                />
+                <FormInput
+                  formik={formik as any}
+                  name="bank_info"
+                  label="Thông tin ngân hàng"
                   optional
                 />
               </div>
@@ -84,9 +99,11 @@ const QuoteTermEditCard: React.FC = () => {
 
           <div className="card-footer d-flex justify-content-end py-6 px-9">
             <button
-              type="submit"
               className="btn btn-light mx-6"
               disabled={loading}
+              onClick={() =>
+                navigate(`/${Routing.SaleQuotes}/${quote.id}/term`)
+              }
             >
               {!loading && "Discard"}
               {loading && (

@@ -1,7 +1,9 @@
 import clsx from "clsx";
+import moment from "moment";
 import React from "react";
 import { KTSVG } from "../../../../../../_metronic/helpers";
 import { QuoteWarrantyStatus } from "../../../../../enums/QuoteWarrantyStatus.enum";
+import { formatMoney } from "../../../../../helpers/Number.helper";
 import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
 import { useQuoteActionContext } from "../../quotes-list/core/QuoteActionProvider";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
@@ -36,14 +38,16 @@ export const RowItem: React.FC<ItemProps> = ({
           href="#"
           className="text-dark fw-bolder text-hover-primary mb-1 fs-6"
         >
-          {time_start_warranty}
+          {moment(time_start_warranty).format("DD/MM/YYYY")}
         </a>
-        <span className="text-muted fw-bold d-block">{issue}</span>
+        <span className="text-muted fw-bold d-block">
+          {technical_in_charge}
+        </span>
       </td>
-      <td className="text-muted fw-bold">{technical_in_charge}</td>
+      <td className="text-muted fw-bold">{issue}</td>
       <td className="text-muted fw-bold">{errors}</td>
-      <td className="text-end fw-bold">{warranty_process_time}</td>
-      <td className="text-end fw-bold">{cost_incurred}</td>
+      <td className="text-end fw-bold">{warranty_process_time || "-"} ngày</td>
+      <td className="text-end fw-bold">{formatMoney(cost_incurred)}</td>
       <td className="text-end fw-bold">
         <div
           className={clsx(
@@ -128,9 +132,11 @@ export function WarrantyListView() {
           <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
             <thead>
               <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                <th className="p-0 min-w-120px">Thời gian tạo / Tình trạng</th>
-                <th className="p-0 min-w-100px">Kỹ thuật viên</th>
-                <th className="p-0 min-w-110px">Lỗi</th>
+                <th className="p-0 min-w-120px">
+                  Thời gian tạo / Kỹ thuật viên
+                </th>
+                <th className="p-0 min-w-100px">Thông tin tiếp nhận</th>
+                <th className="p-0 min-w-110px">Hiện trạng lỗi</th>
                 <th className="p-0 min-w-50px">Thời gian xử lý</th>
                 <th className="p-0 min-w-50px">Phí phát sinh</th>
                 <th className="p-0 min-w-50px">Tình trạng</th>
