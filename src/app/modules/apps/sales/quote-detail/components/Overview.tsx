@@ -81,8 +81,9 @@ export function Overview() {
             text="Loại đơn hàng"
             value={<span className="badge badge-success">{typeName}</span>}
           />
-          <InfoRow text="Chất lượng hàng hoá" value={package_quality || "-"} />
           <InfoRow text="Địa chỉ giao hàng" value={delivery_address || "-"} />
+          <InfoRow text="Ngày tạo" value={createdAtText} />
+          <InfoRow text="Chất lượng hàng hoá" value={package_quality || "-"} />
           <InfoRow
             text="Chữ ký sales"
             value={<FileLink file={sale_signature} />}
@@ -95,7 +96,6 @@ export function Overview() {
             text="Xác nhận đặt hàng"
             value={<FileLink file={order_confirmation} />}
           />
-          <InfoRow text="Ngày tạo" value={createdAtText} />
           <InfoRow text="Tạo bởi" value={name || "-"} />
         </div>
       </div>

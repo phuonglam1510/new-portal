@@ -3,24 +3,14 @@ import { useFormik } from "formik";
 import { FormDropdown } from "../../../../../../components/FormDropdown";
 import { useContactContext } from "../../../../customers/contacts-list/core/ContactProvider";
 import { useCustomerContext } from "../../../../customers/companies-list/core/CustomerProvider";
-import { QuoteType } from "../../../../../../enums/QuoteType.enum";
 import { FormInput } from "../../../../../../components/FormInput";
-import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
 import { FormFileUploader } from "../../../../../../components/FormFileUploader";
+import { quoteTypes } from "../../../../../../constants/quoteTypes.constant";
+import { quoteStatuses } from "../../../../../../constants/quoteStatuses.constant";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
 }
-
-const quoteTypes = [
-  { text: "Bán hàng", value: QuoteType.Sale },
-  { text: "Dịch vụ", value: QuoteType.Service },
-];
-
-const quoteStatuses = [
-  { text: "Chờ báo giá", value: QuoteStatus.Wating },
-  { text: "Đã báo giá", value: QuoteStatus.Quoted },
-];
 
 const QuoteInfoStep: React.FC<Props> = ({ formik }) => {
   const { contacts } = useContactContext();

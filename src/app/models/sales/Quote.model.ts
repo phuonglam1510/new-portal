@@ -1,3 +1,4 @@
+import moment from "moment";
 import { QuoteStatus } from "../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../enums/QuoteType.enum";
 import { UserModel } from "../../modules/auth/models/UserModel";
@@ -36,7 +37,7 @@ export class QuoteModel {
 
   public get createdAtText(): string {
     return this.created_at
-      ? new Date(this.created_at).toDateString()
+      ? moment(this.created_at).format("DD/MM/YYYY")
       : "Unknown";
   }
 }

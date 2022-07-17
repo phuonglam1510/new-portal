@@ -16,6 +16,6 @@ export class QuoteTermModel {
   updated_at!: string;
 
   public get quoteEffectText(): string {
-    return moment(this.quote_effect).format("DD-MM-YYYY");
+    return moment(this.quote_effect).format("DD/MM/YYYY");
   }
 }

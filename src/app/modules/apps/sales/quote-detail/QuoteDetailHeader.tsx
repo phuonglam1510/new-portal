@@ -29,8 +29,9 @@ const QuoteDetailHeader: React.FC = () => {
   const id = params.id as string;
   const { quote } = useQuoteDetailContext();
   const { exportPdf } = useQuoteActionContext();
-  const { quote_info, quote_items, status, contact } = quote;
-  const { prepay, total_selling_price_vat } = quote_info || {};
+  const { quote_info, quote_items, status, contact, quote_term } = quote;
+  const { total_commission, total_selling_price_vat } = quote_info || {};
+  const { quoteEffectText } = quote_term || {};
   const { contact_name, contact_email, contact_position } = contact || {};
 
   return (
@@ -136,8 +137,16 @@ const QuoteDetailHeader: React.FC = () => {
                     value={quote_items?.length?.toString()}
                   />
                   <SummaryCard
-                    text="Trả trước"
-                    value={prepay ? prepay + "%" : "-"}
+                    text="Tổng com chi khách"
+                    value={
+                      total_commission
+                        ? formatMoney(total_commission) + "VNĐ"
+                        : "-"
+                    }
+                  />
+                  <SummaryCard
+                    text="Hiệu lực báo giá"
+                    value={quoteEffectText || "-"}
                   />
                 </div>
               </div>

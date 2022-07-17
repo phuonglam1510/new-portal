@@ -17,7 +17,7 @@ const UserInfoCell: FC<Props> = ({ quote }) => (
           {quote.contact?.contact_name}
         </a>
       </Link>
-      <span>{quote.contact?.contact_phone}</span>
+      <span>{quote.contact?.contact_position}</span>
     </div>
   </div>
 );

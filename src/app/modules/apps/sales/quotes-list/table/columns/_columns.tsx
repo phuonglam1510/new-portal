@@ -37,7 +37,29 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
-        title="Người Liên Hệ"
+        title="Tình trạng"
+        className="min-w-100px"
+      />
+    ),
+    accessor: "statusName",
+    Cell: ({ data, row }) => (
+      <div
+        className={clsx(
+          "badge",
+          data[row.index].status === QuoteStatus.Wating
+            ? "badge-warning"
+            : "badge-success"
+        )}
+      >
+        {data[row.index].statusName}
+      </div>
+    ),
+  },
+  {
+    Header: (props) => (
+      <UserCustomHeader
+        tableProps={props}
+        title="Khách hàng"
         className="min-w-125px"
       />
     ),
@@ -97,28 +119,6 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       />
     ),
     accessor: "package_quality",
-  },
-  {
-    Header: (props) => (
-      <UserCustomHeader
-        tableProps={props}
-        title="Tình trạng"
-        className="min-w-100px"
-      />
-    ),
-    accessor: "statusName",
-    Cell: ({ data, row }) => (
-      <div
-        className={clsx(
-          "badge",
-          data[row.index].status === QuoteStatus.Wating
-            ? "badge-warning"
-            : "badge-success"
-        )}
-      >
-        {data[row.index].statusName}
-      </div>
-    ),
   },
   {
     Header: (props) => (

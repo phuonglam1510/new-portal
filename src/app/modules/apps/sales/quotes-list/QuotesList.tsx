@@ -31,7 +31,9 @@ const QuoteListWrapper = () => (
         element={
           <QuoteProvider>
             <ListViewProvider>
-              <QuoteList />
+              <ContactProvider>
+                <QuoteList />
+              </ContactProvider>
             </ListViewProvider>
           </QuoteProvider>
         }

@@ -1,12 +1,29 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { Dropdown } from "../../../../../../components/Dropdown";
+import { quoteStatuses } from "../../../../../../constants/quoteStatuses.constant";
+import { quoteTypes } from "../../../../../../constants/quoteTypes.constant";
+import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
+import { QuoteType } from "../../../../../../enums/QuoteType.enum";
+import { useContactContext } from "../../../../customers/contacts-list/core/ContactProvider";
 import { QuotesFilter, useQuoteContext } from "../../core/QuoteProvider";
 
 const UsersListFilter = () => {
   const { updateFilter, isLoading } = useQuoteContext();
-  const [role, setRole] = useState<string | undefined>();
-  const [lastLogin, setLastLogin] = useState<string | undefined>();
+  const { contacts } = useContactContext();
+  const [contactId, setContactId] = useState<number | "">("");
+  const [status, setStatus] = useState<QuoteStatus | "">("");
+  const [type, setType] = useState<QuoteType | "">("");
+
+  const constactItems = React.useMemo(
+    () =>
+      contacts?.map((contact) => ({
+        text: contact.contact_name,
+        value: contact.id || 0,
+      })) || [],
+    [contacts]
+  );
 
   useEffect(() => {
     MenuComponent.reinitialization();
@@ -14,15 +31,21 @@ const UsersListFilter = () => {
 
   const resetData = () => {
     updateFilter(new QuotesFilter());
+    setContactId("");
+    setType("");
+    setStatus("");
   };
 
   const filterData = () => {
-    updateFilter({});
+    updateFilter({
+      contact_id: contactId || undefined,
+      status: status || undefined,
+      type: type || undefined,
+    });
   };
 
   return (
     <>
-      {/* begin::Filter Button */}
       <button
         disabled={isLoading}
         type="button"
@@ -36,75 +59,51 @@ const UsersListFilter = () => {
         />
         Bộ lọc
       </button>
-      {/* end::Filter Button */}
-      {/* begin::SubMenu */}
       <div
         className="menu menu-sub menu-sub-dropdown w-300px w-md-325px"
         data-kt-menu="true"
       >
-        {/* begin::Header */}
         <div className="px-7 py-5">
           <div className="fs-5 text-dark fw-bolder">Filter Options</div>
         </div>
-        {/* end::Header */}
 
-        {/* begin::Separator */}
         <div className="separator border-gray-200"></div>
-        {/* end::Separator */}
 
-        {/* begin::Content */}
         <div className="px-7 py-5" data-kt-user-table-filter="form">
-          {/* begin::Input group */}
           <div className="mb-10">
-            <label className="form-label fs-6 fw-bold">Role:</label>
-            <select
-              className="form-select form-select-solid fw-bolder"
-              data-kt-select2="true"
-              data-placeholder="Select option"
-              data-allow-clear="true"
-              data-kt-user-table-filter="role"
-              data-hide-search="true"
-              onChange={(e) => setRole(e.target.value)}
-              value={role}
-            >
-              <option value=""></option>
-              <option value="Administrator">Administrator</option>
-              <option value="Analyst">Analyst</option>
-              <option value="Developer">Developer</option>
-              <option value="Support">Support</option>
-              <option value="Trial">Trial</option>
-            </select>
+            <Dropdown
+              value={contactId}
+              onChange={(value) => setContactId(Number(value))}
+              optional
+              items={constactItems}
+              label="Người liên hệ"
+            />
           </div>
-          {/* end::Input group */}
 
-          {/* begin::Input group */}
           <div className="mb-10">
-            <label className="form-label fs-6 fw-bold">Last login:</label>
-            <select
-              className="form-select form-select-solid fw-bolder"
-              data-kt-select2="true"
-              data-placeholder="Select option"
-              data-allow-clear="true"
-              data-kt-user-table-filter="two-step"
-              data-hide-search="true"
-              onChange={(e) => setLastLogin(e.target.value)}
-              value={lastLogin}
-            >
-              <option value=""></option>
-              <option value="Yesterday">Yesterday</option>
-              <option value="20 mins ago">20 mins ago</option>
-              <option value="5 hours ago">5 hours ago</option>
-              <option value="2 days ago">2 days ago</option>
-            </select>
+            <Dropdown
+              value={status}
+              onChange={(value: any) => setStatus(value || "")}
+              optional
+              items={quoteStatuses}
+              label="Tình trạng"
+            />
           </div>
-          {/* end::Input group */}
+          <div className="mb-10">
+            <Dropdown
+              value={type}
+              onChange={(value: any) => setType(value || "")}
+              optional
+              items={quoteTypes}
+              label="Loại đơn hàng"
+            />
+          </div>
 
-          {/* begin::Actions */}
           <div className="d-flex justify-content-end">
             <button
               type="button"
               disabled={isLoading}
-              onClick={filterData}
+              onClick={resetData}
               className="btn btn-light btn-active-light-primary fw-bold me-2 px-6"
               data-kt-menu-dismiss="true"
               data-kt-user-table-filter="reset"
@@ -114,7 +113,7 @@ const UsersListFilter = () => {
             <button
               disabled={isLoading}
               type="button"
-              onClick={resetData}
+              onClick={filterData}
               className="btn btn-primary fw-bold px-6"
               data-kt-menu-dismiss="true"
               data-kt-user-table-filter="filter"
@@ -122,11 +121,8 @@ const UsersListFilter = () => {
               Apply
             </button>
           </div>
-          {/* end::Actions */}
         </div>
-        {/* end::Content */}
       </div>
-      {/* end::SubMenu */}
     </>
   );
 };

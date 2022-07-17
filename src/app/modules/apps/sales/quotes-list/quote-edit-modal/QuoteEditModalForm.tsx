@@ -44,9 +44,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
   const delta = total_selling_price_without_vat - total_net_price_without_vat;
   const deltaMinusTax = delta - (corporate_tax / 100) * delta;
   const finalCommission =
-    deltaMinusTax + (commission / 100) * total_selling_price_with_vat;
-
-  console.log(formik);
+    deltaMinusTax + (commission / 100) * total_net_price_without_vat;
 
   return (
     <>

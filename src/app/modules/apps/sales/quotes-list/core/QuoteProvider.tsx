@@ -1,13 +1,19 @@
 import { Builder } from "builder-pattern";
-import { FC, createContext, useContext, useState } from "react";
+import React, { FC, createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
+import qs from "qs";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { getQuotes } from "./_requests";
+import { QuoteType } from "../../../../../enums/QuoteType.enum";
+import { QuoteStatus } from "../../../../../enums/QuoteStatus.enum";
 
 export class QuotesFilter {
   search: string = "";
   sort: string = "";
   order?: "asc" | "desc" = "asc";
+  contact_id?: number;
+  type?: QuoteType;
+  status?: QuoteStatus;
 }
 
 interface ContextProps {
@@ -30,7 +36,11 @@ const QuoteContext = createContext<ContextProps>({
 
 const QuoteProvider: FC = ({ children }) => {
   const [filter, setFilter] = useState(new QuotesFilter());
-  const query = "";
+  const { contact_id, type, status } = filter;
+  const query = React.useMemo(
+    () => qs.stringify({ contact_id, type, status }),
+    [filter]
+  );
   const {
     isFetching,
     refetch,
