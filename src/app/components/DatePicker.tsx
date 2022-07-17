@@ -11,6 +11,8 @@ export interface DatePickerProps {
   onChange?: (value: string) => void;
 }
 
+declare var $: any;
+
 const DatePicker: React.FC<DatePickerProps> = ({
   label,
   optional,
