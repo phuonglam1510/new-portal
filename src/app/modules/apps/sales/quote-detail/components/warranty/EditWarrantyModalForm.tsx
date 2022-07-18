@@ -25,6 +25,16 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
   const { loading, createQuoteWarranty, editQuoteWarranty } =
     useQuoteActionContext();
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
+  const { quote_items } = quote;
+  const modelItems = React.useMemo(
+    () =>
+      quote_items.map((item) => ({
+        text: item.asking_price_model,
+        value: item.id,
+      })),
+    [quote_items]
+  );
+
   const [quoteForEdit] = useState<QuoteWarrantyModel>(
     Builder(QuoteWarrantyModel, { ...item }).build()
   );
@@ -65,6 +75,12 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
           data-kt-scroll-wrappers="#kt_modal_add_user_scroll"
           data-kt-scroll-offset="300px"
         >
+          <FormDropdown
+            items={modelItems}
+            formik={formik as any}
+            name="quote_item_id"
+            label="Model bảo hành"
+          />
           <FormDatePicker
             key="time_start_warranty"
             formik={formik as any}

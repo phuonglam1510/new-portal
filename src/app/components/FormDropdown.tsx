@@ -16,7 +16,7 @@ const FormDropdown: React.FC<Props> = ({
   ...rest
 }) => {
   return (
-    <div className="fv-row mb-7">
+    <div className="fv-row">
       <Dropdown
         items={items}
         label={label}

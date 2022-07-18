@@ -22,6 +22,8 @@ export const RowItem: React.FC<ItemProps> = ({
   onEdit,
   onRemove,
 }) => {
+  const { quote } = useQuoteDetailContext();
+  const { quote_items } = quote;
   const {
     issue,
     time_start_warranty,
@@ -30,14 +32,16 @@ export const RowItem: React.FC<ItemProps> = ({
     warranty_process_time,
     cost_incurred,
     status,
+    quote_item_id,
   } = item;
   return (
     <tr>
+      <td className="text-dark fw-bolder">
+        {quote_items.find((item) => item.id === quote_item_id)
+          ?.asking_price_model || "-"}
+      </td>
       <td>
-        <a
-          href="#"
-          className="text-dark fw-bolder text-hover-primary mb-1 fs-6"
-        >
+        <a href="#" className="text-muted fw-bold text-hover-primary mb-1">
           {moment(time_start_warranty).format("DD/MM/YYYY")}
         </a>
         <span className="text-muted fw-bold d-block">
@@ -132,6 +136,7 @@ export function WarrantyListView() {
           <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
             <thead>
               <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
+                <th className="p-0 min-w-100px">Model</th>
                 <th className="p-0 min-w-120px">
                   Thời gian tạo / Kỹ thuật viên
                 </th>

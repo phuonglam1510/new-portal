@@ -36,6 +36,7 @@ const editUserSchema = Yup.object().shape({
   company_name: Yup.string()
     .min(3, "Minimum 3 symbols")
     .required("Company name is required"),
+  business_type: Yup.string().required("Business Type is required"),
   company_address: Yup.string().required("Company address is required"),
   type: Yup.string().required("Type is required"),
 });
@@ -172,6 +173,11 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
             formik={formik as any}
             name="company_address"
             label="Địa chỉ công ty"
+          />
+          <FormInput
+            formik={formik as any}
+            name="business_type"
+            label="Ngành nghề"
           />
           <FormDropdown
             formik={formik as any}

@@ -7,6 +7,9 @@ interface ItemProps {
   index: number;
   onEdit: () => any;
   onRemove: () => any;
+  onSelect?: () => any;
+  selected?: boolean;
+  showSelection?: boolean;
 }
 
 export const QuoteRowItem: React.FC<ItemProps> = ({
@@ -14,6 +17,9 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
   index,
   onEdit,
   onRemove,
+  onSelect,
+  selected,
+  showSelection,
 }) => {
   const {
     asking_price_model,
@@ -27,6 +33,18 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
   } = item;
   return (
     <tr>
+      {showSelection && (
+        <td className="text-muted fw-bold">
+          <div className="form-check form-check-sm form-check-custom form-check-solid me-3">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={selected}
+              onChange={onSelect}
+            />
+          </div>
+        </td>
+      )}
       <td>
         <a
           href="#"

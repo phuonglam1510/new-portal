@@ -9,7 +9,6 @@ import { Routing } from "../../../../enums/Routing.enum";
 import { useQuoteDetailContext } from "./core/QuoteDetailProvider";
 import { QuoteStatus } from "../../../../enums/QuoteStatus.enum";
 import { formatMoney } from "../../../../helpers/Number.helper";
-import { useQuoteActionContext } from "../quotes-list/core/QuoteActionProvider";
 
 const SummaryCard = ({ text, value }: { text: string; value: string }) => {
   return (
@@ -28,7 +27,6 @@ const QuoteDetailHeader: React.FC = () => {
   const location = useLocation();
   const id = params.id as string;
   const { quote } = useQuoteDetailContext();
-  const { exportPdf } = useQuoteActionContext();
   const { quote_info, quote_items, status, contact, quote_term } = quote;
   const { total_commission, total_selling_price_vat } = quote_info || {};
   const { quoteEffectText } = quote_term || {};
@@ -111,17 +109,6 @@ const QuoteDetailHeader: React.FC = () => {
                     <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                   </span>
                 </a>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-primary me-2"
-                  onClick={() => exportPdf(Number(id) || 0)}
-                >
-                  <KTSVG
-                    path="/media/icons/duotune/arrows/arr078.svg"
-                    className="svg-icon-2"
-                  />
-                  Export
-                </button>
               </div>
             </div>
 

@@ -2,6 +2,7 @@ import { QuoteWarrantyStatus } from "../../enums/QuoteWarrantyStatus.enum";
 
 export class QuoteWarrantyModel {
   quote_id!: number;
+  quote_item_id!: number;
   issue!: string;
   time_start_warranty!: string;
   technical_in_charge!: string;

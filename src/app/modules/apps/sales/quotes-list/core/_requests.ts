@@ -216,8 +216,9 @@ const deleteUser = (userId: ID): Promise<void> => {
   return axios.delete(`${URL}/${userId}`).then(() => {});
 };
 
-const exportQuotePdf = (quoteId: ID): Promise<void> => {
-  return axios.get(`${URL}/${quoteId}/export/pdf`);
+const exportQuotePdf = (quoteId: ID, modelIds: number[]): Promise<void> => {
+  const query = modelIds.join(",");
+  return axios.get(`${URL}/${quoteId}/export/pdf?item_id=${query}`);
 };
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {

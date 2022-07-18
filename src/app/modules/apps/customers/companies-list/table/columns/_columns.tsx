@@ -41,6 +41,16 @@ const usersColumns: ReadonlyArray<Column<CompanyModel>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
+        title="Ngành nghề"
+        className="min-w-125px"
+      />
+    ),
+    accessor: "business_type",
+  },
+  {
+    Header: (props) => (
+      <UserCustomHeader
+        tableProps={props}
         title="Loại khách hàng"
         className="min-w-125px"
       />

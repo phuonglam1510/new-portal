@@ -30,7 +30,7 @@ import { fileKeyMap, pickBody } from "./_util";
 class ContextProps {
   loading: boolean = false;
   quote: QuoteModel | null = null;
-  exportPdf!: (quoteId: number) => Promise<boolean>;
+  exportPdf!: (quoteId: number, modelIds: number[]) => Promise<boolean>;
   createQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   editQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   createQuoteItems!: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
@@ -124,10 +124,13 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
-  const exportPdf = async (quoteId: number): Promise<boolean> => {
+  const exportPdf = async (
+    quoteId: number,
+    modelIds: number[]
+  ): Promise<boolean> => {
     try {
       setLoading(true);
-      const data = await exportQuotePdf(quoteId);
+      const data = await exportQuotePdf(quoteId, modelIds);
       return true;
     } catch (error) {
       return false;
