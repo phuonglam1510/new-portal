@@ -14,10 +14,10 @@ const UserInfoCell: FC<Props> = ({ quote }) => (
     <div className="d-flex flex-column">
       <Link to={`/${Routing.SaleQuotes}/${quote.id}`}>
         <a className="text-gray-800 text-hover-primary mb-1">
-          {quote.contact?.contact_name}
+          {quote.contact?.company?.company_name}
         </a>
       </Link>
-      <span>{quote.contact?.contact_position}</span>
+      <span>{quote.contact?.contact_name}</span>
     </div>
   </div>
 );
