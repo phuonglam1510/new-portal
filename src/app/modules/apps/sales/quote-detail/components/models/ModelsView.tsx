@@ -46,7 +46,7 @@ export function ModelsView() {
   };
 
   const onExport = () => {
-    exportPdf(quote.id || 0, ids);
+    exportPdf(quote.id || 0, ids).then(() => setIds([]));
   };
 
   return (

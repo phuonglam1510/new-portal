@@ -25,7 +25,7 @@ import {
   addQuoteTerm,
   updateQuoteTerm,
 } from "./_requests";
-import { fileKeyMap, pickBody } from "./_util";
+import { fileKeyMap, loadAndOpenPdfFile, pickBody } from "./_util";
 
 class ContextProps {
   loading: boolean = false;
@@ -130,7 +130,10 @@ const QuoteActionProvider: FC = ({ children }) => {
   ): Promise<boolean> => {
     try {
       setLoading(true);
-      const data = await exportQuotePdf(quoteId, modelIds);
+      const query = modelIds.join(",");
+      const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
+      const url = `${baseUrl}/${quoteId}/export/pdf?item_id=${query}`;
+      await loadAndOpenPdfFile(url, "application/pdf");
       return true;
     } catch (error) {
       return false;
