@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import clsx from "clsx";
@@ -61,23 +61,16 @@ export function Login() {
       noValidate
       id="kt_login_signin_form"
     >
-      {/* begin::Heading */}
       <div className="text-center mb-10">
         <h1 className="text-dark mb-3">Sign In</h1>
-        <div className="text-gray-400 fw-bold fs-4">
-          New Here?{" "}
-          <Link to="/auth/registration" className="link-primary fw-bolder">
-            Create an Account
-          </Link>
-        </div>
       </div>
-      {/* begin::Heading */}
 
       {formik.status && (
         <div className="mb-lg-15 alert alert-danger">
           <div className="alert-text font-weight-bold">{formik.status}</div>
         </div>
       )}
+
       {/* begin::Form group */}
       <div className="fv-row mb-10">
         <label className="form-label fs-6 fw-bolder text-dark">Email</label>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 
 export interface DropdownItemProps {
@@ -16,6 +16,7 @@ export interface DropdownProps {
   selectProps?: any;
   value?: string | number;
   onChange?: (value: string | number) => any;
+  haveSearch?: boolean;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
@@ -27,7 +28,22 @@ const Dropdown: React.FC<DropdownProps> = ({
   selectProps,
   value,
   onChange = () => true,
+  haveSearch,
 }) => {
+  // Init Select2
+  useEffect(() => {
+    setTimeout(() => {
+      const ele = $('[data-control="select2"]');
+      (ele as any).select2({});
+      ele.on("change", function (e) {
+        onChange((e.target as any)?.value);
+        if (selectProps?.onChange) {
+          selectProps.onChange(e);
+        }
+      });
+    }, 500);
+  }, []);
+
   return (
     <div className="fv-row mb-7">
       <label className={clsx(!optional && "required", "fw-bold fs-6 mb-2")}>
@@ -36,6 +52,9 @@ const Dropdown: React.FC<DropdownProps> = ({
       <div className="mb-3 mb-lg-0">
         <select
           className="form-select form-select-solid form-select-lg"
+          data-control="select2"
+          data-kt-select2="true"
+          // {...(haveSearch ? {} : { "data-hide-search": "true" })}
           value={value}
           onChange={(event) => onChange(event.target.value)}
           {...selectProps}

@@ -33,6 +33,7 @@ const QuoteInfoEditCard: React.FC = () => {
     validationSchema: quoteCreationSchemas[2],
     onSubmit: (values) => {
       setLoading(true);
+      console.log(values);
       formik.setSubmitting(true);
       handleEditOrCreate(values)
         .then(() => {

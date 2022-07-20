@@ -30,6 +30,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
     net_unit_price_no_vat,
     vat,
     commission,
+    total_selling_price_vat,
   } = item;
   return (
     <tr>
@@ -61,6 +62,9 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
       <td className="text-end fw-bold">{formatMoney(net_unit_price_no_vat)}</td>
       <td className="text-end fw-bold">{commission}</td>
       <td className="text-end fw-bold">{vat}</td>
+      <td className="text-end fw-bold">
+        {formatMoney(total_selling_price_vat)}
+      </td>
       <td>
         <div className="d-flex justify-content-end flex-shrink-0">
           <a
