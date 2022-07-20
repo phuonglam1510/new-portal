@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import clsx from "clsx";
 
+declare var $: any;
+
 export interface DropdownItemProps {
   value: string | number;
   text: string;
@@ -28,14 +30,13 @@ const Dropdown: React.FC<DropdownProps> = ({
   selectProps,
   value,
   onChange = () => true,
-  haveSearch,
 }) => {
   // Init Select2
   useEffect(() => {
     setTimeout(() => {
       const ele = $('[data-control="select2"]');
       (ele as any).select2({});
-      ele.on("change", function (e) {
+      ele.on("change", function (e: any) {
         onChange((e.target as any)?.value);
         if (selectProps?.onChange) {
           selectProps.onChange(e);
