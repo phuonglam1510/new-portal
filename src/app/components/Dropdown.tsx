@@ -31,10 +31,11 @@ const Dropdown: React.FC<DropdownProps> = ({
   value,
   onChange = () => true,
 }) => {
+  const ref = React.useRef();
   // Init Select2
   useEffect(() => {
     setTimeout(() => {
-      const ele = $('[data-control="select2"]');
+      const ele = $(ref.current);
       (ele as any).select2({});
       ele.on("change", function (e: any) {
         onChange((e.target as any)?.value);
@@ -54,6 +55,7 @@ const Dropdown: React.FC<DropdownProps> = ({
         <select
           className="form-select form-select-solid form-select-lg"
           data-control="select2"
+          ref={ref}
           data-kt-select2="true"
           // {...(haveSearch ? {} : { "data-hide-search": "true" })}
           value={value}

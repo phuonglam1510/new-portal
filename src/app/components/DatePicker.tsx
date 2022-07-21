@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import clsx from "clsx";
 import moment from "moment";
 
@@ -20,10 +20,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
   key,
   onChange = () => true,
 }) => {
-  const initDaterangepicker = (id: string) => {
+  const ref = useRef<any>();
+  const initDaterangepicker = () => {
     var start = value ? moment(value) : moment();
     var end = moment();
-    var input = $("#" + id);
+    var input = $(ref.current);
 
     function onChangeCallback(start: moment.Moment, end: moment.Moment) {
       input.html(
@@ -58,7 +59,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   React.useEffect(() => {
     setTimeout(() => {
-      initDaterangepicker(`${key}_daterangepicker`);
+      initDaterangepicker();
     }, 1000);
   }, []);
 
@@ -70,7 +71,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
       <input
         className="form-control form-control-solid w-100 mw-250px"
         placeholder="Pick date range"
-        id={`${key}_daterangepicker`}
+        ref={ref}
       />
     </div>
   );
