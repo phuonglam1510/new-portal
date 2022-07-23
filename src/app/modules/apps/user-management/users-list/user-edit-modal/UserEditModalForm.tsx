@@ -90,16 +90,15 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
         } else {
           await createUser(values);
         }
-      } catch (ex) {
-        console.error(ex);
-      } finally {
-        setSubmitting(true);
         cancel(true);
+      } catch (ex: any) {
+        console.error(ex);
+        alert(ex.message);
+      } finally {
+        setSubmitting(false);
       }
     },
   });
-
-  console.log(formik.values);
 
   return (
     <>

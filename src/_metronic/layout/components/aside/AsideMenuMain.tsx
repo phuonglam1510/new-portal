@@ -1,23 +1,12 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
-import { useIntl } from "react-intl";
-import { KTSVG } from "../../../helpers";
 import { AsideMenuItemWithSub } from "./AsideMenuItemWithSub";
 import { AsideMenuItem } from "./AsideMenuItem";
-import { AsideMenuSubHeader } from "./AsideMenuSubHeader";
 import { Routing } from "../../../../app/enums/Routing.enum";
 
 export function AsideMenuMain() {
-  const intl = useIntl();
-
   return (
     <>
-      {/* <AsideMenuItem
-        to="/dashboard"
-        icon="/media/icons/duotune/art/art002.svg"
-        title={intl.formatMessage({ id: "MENU.DASHBOARD" })}
-        fontIcon="bi-app-indicator"
-      /> */}
       <AsideMenuItem
         to="/apps/user-management/users"
         icon="/media/icons/duotune/general/gen051.svg"

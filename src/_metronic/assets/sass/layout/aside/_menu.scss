@@ -10,6 +10,10 @@
 
         // Menu indention
         @include menu-link-indention(get($aside-config, menu-indention), get($aside-config, padding-x));
+
+        .menu-title {
+            font-size: 14px;
+        }
     }
 
     // Item
@@ -18,8 +22,8 @@
 
         // Menu Link
         .menu-link {
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
         }
 
         // Icon
@@ -33,7 +37,7 @@
 .aside-dark {
     .hover-scroll-overlay-y {
         --scrollbar-space: 0.4rem;
-        
+
         @include scrollbar-color(get($aside-config, scrollbar-color), get($aside-config, scrollbar-hover-color));
     }
 
@@ -44,11 +48,11 @@
             }
 
             //$title-color, $icon-color, $bullet-color, $arrow-color, $bg-color
-            @include menu-link-default-state( #9899ac, #494b74, #9899ac, #9899ac, null);
-            @include menu-link-hover-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-here-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-show-state( $white, $primary, $primary, $white, #1b1b28);
-            @include menu-link-active-state( $white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-default-state(#9899ac, #494b74, #9899ac, #9899ac, null);
+            @include menu-link-hover-state($white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-here-state($white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-show-state($white, $primary, $primary, $white, #1b1b28);
+            @include menu-link-active-state($white, $primary, $primary, $white, #1b1b28);
         }
     }
 }
@@ -58,6 +62,7 @@
     .menu {
         .menu-title {
             font-weight: 500;
+            font-size: 14px;
         }
     }
 }

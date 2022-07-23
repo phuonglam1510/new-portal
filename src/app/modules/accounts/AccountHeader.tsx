@@ -11,7 +11,7 @@ import { useContactContext } from "../apps/customers/contacts-list/core/ContactP
 
 const AccountHeader: React.FC = () => {
   const location = useLocation();
-  const { name, email, roleName, group } = useCurrentUser();
+  const { name, email, roleName, group, avatar } = useCurrentUser();
   const { companies } = useCustomerContext();
   const { companies: quotes } = useQuoteContext();
   const { contacts } = useContactContext();
@@ -23,7 +23,11 @@ const AccountHeader: React.FC = () => {
           <div className="me-7 mb-4">
             <div className="symbol symbol-100px symbol-lg-160px symbol-fixed position-relative">
               <img
-                src={toAbsoluteUrl("/media/avatars/300-1.jpg")}
+                src={
+                  avatar
+                    ? avatar.file_url
+                    : toAbsoluteUrl("/media/avatars/300-1.jpg")
+                }
                 alt="Metronic"
               />
               <div className="position-absolute translate-middle bottom-0 start-100 mb-6 bg-success rounded-circle border border-4 border-white h-20px w-20px"></div>
@@ -144,7 +148,7 @@ const AccountHeader: React.FC = () => {
                 Overview
               </Link>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link
                 className={
                   `nav-link text-active-primary me-6 ` +
@@ -154,7 +158,7 @@ const AccountHeader: React.FC = () => {
               >
                 Settings
               </Link>
-            </li> */}
+            </li>
           </ul>
         </div>
       </div>

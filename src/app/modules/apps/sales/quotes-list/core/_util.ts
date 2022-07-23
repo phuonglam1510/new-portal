@@ -41,7 +41,6 @@ export const loadAndOpenPdfFile = async (
   return new Promise((resolve, reject) => {
     const oReq = new XMLHttpRequest();
     oReq.open("GET", url, true);
-    oReq.withCredentials = true;
     const {
       auth: { accessToken },
     } = store.getState();
