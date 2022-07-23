@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Builder } from "builder-pattern";
 import { GenericResponse } from "../../../models/core/GenericResponse.type";
 import { UserModel } from "../models/UserModel";
 
@@ -46,5 +47,8 @@ export function getUserByToken(token: string) {
     .get<GenericResponse<UserModel>>(GET_USER_BY_ACCESSTOKEN_URL, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => res.data);
+    .then((res) => ({
+      data: Builder(UserModel, res.data?.data || {}).build(),
+      message: "",
+    }));
 }

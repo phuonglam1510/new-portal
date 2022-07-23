@@ -5,8 +5,6 @@ import { ContactModel } from "../../../../../../models/customers/Contact.class";
 import { Builder } from "builder-pattern";
 import { useListView } from "../../core/ListViewProvider";
 import { useModalContext } from "../../core/ModalProvider";
-import { useCurrentUser } from "../../../../core/CurrentUserProvider";
-import { UserRole } from "../../../../../../enums/UserRole.enum";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -85,12 +83,7 @@ let editIndex: number | null = null;
 const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
   const listItems = formik.values[name] as ContactModel[];
   const { itemIdForUpdate } = useListView();
-  const user = useCurrentUser();
   const { openModal, closeModal } = useModalContext();
-  const isAdmin = React.useMemo(
-    () => user.role === UserRole.SuperAdmin,
-    [user]
-  );
 
   const onSave = (changedContact: ContactModel) => {
     console.log(changedContact);
@@ -158,12 +151,7 @@ const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
         data-kt-user-table-toolbar="base"
       >
         <a className="fw-bolder text-black fs-4">Người liên hệ</a>
-        <button
-          disabled={isAdmin}
-          type="button"
-          className="btn btn-primary"
-          onClick={onAdd}
-        >
+        <button type="button" className="btn btn-primary" onClick={onAdd}>
           <KTSVG
             path="/media/icons/duotune/arrows/arr075.svg"
             className="svg-icon-2"
@@ -191,7 +179,6 @@ const ContactEditableList: React.FC<Props> = ({ formik, name }) => {
                 index={index}
                 onRemove={() => onRemove(index)}
                 onEdit={() => onEdit(index)}
-                readOnly={isAdmin}
               />
             ))}
           </tbody>

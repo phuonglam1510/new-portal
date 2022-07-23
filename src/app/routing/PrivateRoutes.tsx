@@ -5,6 +5,9 @@ import TopBarProgress from "react-topbar-progress-indicator";
 import { DashboardWrapper } from "../pages/dashboard/DashboardWrapper";
 import { getCSSVariableValue } from "../../_metronic/assets/ts/_utils";
 import SaleContainerPage from "../modules/apps/sales/SaleContainerPage";
+import { ContactProvider } from "../modules/apps/customers/contacts-list/core/ContactProvider";
+import { QuoteProvider } from "../modules/apps/sales/quotes-list/core/QuoteProvider";
+import { CustomerProvider } from "../modules/apps/customers/companies-list/core/CustomerProvider";
 
 const PrivateRoutes = () => {
   const CustomersContainerPage = lazy(
@@ -34,10 +37,16 @@ const PrivateRoutes = () => {
           }
         />
         <Route
-          path="crafted/account/*"
+          path="account/*"
           element={
             <SuspensedView>
-              <AccountPage />
+              <CustomerProvider>
+                <ContactProvider>
+                  <QuoteProvider>
+                    <AccountPage />
+                  </QuoteProvider>
+                </ContactProvider>
+              </CustomerProvider>
             </SuspensedView>
           }
         />
