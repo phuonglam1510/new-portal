@@ -144,14 +144,14 @@ const Settings: React.FC = () => {
 
             <div className="card-footer d-flex justify-content-end py-6 px-9">
               <button className="btn btn-light mx-6" disabled={loading}>
-                {!loading && "Discard"}
+                {!loading && "Huỷ bỏ"}
               </button>
               <button
                 type="submit"
                 className="btn btn-primary"
                 disabled={loading}
               >
-                {!loading && "Save Changes"}
+                {!loading && "Lưu"}
                 {loading && (
                   <span
                     className="indicator-progress"

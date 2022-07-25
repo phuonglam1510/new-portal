@@ -42,9 +42,6 @@ const HeaderUserMenu: FC = () => {
           <div className="d-flex flex-column">
             <div className="fw-bolder d-flex align-items-center fs-5">
               {user.name}
-              <span className="badge badge-light-success fw-bolder fs-8 px-2 py-1 ms-2">
-                Pro
-              </span>
             </div>
             <a href="#" className="fw-bold text-muted text-hover-primary fs-7">
               {user.email}
@@ -57,7 +54,7 @@ const HeaderUserMenu: FC = () => {
 
       <div className="menu-item px-5">
         <Link to={`/${Routing.SaleQuotes}`} className="menu-link px-5">
-          My Sales
+          Quản lý báo giá
         </Link>
       </div>
 
@@ -67,13 +64,13 @@ const HeaderUserMenu: FC = () => {
 
       <div className="menu-item px-5 my-1">
         <Link to="/account/overview" className="menu-link px-5">
-          Account Settings
+          Cài đặt tài khoản
         </Link>
       </div>
 
       <div className="menu-item px-5">
         <a onClick={logout} className="menu-link px-5">
-          Sign Out
+          Đăng xuất
         </a>
       </div>
     </div>

@@ -74,7 +74,7 @@ const QuoteInfoEditCard: React.FC = () => {
               className="btn btn-light mx-6"
               disabled={loading}
             >
-              {!loading && "Discard"}
+              {!loading && "Huỷ bỏ"}
               {loading && (
                 <span
                   className="indicator-progress"
@@ -90,7 +90,7 @@ const QuoteInfoEditCard: React.FC = () => {
               className="btn btn-primary"
               disabled={loading}
             >
-              {!loading && "Save Changes"}
+              {!loading && "Lưu"}
               {loading && (
                 <span
                   className="indicator-progress"

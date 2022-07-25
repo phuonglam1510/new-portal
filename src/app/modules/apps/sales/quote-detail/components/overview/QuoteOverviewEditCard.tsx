@@ -69,7 +69,7 @@ const QuoteOverviewEditCard: React.FC = () => {
               disabled={loading}
               onClick={goBack}
             >
-              {!loading && "Discard"}
+              {!loading && "Huỷ bỏ"}
               {loading && (
                 <span
                   className="indicator-progress"
@@ -85,7 +85,7 @@ const QuoteOverviewEditCard: React.FC = () => {
               className="btn btn-primary"
               disabled={loading}
             >
-              {!loading && "Save Changes"}
+              {!loading && "Lưu"}
               {loading && (
                 <span
                   className="indicator-progress"

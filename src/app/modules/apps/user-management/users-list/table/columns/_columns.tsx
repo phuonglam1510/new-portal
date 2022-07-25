@@ -18,7 +18,7 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
-        title="Name"
+        title="Tên"
         className="min-w-125px"
       />
     ),
@@ -29,7 +29,7 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
-        title="Role"
+        title="Vai trò"
         className="min-w-125px"
       />
     ),
@@ -69,7 +69,7 @@ const usersColumns: ReadonlyArray<Column<User>> = [
     Header: (props) => (
       <UserCustomHeader
         tableProps={props}
-        title="Joined day"
+        title="Ngày tạo"
         className="min-w-125px"
       />
     ),

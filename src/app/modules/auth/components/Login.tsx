@@ -48,7 +48,7 @@ export function Login() {
           .catch(() => {
             setLoading(false);
             setSubmitting(false);
-            setStatus("The login detail is incorrect");
+            setStatus("Email hoặc password không đúng.");
           });
       }, 1000);
     },
@@ -62,7 +62,7 @@ export function Login() {
       id="kt_login_signin_form"
     >
       <div className="text-center mb-10">
-        <h1 className="text-dark mb-3">Sign In</h1>
+        <h1 className="text-dark mb-3">Đăng nhập</h1>
       </div>
 
       {formik.status && (
@@ -102,7 +102,7 @@ export function Login() {
           <div className="d-flex flex-stack mb-2">
             {/* begin::Label */}
             <label className="form-label fw-bolder text-dark fs-6 mb-0">
-              Password
+              Mật khẩu
             </label>
             {/* end::Label */}
             {/* begin::Link */}
@@ -111,7 +111,7 @@ export function Login() {
               className="link-primary fs-6 fw-bolder"
               style={{ marginLeft: "5px" }}
             >
-              Forgot Password ?
+              Quên mật khẩu?
             </Link>
             {/* end::Link */}
           </div>
@@ -148,7 +148,7 @@ export function Login() {
           className="btn btn-lg btn-primary w-100 mb-5"
           disabled={formik.isSubmitting || !formik.isValid}
         >
-          {!loading && <span className="indicator-label">Continue</span>}
+          {!loading && <span className="indicator-label">Tiếp tục</span>}
           {loading && (
             <span className="indicator-progress" style={{ display: "block" }}>
               Please wait...

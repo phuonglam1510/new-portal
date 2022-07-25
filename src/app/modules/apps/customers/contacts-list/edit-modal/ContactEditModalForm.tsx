@@ -152,7 +152,7 @@ const ContactEditModalForm: FC<Props> = ({
             data-kt-users-modal-action="cancel"
             disabled={formik.isSubmitting || isUserLoading}
           >
-            Discard
+            Huỷ bỏ
           </button>
 
           <button
@@ -166,7 +166,7 @@ const ContactEditModalForm: FC<Props> = ({
               !formik.touched
             }
           >
-            <span className="indicator-label">Submit</span>
+            <span className="indicator-label">Lưu</span>
             {(formik.isSubmitting || isUserLoading) && (
               <span className="indicator-progress">
                 Please wait...{" "}

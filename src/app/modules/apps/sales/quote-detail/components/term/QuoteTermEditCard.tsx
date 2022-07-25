@@ -78,7 +78,7 @@ const QuoteTermEditCard: React.FC = () => {
                 <FormInput
                   formik={formik as any}
                   name="trade_condition"
-                  label="Điều kiện thương mại"
+                  label="Ghi chú"
                   optional
                 />
                 <FormInput
@@ -105,7 +105,7 @@ const QuoteTermEditCard: React.FC = () => {
                 navigate(`/${Routing.SaleQuotes}/${quote.id}/term`)
               }
             >
-              {!loading && "Discard"}
+              {!loading && "Huỷ bỏ"}
               {loading && (
                 <span
                   className="indicator-progress"
@@ -121,7 +121,7 @@ const QuoteTermEditCard: React.FC = () => {
               className="btn btn-primary"
               disabled={loading}
             >
-              {!loading && "Save Changes"}
+              {!loading && "Lưu"}
               {loading && (
                 <span
                   className="indicator-progress"

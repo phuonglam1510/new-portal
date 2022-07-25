@@ -3,6 +3,7 @@ import { FC, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
 import { KTSVG, QUERIES } from "../../../../../../../_metronic/helpers";
+import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { useContactContext } from "../../core/ContactProvider";
 import { useListView } from "../../core/ListViewProvider";
 import { deleteContact } from "../../core/_requests";
@@ -15,6 +16,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
   const { setItemIdForUpdate } = useListView();
   const { query } = useContactContext();
   const queryClient = useQueryClient();
+  const { confirm } = useGlobalContext();
 
   useEffect(() => {
     MenuComponent.reinitialization();
@@ -31,6 +33,14 @@ const UserActionsCell: FC<Props> = ({ id }) => {
       queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`]);
     },
   });
+
+  const onDelete = async () => {
+    confirm({
+      title: "Xoá người liên hệ",
+      message: "Bạn có chắc muốn xoá không?",
+      onOk: () => deleteItem.mutateAsync(),
+    });
+  };
 
   return (
     <>
@@ -64,7 +74,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
           <a
             className="menu-link px-3"
             data-kt-users-table-filter="delete_row"
-            onClick={async () => await deleteItem.mutateAsync()}
+            onClick={onDelete}
           >
             Delete
           </a>

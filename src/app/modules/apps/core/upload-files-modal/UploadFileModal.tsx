@@ -116,7 +116,7 @@ const UploadFileModal: React.FC<Props> = ({
                   data-kt-users-modal-action="cancel"
                   disabled={loading}
                 >
-                  Discard
+                  Huỷ bỏ
                 </button>
 
                 <button

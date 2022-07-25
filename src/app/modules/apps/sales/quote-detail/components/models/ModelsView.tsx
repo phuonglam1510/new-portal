@@ -107,9 +107,9 @@ export function ModelsView() {
                 <th className="p-2 min-w-100px">Hãng sản xuất</th>
                 <th className="p-2 min-w-110px">Số lượng</th>
                 <th className="p-2 min-w-50px">Đơn giá</th>
-                <th className="p-2 min-w-50px">Commision (%)</th>
-                <th className="p-2 min-w-50px">VAT (%)</th>
                 <th className="p-2 min-w-50px">Thành tiền (VAT)</th>
+                <th className="p-2 min-w-50px">VAT (%)</th>
+                <th className="p-2 min-w-50px">Commision (%)</th>
               </tr>
             </thead>
             <tbody className="text-gray-600 fw-bold">

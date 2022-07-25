@@ -51,7 +51,7 @@ export function QuoteTermView() {
               vat_include === VaxInclude.Include ? "Bao gồm" : "Không bao gồm"
             }
           />
-          <InfoRow text="Điều kiện thương mại" value={trade_condition || "-"} />
+          <InfoRow text="Ghi chú" value={trade_condition || "-"} />
           <InfoRow text="Điều khoản thanh toán" value={payment_term || "-"} />
           <InfoRow
             text="Thông tin ngân hàng"

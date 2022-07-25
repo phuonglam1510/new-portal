@@ -181,7 +181,7 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
             data-kt-users-modal-action="cancel"
             disabled={formik.isSubmitting || isUserLoading}
           >
-            Discard
+            Huỷ bỏ
           </button>
 
           <button
@@ -195,7 +195,7 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
               !formik.touched
             }
           >
-            <span className="indicator-label">Submit</span>
+            <span className="indicator-label">Lưu</span>
             {(formik.isSubmitting || isUserLoading) && (
               <span className="indicator-progress">
                 Please wait...{" "}
