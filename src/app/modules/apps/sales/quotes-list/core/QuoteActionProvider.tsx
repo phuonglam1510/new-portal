@@ -31,6 +31,7 @@ class ContextProps {
   loading: boolean = false;
   quote: QuoteModel | null = null;
   exportPdf!: (quoteId: number, modelIds: number[]) => Promise<boolean>;
+  exportExcel!: (quoteId: number) => Promise<boolean>;
   createQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   editQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   createQuoteItems!: (quote: QuoteFormModel) => Promise<QuoteModel | boolean>;
@@ -134,7 +135,29 @@ const QuoteActionProvider: FC = ({ children }) => {
       const query = modelIds.join(",");
       const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
       const url = `${baseUrl}/${quoteId}/export/pdf?item_id=${query}`;
-      await loadAndOpenPdfFile(url, "application/pdf");
+      await loadAndOpenPdfFile(
+        url,
+        "application/pdf",
+        `baogia_#${quoteId}.pdf`
+      );
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const exportExcel = async (quoteId: number): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
+      const url = `${baseUrl}/${quoteId}/item/export`;
+      await loadAndOpenPdfFile(
+        url,
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "models.xlsx"
+      );
       return true;
     } catch (error) {
       return false;
@@ -409,6 +432,7 @@ const QuoteActionProvider: FC = ({ children }) => {
         editQuoteTerm,
         exportPdf,
         importFile,
+        exportExcel,
         quote,
       }}
     >

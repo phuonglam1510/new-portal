@@ -36,7 +36,8 @@ export const fileKeyMap: {
 
 export const loadAndOpenPdfFile = async (
   url: string,
-  fileType: string
+  fileType: string,
+  fileName: string
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const oReq = new XMLHttpRequest();
@@ -55,7 +56,7 @@ export const loadAndOpenPdfFile = async (
       document.body.appendChild(a);
       a.style.display = "none";
       a.href = dataUrl;
-      a.download = "bao_gia.pdf";
+      a.download = fileName;
       a.target = "_blank";
       a.click();
       resolve(dataUrl);

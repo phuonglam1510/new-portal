@@ -13,7 +13,7 @@ export function ModelsView() {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const { quote_items } = quote;
   const { open, close, setLoading } = useQuoteModalContext();
-  const { editQuoteItem, createQuoteItem, exportPdf, loading } =
+  const { editQuoteItem, createQuoteItem, exportPdf, exportExcel, loading } =
     useQuoteActionContext();
   const [ids, setIds] = useState<number[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
@@ -84,14 +84,25 @@ export function ModelsView() {
           <div className="d-flex align-items-center">
             <button
               type="button"
-              className="btn btn-light-primary m-4"
+              className="btn btn-light-success m-4"
               onClick={() => setVisible(true)}
+            >
+              <KTSVG
+                path="/media/icons/duotune/arrows/arr076.svg"
+                className="svg-icon-2"
+              />
+              Import
+            </button>
+            <button
+              type="button"
+              className="btn btn-light-primary m-4"
+              onClick={() => exportExcel(quote.id || 0)}
             >
               <KTSVG
                 path="/media/icons/duotune/arrows/arr078.svg"
                 className="svg-icon-2"
               />
-              Import Models
+              {loading ? "Đang xuất file Excel..." : `Export`}
             </button>
             <button
               type="button"
