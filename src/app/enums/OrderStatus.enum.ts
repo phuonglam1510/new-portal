@@ -4,4 +4,6 @@ export enum OrderStatus {
   DeliveredWithoutPayment = "delivered_without_payment",
   DeliveredPartiallyPaid = "delivered_partially_paid",
   CompletePayment = "complete_payment",
+  DeliveryNoPO = "delivery_no_po",
+  CancelPO = "cancel_po",
 }

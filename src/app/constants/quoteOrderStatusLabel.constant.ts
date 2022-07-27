@@ -6,4 +6,6 @@ export const quoteOrderStatusLabel: { [key: string]: string } = {
   [OrderStatus.DeliveredWithoutPayment]: "Đã giao hàng chưa thanh toán",
   [OrderStatus.DeliveredPartiallyPaid]: "Đã giao hàng thanh toán 1 phần",
   [OrderStatus.CompletePayment]: "Hoàn tất thanh toán",
+  [OrderStatus.DeliveryNoPO]: "Đã giao hàng chưa ra PO",
+  [OrderStatus.CancelPO]: "Huỷ PO",
 };
