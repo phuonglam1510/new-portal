@@ -149,6 +149,13 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
             disabled
             value={formatMoney(total_selling_price_without_vat)}
           />
+          <FormInput
+            formik={formik as any}
+            name="origin_price"
+            label="Gía gốc"
+            optional
+            hasNumberHint
+          />
           <div className="d-flex flex-stack">
             <div className="flex-equal">
               <FormInput

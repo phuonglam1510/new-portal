@@ -14,6 +14,7 @@ export class QuoteItemModel {
   vat?: number;
   delivery_time?: Date;
   notes: string = "";
+  origin_price?: number;
 
   total_selling_price_vat!: number;
 }

@@ -10,6 +10,7 @@ interface ItemProps {
   onSelect?: () => any;
   selected?: boolean;
   showSelection?: boolean;
+  hideActions?: boolean;
 }
 
 export const QuoteRowItem: React.FC<ItemProps> = ({
@@ -20,6 +21,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
   onSelect,
   selected,
   showSelection,
+  hideActions,
 }) => {
   const {
     asking_price_model,
@@ -67,28 +69,30 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
       </td>
       <td className="text-end fw-bold">{vat}</td>
       <td className="text-end fw-bold">{commission}</td>
-      <td>
-        <div className="d-flex justify-content-end flex-shrink-0">
-          <a
-            onClick={onEdit}
-            className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
-          >
-            <KTSVG
-              path="/media/icons/duotune/art/art005.svg"
-              className="svg-icon-3"
-            />
-          </a>
-          <a
-            onClick={onRemove}
-            className="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
-          >
-            <KTSVG
-              path="/media/icons/duotune/general/gen027.svg"
-              className="svg-icon-3"
-            />
-          </a>
-        </div>
-      </td>
+      {!hideActions && (
+        <td>
+          <div className="d-flex justify-content-end flex-shrink-0">
+            <a
+              onClick={onEdit}
+              className="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+            >
+              <KTSVG
+                path="/media/icons/duotune/art/art005.svg"
+                className="svg-icon-3"
+              />
+            </a>
+            <a
+              onClick={onRemove}
+              className="btn btn-icon btn-bg-light btn-active-color-danger btn-sm"
+            >
+              <KTSVG
+                path="/media/icons/duotune/general/gen027.svg"
+                className="svg-icon-3"
+              />
+            </a>
+          </div>
+        </td>
+      )}
     </tr>
   );
 };

@@ -3,6 +3,7 @@ import { QuoteStatus } from "../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../enums/QuoteType.enum";
 import { UserModel } from "../../modules/auth/models/UserModel";
 import { ContactModel } from "../customers/Contact.class";
+import { QuoteItemModel } from "./QuoteItem.model";
 
 export class QuoteModel {
   id?: number;
@@ -21,6 +22,8 @@ export class QuoteModel {
 
   sale_id: number = 0;
   sale?: UserModel;
+
+  quote_items: QuoteItemModel[] = [];
 
   contact: ContactModel = new ContactModel();
 

@@ -3,9 +3,9 @@ import { KTSVG } from "../../../../../../../_metronic/helpers";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { useQuoteModalContext } from "../../../quotes-list/core/QuoteModalProvider";
-import { QuoteRowItem } from "../../../shared/QuoteRowItem";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
 import { ModelsImportModal } from "./ModelsImportModal";
+import { ModelsTable } from "./ModelsTable";
 
 let editIndex: number | null = null;
 
@@ -17,7 +17,6 @@ export function ModelsView() {
     useQuoteActionContext();
   const [ids, setIds] = useState<number[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
-  const isAllSelected = ids.length === quote_items.length;
 
   const onSave = async (newItem: QuoteItemModel) => {
     console.log(newItem);
@@ -110,62 +109,14 @@ export function ModelsView() {
       </div>
 
       <div className="card-body p-9">
-        <div className="table-responsive mt-7">
-          <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
-            <thead>
-              <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                <th className="pb-2 w-10px">
-                  <div className="form-check form-check-sm form-check-custom form-check-solid me-3">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      checked={isAllSelected}
-                      onChange={() =>
-                        !isAllSelected
-                          ? setIds(quote_items.map((item) => item.id))
-                          : setIds([])
-                      }
-                    />
-                  </div>
-                </th>
-                <th className="p-2 min-w-120px">Model</th>
-                <th className="p-2 min-w-100px">Hãng sản xuất</th>
-                <th className="p-2 min-w-100px">Inter</th>
-                <th className="p-2 min-w-110px">Số lượng</th>
-                <th className="p-2 min-w-50px">Đơn giá</th>
-                <th className="p-2 min-w-50px">Thành tiền (VAT)</th>
-                <th className="p-2 min-w-50px">VAT (%)</th>
-                <th className="p-2 min-w-50px">Commision (%)</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-600 fw-bold">
-              {quote_items.map((item: QuoteItemModel, index: number) => (
-                <QuoteRowItem
-                  showSelection
-                  selected={ids.includes(item.id)}
-                  onSelect={() => {
-                    if (ids.includes(item.id)) {
-                      setIds(ids.filter((i) => i !== item.id));
-                    } else {
-                      setIds([...ids, item.id]);
-                    }
-                  }}
-                  key={item.asking_price_model}
-                  item={item}
-                  index={index}
-                  onRemove={() => onRemove(index)}
-                  onEdit={() => onEdit(index)}
-                />
-              ))}
-            </tbody>
-          </table>
-          {quote_items.length === 0 && (
-            <div className="text-gray-500 fw-bold fs-4 w-100 pt-10 text-center">
-              Chọn "Thêm" để tạo model báo giá
-            </div>
-          )}
-          {visible && <ModelsImportModal onClose={() => setVisible(false)} />}
-        </div>
+        <ModelsTable
+          quote={quote}
+          onEdit={onEdit}
+          onRemove={onRemove}
+          selection={ids}
+          onSelectionChange={setIds}
+        />
+        {visible && <ModelsImportModal onClose={() => setVisible(false)} />}
       </div>
     </div>
   );

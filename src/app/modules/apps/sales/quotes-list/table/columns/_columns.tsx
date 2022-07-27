@@ -10,6 +10,7 @@ import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../../../../../enums/QuoteType.enum";
 import { Link } from "react-router-dom";
 import { Routing } from "../../../../../../enums/Routing.enum";
+import { QuoteModelsCell } from "./QuoteModelsCell";
 
 const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
   {
@@ -119,6 +120,17 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       />
     ),
     accessor: "package_quality",
+  },
+  {
+    Header: (props) => (
+      <UserCustomHeader
+        tableProps={props}
+        title="Models báo giá"
+        className="min-w-125px"
+      />
+    ),
+    accessor: "exportedItemIds",
+    Cell: ({ data, row }) => <QuoteModelsCell quote={data[row.index]} />,
   },
   {
     Header: (props) => (
