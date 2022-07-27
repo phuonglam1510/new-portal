@@ -73,12 +73,14 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
         <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
           <thead>
             <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-              <th className="p-0 min-w-120px">Model</th>
-              <th className="p-0 min-w-100px">Hãng sản xuất</th>
-              <th className="p-0 min-w-110px">Số lượng</th>
-              <th className="p-0 min-w-50px">Đơn giá</th>
-              <th className="p-0 min-w-50px">Commision (%)</th>
-              <th className="p-0 min-w-50px">VAT (%)</th>
+              <th className="p-2 min-w-120px">Model</th>
+              <th className="p-2 min-w-100px">Hãng sản xuất</th>
+              <th className="p-2 min-w-100px">Inter</th>
+              <th className="p-2 min-w-110px">Số lượng</th>
+              <th className="p-2 min-w-50px">Đơn giá</th>
+              <th className="p-2 min-w-50px">Thành tiền (VAT)</th>
+              <th className="p-2 min-w-50px">VAT (%)</th>
+              <th className="p-2 min-w-50px">Commision (%)</th>
             </tr>
           </thead>
           <tbody className="text-gray-600 fw-bold">

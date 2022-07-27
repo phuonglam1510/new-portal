@@ -39,6 +39,8 @@ export function Overview() {
     sale_signature,
     head_signature,
     order_confirmation,
+    exportedItemIds,
+    exportedModelNames,
   } = quote;
   const { contact_name, contact_email, contact_position, contact_phone } =
     contact || {};
@@ -59,6 +61,18 @@ export function Overview() {
         </div>
 
         <div className="card-body p-9">
+          {exportedItemIds.length > 0 && (
+            <InfoRow
+              text="Models đã xuất báo giá"
+              value={
+                <div>
+                  {exportedModelNames.map((name) => (
+                    <span className="badge badge-success mx-1">{name}</span>
+                  ))}
+                </div>
+              }
+            />
+          )}
           <InfoRow text="Người liên hệ" value={contact_name} />
           <InfoRow text="Email" value={contact_email} />
           <InfoRow text="Số điện thoại" value={contact_phone} />

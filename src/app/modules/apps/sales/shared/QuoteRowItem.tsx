@@ -31,6 +31,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
     vat,
     commission,
     total_selling_price_vat,
+    inter,
   } = item;
   return (
     <tr>
@@ -56,6 +57,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
         <span className="text-muted fw-bold d-block">{quotation_model}</span>
       </td>
       <td className="text-muted fw-bold">{manufacturer}</td>
+      <td className="text-muted fw-bold">{inter}</td>
       <td className="text-muted fw-bold">
         {quantity} x {unit}
       </td>

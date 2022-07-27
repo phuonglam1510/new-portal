@@ -15,6 +15,7 @@ export class QuoteModel {
   head_signature_id?: number;
   deliver_record_id?: number;
   status: QuoteStatus = QuoteStatus.Wating;
+  quote_exported_model?: string;
 
   created_at: string = "";
 
@@ -25,6 +26,16 @@ export class QuoteModel {
 
   public get saleName(): string {
     return this.sale?.name || "";
+  }
+
+  public get exportedItemIds(): number[] {
+    try {
+      const array = JSON.parse(this.quote_exported_model || "");
+
+      return array.map((id: string) => Number(id));
+    } catch (error) {
+      return [];
+    }
   }
 
   public get statusName(): string {

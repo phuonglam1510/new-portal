@@ -18,12 +18,12 @@ import {
   updateQuote,
   addQuoteAttachment,
   removeAttachment,
-  exportQuotePdf,
   addQuoteWarranty,
   updateQuoteWarranty,
   deleteQuoteWarranty,
   addQuoteTerm,
   updateQuoteTerm,
+  importModelsFile,
 } from "./_requests";
 import { fileKeyMap, loadAndOpenPdfFile, pickBody } from "./_util";
 
@@ -74,6 +74,7 @@ class ContextProps {
     quoteId: number,
     attachmentId: number
   ) => Promise<boolean>;
+  importFile!: (quoteId: number, file: File) => Promise<boolean>;
 }
 
 const QuoteActionContext = createContext<ContextProps>(new ContextProps());
@@ -136,6 +137,19 @@ const QuoteActionProvider: FC = ({ children }) => {
       await loadAndOpenPdfFile(url, "application/pdf");
       return true;
     } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const importFile = async (quoteId: number, file: File): Promise<boolean> => {
+    try {
+      setLoading(true);
+      await importModelsFile(quoteId, file);
+      return true;
+    } catch (error: any) {
+      alert(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -394,6 +408,7 @@ const QuoteActionProvider: FC = ({ children }) => {
         createQuoteTerm,
         editQuoteTerm,
         exportPdf,
+        importFile,
         quote,
       }}
     >

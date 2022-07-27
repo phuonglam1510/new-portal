@@ -19,4 +19,12 @@ export class QuoteDetailModel extends QuoteModel {
     id: number;
     quote_id: number;
   }[] = [];
+
+  public get exportedModelNames(): string[] {
+    return this.exportedItemIds.map(
+      (id) =>
+        this.quote_items.find((item) => item.id === id)?.asking_price_model ||
+        ""
+    );
+  }
 }

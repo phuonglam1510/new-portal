@@ -5,6 +5,7 @@ import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProv
 import { useQuoteModalContext } from "../../../quotes-list/core/QuoteModalProvider";
 import { QuoteRowItem } from "../../../shared/QuoteRowItem";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
+import { ModelsImportModal } from "./ModelsImportModal";
 
 let editIndex: number | null = null;
 
@@ -15,6 +16,7 @@ export function ModelsView() {
   const { editQuoteItem, createQuoteItem, exportPdf, loading } =
     useQuoteActionContext();
   const [ids, setIds] = useState<number[]>([]);
+  const [visible, setVisible] = useState<boolean>(false);
   const isAllSelected = ids.length === quote_items.length;
 
   const onSave = async (newItem: QuoteItemModel) => {
@@ -46,6 +48,12 @@ export function ModelsView() {
   };
 
   const onExport = () => {
+    if (!quote.quote_info) {
+      alert(
+        "Không thể xuất báo giá vì chưa có thông tin đơn hàng. Vui lòng cập nhật."
+      );
+      return;
+    }
     exportPdf(quote.id || 0, ids).then(() => setIds([]));
   };
 
@@ -74,13 +82,30 @@ export function ModelsView() {
             </button>
           </div>
         ) : (
-          <button type="button" className="btn btn-primary m-4" onClick={onAdd}>
-            <KTSVG
-              path="/media/icons/duotune/arrows/arr075.svg"
-              className="svg-icon-2"
-            />
-            Thêm
-          </button>
+          <div className="d-flex align-items-center">
+            <button
+              type="button"
+              className="btn btn-light-primary m-4"
+              onClick={() => setVisible(true)}
+            >
+              <KTSVG
+                path="/media/icons/duotune/arrows/arr078.svg"
+                className="svg-icon-2"
+              />
+              Import Models
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary m-4"
+              onClick={onAdd}
+            >
+              <KTSVG
+                path="/media/icons/duotune/arrows/arr075.svg"
+                className="svg-icon-2"
+              />
+              Thêm
+            </button>
+          </div>
         )}
       </div>
 
@@ -105,6 +130,7 @@ export function ModelsView() {
                 </th>
                 <th className="p-2 min-w-120px">Model</th>
                 <th className="p-2 min-w-100px">Hãng sản xuất</th>
+                <th className="p-2 min-w-100px">Inter</th>
                 <th className="p-2 min-w-110px">Số lượng</th>
                 <th className="p-2 min-w-50px">Đơn giá</th>
                 <th className="p-2 min-w-50px">Thành tiền (VAT)</th>
@@ -138,6 +164,7 @@ export function ModelsView() {
               Chọn "Thêm" để tạo model báo giá
             </div>
           )}
+          {visible && <ModelsImportModal onClose={() => setVisible(false)} />}
         </div>
       </div>
     </div>
