@@ -35,6 +35,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
     vat = 8,
     corporate_tax = 20,
     commission = 10,
+    origin_price = 0,
   } = formik.values;
   const total_net_price_without_vat = quantity * (net_unit_price_no_vat || 0);
   const total_selling_price_without_vat = quantity * (unit_price_no_vat || 0);
@@ -127,6 +128,18 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
           />
           <FormInput
             formik={formik as any}
+            name="origin_price"
+            label="Gía gốc"
+            optional
+            hasNumberHint
+          />
+          <Input
+            label="Thành tiền giá gốc"
+            disabled
+            value={formatMoney(origin_price * quantity)}
+          />
+          <FormInput
+            formik={formik as any}
             name="net_unit_price_no_vat"
             label="Đơn giá net trước VAT"
             optional
@@ -148,13 +161,6 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
             label="Thành tiền giá bán trước VAT"
             disabled
             value={formatMoney(total_selling_price_without_vat)}
-          />
-          <FormInput
-            formik={formik as any}
-            name="origin_price"
-            label="Gía gốc"
-            optional
-            hasNumberHint
           />
           <div className="d-flex flex-stack">
             <div className="flex-equal">

@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Builder } from "builder-pattern";
+import { handleAxiosError } from "../../../../../helpers/Error.helper";
 import { GenericResponse } from "../../../../../models/core/GenericResponse.type";
 import { ID } from "../../../../../models/core/ID.type";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
@@ -66,7 +67,8 @@ const createQuoteItem = (
       (response: AxiosResponse<GenericResponse<QuoteItemModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteItemModel>) => response.data);
+    .then((response: GenericResponse<QuoteItemModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateQuoteItem = (
@@ -80,7 +82,22 @@ const updateQuoteItem = (
       (response: AxiosResponse<GenericResponse<QuoteItemModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteItemModel>) => response.data);
+    .then((response: GenericResponse<QuoteItemModel>) => response.data)
+    .catch(handleAxiosError);
+};
+
+const deleteQuoteItem = (
+  quoteId: number,
+  quoteItemId: number
+): Promise<QuoteItemModel> => {
+  return axios
+    .delete(`${URL}/${quoteId}/item/${quoteItemId}`)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteItemModel>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteItemModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const createQuoteInfo = (
@@ -258,4 +275,5 @@ export {
   addQuoteTerm,
   updateQuoteTerm,
   importModelsFile,
+  deleteQuoteItem,
 };

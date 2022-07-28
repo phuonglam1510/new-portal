@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
+import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { useQuoteModalContext } from "../../../quotes-list/core/QuoteModalProvider";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
@@ -13,23 +14,32 @@ export function ModelsView() {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const { quote_items } = quote;
   const { open, close, setLoading } = useQuoteModalContext();
-  const { editQuoteItem, createQuoteItem, exportPdf, exportExcel, loading } =
-    useQuoteActionContext();
+  const {
+    editQuoteItem,
+    createQuoteItem,
+    exportPdf,
+    exportExcel,
+    loading,
+    removeQuoteItem,
+  } = useQuoteActionContext();
+  const { confirm } = useGlobalContext();
   const [ids, setIds] = useState<number[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
 
   const onSave = async (newItem: QuoteItemModel) => {
-    console.log(newItem);
+    let done: any = false;
     setLoading(true);
     if (editIndex !== null) {
-      await editQuoteItem(quote.id || 0, newItem);
+      done = await editQuoteItem(quote.id || 0, newItem);
     } else {
-      await createQuoteItem(quote.id || 0, newItem);
+      done = await createQuoteItem(quote.id || 0, newItem);
     }
     setLoading(false);
-    loadQuoteDetail(quote.id?.toString() || "");
-    editIndex = null;
-    close();
+    if (done) {
+      loadQuoteDetail(quote.id?.toString() || "");
+      editIndex = null;
+      close();
+    }
   };
 
   const onEdit = (index: number) => {
@@ -39,7 +49,15 @@ export function ModelsView() {
   };
 
   const onRemove = (index: number) => {
-    // delete model
+    const item = quote_items[index];
+    confirm({
+      title: "Xoá model",
+      message: `Bạn có chắc muốn xoá model ${item.asking_price_model} không?`,
+      onOk: () =>
+        removeQuoteItem(quote.id || 0, item.id).then(() =>
+          loadQuoteDetail(quote.id?.toString() || "")
+        ),
+    });
   };
 
   const onAdd = () => {

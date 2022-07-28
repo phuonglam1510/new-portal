@@ -24,6 +24,7 @@ import {
   addQuoteTerm,
   updateQuoteTerm,
   importModelsFile,
+  deleteQuoteItem,
 } from "./_requests";
 import { fileKeyMap, loadAndOpenPdfFile, pickBody } from "./_util";
 
@@ -55,6 +56,7 @@ class ContextProps {
     quoteId: number,
     quote: QuoteItemModel
   ) => Promise<QuoteItemModel | boolean>;
+  removeQuoteItem!: (quoteId: number, quoteItemId: number) => Promise<boolean>;
   editQuoteInfo!: (
     quoteId: number,
     quote: QuoteInfoFormModel
@@ -224,8 +226,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       const data = await createQuoteItemAPI(quoteId, quoteItem);
       return data || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -241,6 +244,23 @@ const QuoteActionProvider: FC = ({ children }) => {
       const data = await updateQuoteItem(quoteId, quoteItem);
       return data || false;
     } catch (error) {
+      console.error(error);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeQuoteItem = async (
+    quoteId: number,
+    quoteItemId: number
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      await deleteQuoteItem(quoteId, quoteItemId);
+      return true;
+    } catch (error: any) {
+      alert(error.message);
       console.error(error);
       return false;
     } finally {
@@ -417,12 +437,13 @@ const QuoteActionProvider: FC = ({ children }) => {
       value={{
         loading,
         createQuote,
+        editQuote,
         createQuoteItems,
         createQuoteItem,
-        createQuoteInfo,
         editQuoteItem,
+        removeQuoteItem,
+        createQuoteInfo,
         editQuoteInfo,
-        editQuote,
         createQuoteAttachments,
         removeQuoteAttachment,
         createQuoteWarranty,
