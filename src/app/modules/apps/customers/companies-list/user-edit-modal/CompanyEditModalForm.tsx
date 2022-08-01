@@ -21,6 +21,8 @@ import {
 import { ContactModel } from "../../../../../models/customers/Contact.class";
 import { FormDropdown } from "../../../../../components/FormDropdown";
 import { CompanyType } from "../../../../../enums/CompanyType.enum";
+import { toast } from "../../../../../helpers/Toast.helper";
+import { showError } from "../../../../../helpers/Error.helper";
 
 type Props = {
   isUserLoading: boolean;
@@ -121,8 +123,10 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
           values.id = createdCompany.id;
         }
         await handleContacts(values);
-      } catch (ex) {
+        toast("Cập nhật khách hàng thành công!");
+      } catch (ex: any) {
         console.error(ex);
+        showError(ex.message);
       } finally {
         setSubmitting(true);
         cancel(true);

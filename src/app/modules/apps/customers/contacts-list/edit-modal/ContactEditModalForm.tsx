@@ -12,6 +12,7 @@ import { ContactModel } from "../../../../../models/customers/Contact.class";
 import { FormDropdown } from "../../../../../components/FormDropdown";
 import { useCustomerContext } from "../../companies-list/core/CustomerProvider";
 import { showError } from "../../../../../helpers/Error.helper";
+import { toast } from "../../../../../helpers/Toast.helper";
 
 type Props = {
   isUserLoading: boolean;
@@ -84,8 +85,10 @@ const ContactEditModalForm: FC<Props> = ({
       try {
         if (isNotEmpty(values.id)) {
           await updateContact(values);
+          toast("Cập nhật người liên hệ thành công!");
         } else {
           await createContact(values);
+          toast("Tạo người liên hệ thành công!");
         }
         cancel(true);
       } catch (ex: any) {

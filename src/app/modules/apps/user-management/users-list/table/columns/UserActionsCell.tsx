@@ -3,6 +3,7 @@ import { FC, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
 import { ID, KTSVG, QUERIES } from "../../../../../../../_metronic/helpers";
+import { toast } from "../../../../../../helpers/Toast.helper";
 import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { useListView } from "../../core/ListViewProvider";
 import { useQueryResponse } from "../../core/QueryResponseProvider";
@@ -31,6 +32,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
     onSuccess: () => {
       // ✅ update detail view directly
       queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`]);
+      toast("Xoá user thành công!");
     },
   });
 

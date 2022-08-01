@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Builder } from "builder-pattern";
+import { handleAxiosError } from "../../../../../helpers/Error.helper";
 import { GenericResponse } from "../../../../../models/core/GenericResponse.type";
 import { ID } from "../../../../../models/core/ID.type";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
@@ -33,7 +34,8 @@ const createCompany = (company: CompanyModel): Promise<CompanyModel> => {
     .then(
       (response: AxiosResponse<GenericResponse<CompanyModel>>) => response.data
     )
-    .then((response: GenericResponse<CompanyModel>) => response.data);
+    .then((response: GenericResponse<CompanyModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateCompany = (
@@ -44,7 +46,8 @@ const updateCompany = (
     .then(
       (response: AxiosResponse<GenericResponse<CompanyModel>>) => response.data
     )
-    .then((response: GenericResponse<CompanyModel>) => response.data);
+    .then((response: GenericResponse<CompanyModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const deleteUser = (userId: ID): Promise<void> => {

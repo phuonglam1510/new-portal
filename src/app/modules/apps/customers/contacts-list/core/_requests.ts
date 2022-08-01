@@ -1,6 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import { Builder } from "builder-pattern";
-import { handleError } from "../../../../../helpers/Error.helper";
+import {
+  handleAxiosError,
+  handleError,
+} from "../../../../../helpers/Error.helper";
 import { GenericResponse } from "../../../../../models/core/GenericResponse.type";
 import { ID } from "../../../../../models/core/ID.type";
 import { ContactModel } from "../../../../../models/customers/Contact.class";
@@ -43,9 +46,7 @@ const createContact = (
       (response: AxiosResponse<GenericResponse<ContactModel>>) => response.data
     )
     .then((response: GenericResponse<ContactModel>) => response.data)
-    .catch((err) => {
-      throw new Error(err.response?.data.message[0] || "Unknown Error");
-    });
+    .catch(handleAxiosError);
 };
 
 const updateContact = (
@@ -58,11 +59,15 @@ const updateContact = (
     .then(
       (response: AxiosResponse<GenericResponse<ContactModel>>) => response.data
     )
-    .then((response: GenericResponse<ContactModel>) => response.data);
+    .then((response: GenericResponse<ContactModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const deleteContact = (id: number): Promise<void> => {
-  return axios.delete(`${CONTACT_URL}/${id}`).then(() => {});
+  return axios
+    .delete(`${CONTACT_URL}/${id}`)
+    .then(() => {})
+    .catch(handleAxiosError);
 };
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {

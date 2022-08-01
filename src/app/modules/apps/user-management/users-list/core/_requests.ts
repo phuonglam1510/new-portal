@@ -1,7 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Builder } from "builder-pattern";
 import { ID, Response } from "../../../../../../_metronic/helpers";
-import { handleError } from "../../../../../helpers/Error.helper";
+import {
+  handleAxiosError,
+  handleError,
+} from "../../../../../helpers/Error.helper";
 import { GenericResponse } from "../../../../../models/core/GenericResponse.type";
 import { ChangePasswordForm } from "../../../../../models/users/ChangePassword.interface";
 import { User } from "../../../../../models/users/User.interface";
@@ -38,7 +41,8 @@ const createUser = (user: User): Promise<User | undefined> => {
   return axios
     .post(USER_URL, user)
     .then((response: AxiosResponse<GenericResponse<User>>) => response.data)
-    .then((response: GenericResponse<User>) => response.data);
+    .then((response: GenericResponse<User>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateUser = (user: User): Promise<User | undefined> => {
@@ -46,7 +50,8 @@ const updateUser = (user: User): Promise<User | undefined> => {
   return axios
     .put(`${USER_URL}/${user.id}`, user)
     .then((response: AxiosResponse<GenericResponse<User>>) => response.data)
-    .then((response: GenericResponse<User>) => response.data);
+    .then((response: GenericResponse<User>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updatePassword = (form: ChangePasswordForm): Promise<any> => {
@@ -60,7 +65,10 @@ const updatePassword = (form: ChangePasswordForm): Promise<any> => {
 };
 
 const deleteUser = (userId: ID): Promise<void> => {
-  return axios.delete(`${USER_URL}/${userId}`).then(() => {});
+  return axios
+    .delete(`${USER_URL}/${userId}`)
+    .then(() => {})
+    .catch(handleAxiosError);
 };
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {

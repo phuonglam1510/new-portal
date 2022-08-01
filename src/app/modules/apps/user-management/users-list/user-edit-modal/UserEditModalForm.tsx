@@ -17,6 +17,7 @@ import { uploadImage } from "../../../core/images/requests";
 import { FormDropdown } from "../../../../../components/FormDropdown";
 import { UserGroup } from "../../../../../enums/UserGroup.enum";
 import { showError } from "../../../../../helpers/Error.helper";
+import { toast } from "../../../../../helpers/Toast.helper";
 
 type Props = {
   isUserLoading: boolean;
@@ -88,8 +89,10 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
         values = await handleImage(values);
         if (isNotEmpty(values.id)) {
           await updateUser(values);
+          toast("Cập nhật user thành công!");
         } else {
           await createUser(values);
+          toast("Tạo user thành công!");
         }
         cancel(true);
       } catch (ex: any) {
