@@ -88,7 +88,6 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
                 formik={formik as any}
                 name="manufacturer"
                 label="Hãng sản xuất"
-                optional
               />
             </div>
             <div className="w-10px" />
@@ -107,7 +106,6 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
                 formik={formik as any}
                 name="unit"
                 label="Đơn vị tính"
-                optional
               />
             </div>
             <div className="w-10px" />

@@ -10,6 +10,7 @@ import { QuoteOrderInfoStep } from "./steps/QuoteOrderInfoStep";
 import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../enums/Routing.enum";
 import { QuoteAttachmentsStep } from "./steps/QuoteAttachmentsStep";
+import { toast } from "../../../../../helpers/Toast.helper";
 
 const NewQuote: FC = () => {
   const stepperRef = useRef<HTMLDivElement | null>(null);
@@ -62,6 +63,7 @@ const NewQuote: FC = () => {
     if (stepper.current.currentStepIndex !== stepper.current.totatStepsNumber) {
       stepper.current.goNext();
     } else {
+      toast(`Tạo báo giá thành công!`);
       navigate(`/${Routing.SaleQuotes}`);
     }
     actions.setSubmitting(false);

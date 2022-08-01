@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { toast } from "../../../../../../helpers/Toast.helper";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
@@ -36,6 +37,11 @@ export function ModelsView() {
     }
     setLoading(false);
     if (done) {
+      toast(
+        `${editIndex !== null ? "Cập nhật" : "Tạo"} model ${
+          newItem.asking_price_model
+        } thành công!`
+      );
       loadQuoteDetail(quote.id?.toString() || "");
       editIndex = null;
       close();
@@ -54,9 +60,10 @@ export function ModelsView() {
       title: "Xoá model",
       message: `Bạn có chắc muốn xoá model ${item.asking_price_model} không?`,
       onOk: () =>
-        removeQuoteItem(quote.id || 0, item.id).then(() =>
-          loadQuoteDetail(quote.id?.toString() || "")
-        ),
+        removeQuoteItem(quote.id || 0, item.id).then(() => {
+          loadQuoteDetail(quote.id?.toString() || "");
+          toast(`Xoá model ${item.asking_price_model} thành công!`);
+        }),
     });
   };
 

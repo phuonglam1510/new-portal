@@ -2,10 +2,12 @@
 import { FC, useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
-import { ID, KTSVG, QUERIES } from "../../../../../../../_metronic/helpers";
+import { ID, KTSVG } from "../../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../../core/QuoteProvider";
 import { deleteUser } from "../../core/_requests";
 import { Link } from "react-router-dom";
+import { useGlobalContext } from "../../../../core/GlobalProvider";
+import { toast } from "../../../../../../helpers/Toast.helper";
 
 type Props = {
   id: ID;
@@ -14,18 +16,29 @@ type Props = {
 const UserActionsCell: FC<Props> = ({ id }) => {
   const { query } = useQuoteContext();
   const queryClient = useQueryClient();
+  const { confirm } = useGlobalContext();
 
   useEffect(() => {
     MenuComponent.reinitialization();
   }, []);
 
   const deleteItem = useMutation(() => deleteUser(id), {
-    // 💡 response of the mutation is passed to onSuccess
     onSuccess: () => {
-      // ✅ update detail view directly
-      queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`]);
+      queryClient.invalidateQueries([`quote-list-${query}`]);
+      toast(`Xoá báo giá #${id} thành công!`);
+    },
+    onError: (error: Error) => {
+      alert(error.message);
     },
   });
+
+  const onDelete = async () => {
+    confirm({
+      title: "Xoá báo giá",
+      message: "Bạn có chắc muốn xoá không?",
+      onOk: () => deleteItem.mutateAsync(),
+    });
+  };
 
   return (
     <>
@@ -59,7 +72,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
           <a
             className="menu-link px-3"
             data-kt-users-table-filter="delete_row"
-            onClick={async () => await deleteItem.mutateAsync()}
+            onClick={onDelete}
           >
             Delete
           </a>

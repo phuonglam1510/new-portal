@@ -36,9 +36,9 @@ const QuoteContext = createContext<ContextProps>({
 
 const QuoteProvider: FC = ({ children }) => {
   const [filter, setFilter] = useState(new QuotesFilter());
-  const { contact_id, type, status } = filter;
+  const { contact_id, type, status, search } = filter;
   const query = React.useMemo(
-    () => qs.stringify({ contact_id, type, status }),
+    () => qs.stringify({ contact_id, type, status, key: search || undefined }),
     [filter]
   );
   const {
@@ -46,7 +46,7 @@ const QuoteProvider: FC = ({ children }) => {
     refetch,
     data: companies = [],
   } = useQuery(
-    `company-list-${query}`,
+    `quote-list-${query}`,
     () => {
       return getQuotes(query).then((res) => {
         const items = res.data || [];

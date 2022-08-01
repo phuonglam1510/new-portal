@@ -17,7 +17,6 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
   const { open, close } = useQuoteModalContext();
 
   const onSave = (newItem: QuoteItemModel) => {
-    console.log(newItem);
     if (editIndex !== null) {
       formik.setFieldValue(
         "models",

@@ -210,8 +210,9 @@ const QuoteActionProvider: FC = ({ children }) => {
         quoteForm.models.map((item) => createQuoteItemAPI(quote?.id || 0, item))
       );
       return quote || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      alert(error.message);
       return false;
     } finally {
       setLoading(false);

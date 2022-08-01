@@ -229,8 +229,11 @@ const updateCompany = (
     .then((response: GenericResponse<CompanyModel>) => response.data);
 };
 
-const deleteUser = (userId: ID): Promise<void> => {
-  return axios.delete(`${URL}/${userId}`).then(() => {});
+const deleteUser = (userId: ID): Promise<boolean> => {
+  return axios
+    .delete(`${URL}/${userId}`)
+    .then(() => true)
+    .catch(handleAxiosError);
 };
 
 const exportQuotePdf = (quoteId: ID, modelIds: number[]): Promise<void> => {
