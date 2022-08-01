@@ -245,8 +245,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       const data = await updateQuoteItem(quoteId, quoteItem);
       return data || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -277,8 +278,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       await createQuoteInfoAPI(quoteForm.id || quote?.id || 0, quoteForm.info);
       return quote || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -294,8 +296,9 @@ const QuoteActionProvider: FC = ({ children }) => {
 
       const data = await updateQuoteInfo(quoteId, quoteItem);
       return data || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -310,8 +313,10 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       await addQuoteTerm(quoteId || quote?.id || 0, quoteTerm);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
+
       return false;
     } finally {
       setLoading(false);
@@ -326,8 +331,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       await updateQuoteTerm(quoteId || quote?.id || 0, quoteTerm);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -394,8 +400,10 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       const data = await addQuoteWarranty(quoteId, warranty);
       return data || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
+
       return false;
     } finally {
       setLoading(false);
@@ -411,8 +419,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       const { id, ...options } = warranty;
       const data = await updateQuoteWarranty(quoteId, warranty.id, options);
       return data || false;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
@@ -426,8 +435,9 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
       await deleteQuoteWarranty(quoteId, warrantyId);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      showError(error.message);
       return false;
     } finally {
       setLoading(false);
