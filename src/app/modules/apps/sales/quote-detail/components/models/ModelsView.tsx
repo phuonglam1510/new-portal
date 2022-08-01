@@ -79,6 +79,15 @@ export function ModelsView() {
       );
       return;
     }
+    const hasEmptyPriceModel = quote.quote_items
+      ?.filter((item) => ids.includes(item.id))
+      ?.some((item) => !item.total_selling_price_vat);
+    if (hasEmptyPriceModel) {
+      showError(
+        "Không thể xuất báo giá vì có model chưa có giá thành tiền. Vui lòng cập nhật."
+      );
+      return;
+    }
     exportPdf(quote.id || 0, ids).then(() => setIds([]));
   };
 
