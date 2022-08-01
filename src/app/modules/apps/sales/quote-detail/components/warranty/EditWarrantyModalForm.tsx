@@ -10,6 +10,7 @@ import { FormDropdown } from "../../../../../../components/FormDropdown";
 import { QuoteWarrantyStatus } from "../../../../../../enums/QuoteWarrantyStatus.enum";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
 import { FormDatePicker } from "../../../../../../components/FormDatePicker";
+import { toast } from "../../../../../../helpers/Toast.helper";
 
 type Props = {
   onClose: () => any;
@@ -46,11 +47,13 @@ const EditWarrantyModalForm: React.FC<Props> = ({ onClose, item }) => {
       if (item.id) {
         editQuoteWarranty(quote.id || 0, values).then(() => {
           loadQuoteDetail(quote.id?.toString() || "");
+          toast("Sửa đơn bảo hành thành công!");
           onClose();
         });
       } else {
         createQuoteWarranty(quote.id || 0, values).then(() => {
           loadQuoteDetail(quote.id?.toString() || "");
+          toast("Tạo đơn bảo hành thành công!");
           onClose();
         });
       }

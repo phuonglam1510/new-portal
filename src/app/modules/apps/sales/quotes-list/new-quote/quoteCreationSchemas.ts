@@ -30,7 +30,7 @@ export const quoteCreationSchemas = [
   }),
   Yup.object({
     info: Yup.object({
-      prepay: Yup.number().max(100, "% trả trước không đc hơn 100%"),
+      prepay: Yup.number().max(100, "% trả trước không đc hơn 100%").nullable(),
     }),
   }),
   Yup.object({}),

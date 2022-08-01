@@ -10,6 +10,7 @@ import { QuoteOrderInfoStep } from "../../../quotes-list/new-quote/steps/QuoteOr
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../../enums/Routing.enum";
+import { toast } from "../../../../../../helpers/Toast.helper";
 
 const QuoteInfoEditCard: React.FC = () => {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
@@ -17,7 +18,6 @@ const QuoteInfoEditCard: React.FC = () => {
   const { editQuoteInfo, createQuoteInfo } = useQuoteActionContext();
 
   const handleEditOrCreate = async (values: QuoteFormModel) => {
-    console.log(quote.quote_info);
     if (quote.quote_info) {
       return editQuoteInfo(quote.id || 0, values.info);
     }
@@ -39,6 +39,7 @@ const QuoteInfoEditCard: React.FC = () => {
         .then(() => {
           navigate(`/${Routing.SaleQuotes}/${quote.id}/info`);
           loadQuoteDetail(quote.id?.toString() || "");
+          toast("Lưu thông tin đơn hàng thành công!");
         })
         .finally(() => {
           setLoading(false);
@@ -46,6 +47,8 @@ const QuoteInfoEditCard: React.FC = () => {
         });
     },
   });
+
+  console.log(formik.errors);
 
   return (
     <div className="card mb-5 mb-xl-10">
