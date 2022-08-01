@@ -73,9 +73,11 @@ const QuoteInfoEditCard: React.FC = () => {
 
           <div className="card-footer d-flex justify-content-end py-6 px-9">
             <button
-              type="submit"
               className="btn btn-light mx-6"
               disabled={loading}
+              onClick={() =>
+                navigate(`/${Routing.SaleQuotes}/${quote.id}/info`)
+              }
             >
               {!loading && "Huỷ bỏ"}
               {loading && (
