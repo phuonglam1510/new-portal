@@ -11,6 +11,7 @@ import { Builder } from "builder-pattern";
 import { ContactModel } from "../../../../../models/customers/Contact.class";
 import { FormDropdown } from "../../../../../components/FormDropdown";
 import { useCustomerContext } from "../../companies-list/core/CustomerProvider";
+import { showError } from "../../../../../helpers/Error.helper";
 
 type Props = {
   isUserLoading: boolean;
@@ -89,7 +90,7 @@ const ContactEditModalForm: FC<Props> = ({
         cancel(true);
       } catch (ex: any) {
         console.error(ex);
-        alert(ex.message);
+        showError(ex.message);
         cancel();
       } finally {
         setSubmitting(true);

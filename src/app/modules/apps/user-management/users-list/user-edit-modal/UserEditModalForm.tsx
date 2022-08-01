@@ -16,6 +16,7 @@ import { FormImageUploader } from "../../../../../components/FormImageUploader";
 import { uploadImage } from "../../../core/images/requests";
 import { FormDropdown } from "../../../../../components/FormDropdown";
 import { UserGroup } from "../../../../../enums/UserGroup.enum";
+import { showError } from "../../../../../helpers/Error.helper";
 
 type Props = {
   isUserLoading: boolean;
@@ -93,7 +94,7 @@ const UserEditModalForm: FC<Props> = ({ user, isUserLoading }) => {
         cancel(true);
       } catch (ex: any) {
         console.error(ex);
-        alert(ex.message);
+        showError(ex.message);
       } finally {
         setSubmitting(false);
       }

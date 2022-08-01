@@ -110,7 +110,8 @@ const createQuoteInfo = (
       (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateQuoteInfo = (
@@ -123,7 +124,8 @@ const updateQuoteInfo = (
       (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const addQuoteTerm = (
@@ -136,7 +138,8 @@ const addQuoteTerm = (
       (response: AxiosResponse<GenericResponse<QuoteTermModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteTermModel>) => response.data);
+    .then((response: GenericResponse<QuoteTermModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateQuoteTerm = (
@@ -149,7 +152,8 @@ const updateQuoteTerm = (
       (response: AxiosResponse<GenericResponse<QuoteTermModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteTermModel>) => response.data);
+    .then((response: GenericResponse<QuoteTermModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const addQuoteAttachment = (
@@ -162,7 +166,8 @@ const addQuoteAttachment = (
       (response: AxiosResponse<GenericResponse<QuoteInfoModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteInfoModel>) => response.data);
+    .then((response: GenericResponse<QuoteInfoModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const addQuoteWarranty = (
@@ -175,7 +180,8 @@ const addQuoteWarranty = (
       (response: AxiosResponse<GenericResponse<QuoteWarrantyModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data);
+    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const updateQuoteWarranty = (
@@ -189,7 +195,8 @@ const updateQuoteWarranty = (
       (response: AxiosResponse<GenericResponse<QuoteWarrantyModel>>) =>
         response.data
     )
-    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data);
+    .then((response: GenericResponse<QuoteWarrantyModel>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const deleteQuoteWarranty = (
@@ -249,7 +256,8 @@ const importModelsFile = (quoteId: ID, file: File): Promise<void> => {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((response: AxiosResponse<GenericResponse<any>>) => response.data)
-    .then((response: GenericResponse<any>) => response.data);
+    .then((response: GenericResponse<any>) => response.data)
+    .catch(handleAxiosError);
 };
 
 const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {

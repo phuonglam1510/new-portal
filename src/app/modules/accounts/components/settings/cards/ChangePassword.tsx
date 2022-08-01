@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import { FormInput } from "../../../../../components/FormInput";
 import { ChangePasswordForm } from "../../../../../models/users/ChangePassword.interface";
 import { updatePassword } from "../../../../apps/user-management/users-list/core/_requests";
+import { toast } from "../../../../../helpers/Toast.helper";
+import { showError } from "../../../../../helpers/Error.helper";
 
 const deactivateAccountSchema = Yup.object().shape({
   old_password: Yup.string().required("Field is required"),
@@ -27,11 +29,11 @@ const ChangePassword: React.FC = () => {
       setLoading(true);
       updatePassword(values)
         .then(() => {
-          alert("New password has been successfully updated!");
+          toast("New password has been successfully updated!");
           formik.resetForm();
         })
         .catch((err) => {
-          alert(err.message);
+          showError(err.message);
         })
         .finally(() => {
           setLoading(false);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { showError } from "../../../../../../helpers/Error.helper";
 import { toast } from "../../../../../../helpers/Toast.helper";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useGlobalContext } from "../../../../core/GlobalProvider";
@@ -73,7 +74,7 @@ export function ModelsView() {
 
   const onExport = () => {
     if (!quote.quote_info) {
-      alert(
+      showError(
         "Không thể xuất báo giá vì chưa có thông tin đơn hàng. Vui lòng cập nhật."
       );
       return;

@@ -8,6 +8,7 @@ import { deleteUser } from "../../core/_requests";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { toast } from "../../../../../../helpers/Toast.helper";
+import { showError } from "../../../../../../helpers/Error.helper";
 
 type Props = {
   id: ID;
@@ -28,7 +29,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
       toast(`Xoá báo giá #${id} thành công!`);
     },
     onError: (error: Error) => {
-      alert(error.message);
+      showError(error.message);
     },
   });
 

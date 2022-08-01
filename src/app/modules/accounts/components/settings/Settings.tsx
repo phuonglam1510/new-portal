@@ -13,6 +13,7 @@ import { uploadImage } from "../../../apps/core/images/requests";
 import { updateUser } from "../../../apps/user-management/users-list/core/_requests";
 import { User } from "../../../../models/users/User.interface";
 import { ChangePassword } from "./cards/ChangePassword";
+import { showError } from "../../../../helpers/Error.helper";
 
 const editUserSchema = Yup.object().shape({
   email: Yup.string()
@@ -75,7 +76,7 @@ const Settings: React.FC = () => {
         .then(() => {
           navigate(`/account/overview`);
         })
-        .catch((e) => alert(e.message))
+        .catch((e) => showError(e.message))
         .finally(() => {
           setLoading(false);
           formik.setSubmitting(false);
