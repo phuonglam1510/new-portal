@@ -248,15 +248,21 @@ const exportQuotePdf = (quoteId: ID, modelIds: number[]): Promise<void> => {
   return axios.get(`${URL}/${quoteId}/export/pdf?item_id=${query}`);
 };
 
-const importModelsFile = (quoteId: ID, file: File): Promise<void> => {
+const importModelsFile = (
+  quoteId: ID,
+  file: File
+): Promise<QuoteItemModel[]> => {
   const formData = new FormData();
   formData.append("quote_item", file);
   return axios
     .post(`${URL}/${quoteId}/item/import`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then((response: AxiosResponse<GenericResponse<any>>) => response.data)
-    .then((response: GenericResponse<any>) => response.data)
+    .then(
+      (response: AxiosResponse<GenericResponse<QuoteItemModel[]>>) =>
+        response.data
+    )
+    .then((response: GenericResponse<QuoteItemModel[]>) => response.data)
     .catch(handleAxiosError);
 };
 

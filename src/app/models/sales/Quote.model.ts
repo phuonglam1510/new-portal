@@ -42,7 +42,11 @@ export class QuoteModel {
   }
 
   public get statusName(): string {
-    return this.status === QuoteStatus.Wating ? "Chờ báo giá" : "Đã báo giá";
+    return this.status === QuoteStatus.Wating
+      ? "Chờ báo giá"
+      : this.status === QuoteStatus.Sold
+      ? "Bán hàng"
+      : "Đã báo giá";
   }
 
   public get typeName(): string {

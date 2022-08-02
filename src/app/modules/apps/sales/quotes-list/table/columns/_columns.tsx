@@ -49,6 +49,8 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
           "badge",
           data[row.index].status === QuoteStatus.Wating
             ? "badge-warning"
+            : data[row.index].status === QuoteStatus.Sold
+            ? "badge-info"
             : "badge-success"
         )}
       >

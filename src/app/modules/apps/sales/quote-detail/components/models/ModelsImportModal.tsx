@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
+import { QuoteDetailModel } from "../../core/_models";
 
 interface Props {
   onClose: () => void;
+  onDone: (items: QuoteItemModel[]) => void;
+  quote: QuoteDetailModel;
 }
 
-const ModelsImportModal: React.FC<Props> = ({ onClose }) => {
+const ModelsImportModal: React.FC<Props> = ({ onClose, onDone, quote }) => {
   const [file, setFile] = useState<File>();
-  const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const { loading, importFile } = useQuoteActionContext();
   useEffect(() => {
     document.body.classList.add("modal-open");
@@ -20,10 +23,10 @@ const ModelsImportModal: React.FC<Props> = ({ onClose }) => {
 
   const onImport = async () => {
     if (file) {
-      const done = await importFile(quote.id || 0, file);
-      if (done) {
+      const items = await importFile(quote.id || 0, file);
+      if (items) {
         onClose();
-        loadQuoteDetail(quote.id?.toString() || "");
+        onDone(items);
       }
     }
   };

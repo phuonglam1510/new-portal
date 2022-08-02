@@ -54,6 +54,8 @@ const QuoteDetailHeader: React.FC = () => {
                   >
                     {status === QuoteStatus.Wating
                       ? "Chờ báo giá"
+                      : status === QuoteStatus.Sold
+                      ? "Bán hàng"
                       : "Đã báo giá"}
                   </a>
                 </div>

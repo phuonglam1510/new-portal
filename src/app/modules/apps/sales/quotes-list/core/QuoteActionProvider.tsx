@@ -78,7 +78,10 @@ class ContextProps {
     quoteId: number,
     attachmentId: number
   ) => Promise<boolean>;
-  importFile!: (quoteId: number, file: File) => Promise<boolean>;
+  importFile!: (
+    quoteId: number,
+    file: File
+  ) => Promise<QuoteItemModel[] | undefined>;
 }
 
 const QuoteActionContext = createContext<ContextProps>(new ContextProps());
@@ -169,14 +172,17 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
-  const importFile = async (quoteId: number, file: File): Promise<boolean> => {
+  const importFile = async (
+    quoteId: number,
+    file: File
+  ): Promise<QuoteItemModel[] | undefined> => {
     try {
       setLoading(true);
-      await importModelsFile(quoteId, file);
-      return true;
+      const data = await importModelsFile(quoteId, file);
+      return data;
     } catch (error: any) {
       showError(error.message);
-      return false;
+      return;
     } finally {
       setLoading(false);
     }
@@ -208,7 +214,11 @@ const QuoteActionProvider: FC = ({ children }) => {
       setLoading(true);
 
       await Promise.all(
-        quoteForm.models.map((item) => createQuoteItemAPI(quote?.id || 0, item))
+        quoteForm.models.map((item) =>
+          item.id
+            ? updateQuoteItem(quote?.id || 0, item)
+            : createQuoteItemAPI(quote?.id || 0, item)
+        )
       );
       return quote || false;
     } catch (error: any) {

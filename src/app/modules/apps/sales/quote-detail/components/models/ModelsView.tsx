@@ -91,6 +91,10 @@ export function ModelsView() {
     exportPdf(quote.id || 0, ids).then(() => setIds([]));
   };
 
+  const onImportDone = async () => {
+    loadQuoteDetail(quote.id?.toString() || "");
+  };
+
   return (
     <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
       <div className="card-header cursor-pointer">
@@ -162,7 +166,13 @@ export function ModelsView() {
           selection={ids}
           onSelectionChange={setIds}
         />
-        {visible && <ModelsImportModal onClose={() => setVisible(false)} />}
+        {visible && (
+          <ModelsImportModal
+            onClose={() => setVisible(false)}
+            onDone={onImportDone}
+            quote={quote}
+          />
+        )}
       </div>
     </div>
   );
