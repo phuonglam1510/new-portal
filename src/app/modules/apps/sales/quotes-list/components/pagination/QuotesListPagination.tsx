@@ -13,10 +13,11 @@ const createPageItem = (totalPage: number) => {
 
 const QuotesListPagination = () => {
   const { isLoading, paging, setPaging } = useQuoteContext();
-  const pages = React.useMemo(
-    () => createPageItem(Math.ceil(paging.total / paging.size)),
+  const pageTotal = React.useMemo(
+    () => Math.ceil(paging.total / paging.size),
     [paging.total, paging.size]
   );
+  const pages = React.useMemo(() => createPageItem(pageTotal), [pageTotal]);
   const updatePage = (page: number | null) => {
     if (!page || isLoading || paging.page === page) {
       return;
@@ -33,7 +34,7 @@ const QuotesListPagination = () => {
             <li
               key="previous"
               className={clsx("page-item previous", {
-                disabled: isLoading,
+                disabled: isLoading || paging.page <= 1,
               })}
             >
               <a
@@ -62,7 +63,7 @@ const QuotesListPagination = () => {
             <li
               key="next"
               className={clsx("page-item next", {
-                disabled: isLoading,
+                disabled: isLoading || paging.page >= pageTotal,
               })}
             >
               <a
