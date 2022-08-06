@@ -83,10 +83,7 @@ const NewQuote: FC = () => {
         goNext(actions);
       }
     } else if (stepper.current.currentStepIndex === 2) {
-      const done = await createQuoteItems(values);
-      if (done) {
-        goNext(actions);
-      }
+      goNext(actions);
     } else if (stepper.current.currentStepIndex === 3) {
       const done = await createQuoteInfo(values);
       if (done) {

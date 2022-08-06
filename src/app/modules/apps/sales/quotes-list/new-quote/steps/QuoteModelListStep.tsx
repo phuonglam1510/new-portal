@@ -4,11 +4,12 @@ import { KTSVG } from "../../../../../../../_metronic/helpers";
 import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
 import { useQuoteModalContext } from "../../core/QuoteModalProvider";
 import { FormFieldError } from "../../../../../../components/FormFieldError";
-import { QuoteRowItem } from "../../../shared/QuoteRowItem";
 import { ModelsImportModal } from "../../../quote-detail/components/models/ModelsImportModal";
 import { Builder } from "builder-pattern";
 import { QuoteDetailModel } from "../../../quote-detail/core/_models";
 import { useQuoteActionContext } from "../../core/QuoteActionProvider";
+import { ModelsTable } from "../../../quote-detail/components/models/ModelsTable";
+import { QuoteModel } from "../../../../../../models/sales/Quote.model";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -18,27 +19,43 @@ let editIndex: number | null = null;
 
 const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
   const { models } = formik.values;
-  const { open, close } = useQuoteModalContext();
-  const { quote } = useQuoteActionContext();
+  const { open, close, setLoading } = useQuoteModalContext();
+  const { quote, editQuoteItem, createQuoteItem, removeQuoteItem } =
+    useQuoteActionContext();
   const [visible, setVisible] = useState<boolean>(false);
+  const quoteForTable = React.useMemo(
+    () => Builder(QuoteModel, { id: quote?.id, quote_items: models }).build(),
+    [quote, models]
+  );
 
-  const onSave = (newItem: QuoteItemModel) => {
+  const onSave = async (newItem: QuoteItemModel) => {
+    setLoading(true);
+    let savedItem: any = false;
     if (editIndex !== null) {
-      formik.setFieldValue(
-        "models",
-        models.map((item: QuoteItemModel, index: number) => {
-          if (index === editIndex) {
-            return newItem;
-          }
-          return item;
-        }),
-        true
-      );
+      savedItem = await editQuoteItem(quote?.id || 0, newItem);
     } else {
-      formik.setFieldValue("models", [...models, newItem], true);
+      savedItem = await createQuoteItem(quote?.id || 0, newItem);
     }
-    editIndex = null;
-    close();
+    setLoading(false);
+    if (savedItem) {
+      if (editIndex !== null) {
+        formik.setFieldValue(
+          "models",
+          models.map((item: QuoteItemModel, index: number) => {
+            if (index === editIndex) {
+              return newItem;
+            }
+            return item;
+          }),
+          true
+        );
+      } else {
+        console.log("new", savedItem);
+        formik.setFieldValue("models", [...models, savedItem], true);
+      }
+      editIndex = null;
+      close();
+    }
   };
 
   const onAdd = () => {
@@ -52,10 +69,14 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
   };
 
   const onRemove = (index: number) => {
-    formik.setFieldValue(
-      "models",
-      models.filter((_: any, ind: number) => index !== ind)
-    );
+    const item = models[index];
+
+    removeQuoteItem(quote?.id || 0, item.id).then(() => {
+      formik.setFieldValue(
+        "models",
+        models.filter((_: any, ind: number) => index !== ind)
+      );
+    });
   };
 
   const onImportDone = (newModels: QuoteItemModel[]) => {
@@ -91,39 +112,14 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
         </div>
       </div>
 
-      <div className="table-responsive mt-7">
-        <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">
-          <thead>
-            <tr className="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-              <th className="p-2 min-w-120px">Model</th>
-              <th className="p-2 min-w-100px">Hãng sản xuất</th>
-              <th className="p-2 min-w-100px">Inter</th>
-              <th className="p-2 min-w-110px">Số lượng</th>
-              <th className="p-2 min-w-50px">Đơn giá</th>
-              <th className="p-2 min-w-50px">Thành tiền (VAT)</th>
-              <th className="p-2 min-w-50px">VAT (%)</th>
-              <th className="p-2 min-w-50px">Commision (%)</th>
-            </tr>
-          </thead>
-          <tbody className="text-gray-600 fw-bold">
-            {models.map((item: QuoteItemModel, index: number) => (
-              <QuoteRowItem
-                key={item.asking_price_model}
-                item={models[index]}
-                index={index}
-                onRemove={() => onRemove(index)}
-                onEdit={() => onEdit(index)}
-              />
-            ))}
-          </tbody>
-        </table>
-        {models.length === 0 && (
-          <div className="text-gray-500 fw-bold fs-4 w-100 pt-10 text-center">
-            Chọn "Thêm" để tạo model báo giá
-          </div>
-        )}
-        <FormFieldError formik={formik} name="models" />
-      </div>
+      {quote && (
+        <ModelsTable
+          quote={quoteForTable}
+          onEdit={onEdit}
+          onRemove={onRemove}
+        />
+      )}
+      <FormFieldError formik={formik} name="models" />
       {visible && (
         <ModelsImportModal
           onClose={() => setVisible(false)}

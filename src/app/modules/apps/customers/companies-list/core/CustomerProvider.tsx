@@ -33,7 +33,7 @@ const CustomerProvider: FC = ({ children }) => {
   const [filter, setFilter] = useState(new CompaniesFilter());
   const { search } = filter;
   const query = React.useMemo(
-    () => qs.stringify({ key: search || undefined }),
+    () => qs.stringify({ key: search || undefined, size: 1000, page: 1 }),
     [filter]
   );
   const {

@@ -1,7 +1,8 @@
-import { FC, createContext, useContext, useState } from "react";
+import React, { FC, createContext, useContext, useState } from "react";
 import { useQuery } from "react-query";
 import { ContactModel } from "../../../../../models/customers/Contact.class";
 import { getContacts } from "./_requests";
+import qs from "qs";
 
 export class ContactFilter {
   search: string = "";
@@ -29,7 +30,10 @@ const CustomerContext = createContext<ContextProps>({
 
 const ContactProvider: FC = ({ children }) => {
   const [filter, setFilter] = useState(new ContactFilter());
-  const query = "";
+  const query = React.useMemo(
+    () => qs.stringify({ size: 1000, page: 1 }),
+    [filter]
+  );
   const {
     isFetching,
     refetch,

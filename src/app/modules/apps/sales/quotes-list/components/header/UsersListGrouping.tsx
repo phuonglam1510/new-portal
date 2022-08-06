@@ -1,9 +1,9 @@
 import { useQueryClient, useMutation } from "react-query";
-import { QUERIES } from "../../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../../core/QuoteProvider";
 import { useListView } from "../../core/ListViewProvider";
 import { deleteSelectedUsers } from "../../core/_requests";
 import { useGlobalContext } from "../../../../core/GlobalProvider";
+import { toast } from "../../../../../../helpers/Toast.helper";
 
 const UsersListGrouping = () => {
   const { selected, clearSelected } = useListView();
@@ -15,8 +15,9 @@ const UsersListGrouping = () => {
     // 💡 response of the mutation is passed to onSuccess
     onSuccess: () => {
       // ✅ update detail view directly
-      queryClient.invalidateQueries([`${QUERIES.USERS_LIST}-${query}`]);
+      queryClient.invalidateQueries([`quote-list-${query}`]);
       clearSelected();
+      toast(`Đã xoá thành công ${selected.length} báo giá`);
     },
   });
 

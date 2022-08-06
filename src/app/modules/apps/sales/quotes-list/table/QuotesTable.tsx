@@ -4,10 +4,10 @@ import { CustomHeaderColumn } from "./columns/CustomHeaderColumn";
 import { CustomRow } from "./columns/CustomRow";
 import { usersColumns } from "./columns/_columns";
 import { UsersListLoading } from "../components/loading/UsersListLoading";
-// import {UsersListPagination} from '../components/pagination/UsersListPagination'
 import { KTCardBody } from "../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../core/QuoteProvider";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
+import { QuotesListPagination } from "../components/pagination/QuotesListPagination";
 
 const QuotesTable = () => {
   const { companies, isLoading } = useQuoteContext();
@@ -52,7 +52,7 @@ const QuotesTable = () => {
           </tbody>
         </table>
       </div>
-      {/* <UsersListPagination /> */}
+      <QuotesListPagination />
       {isLoading && <UsersListLoading />}
     </KTCardBody>
   );
