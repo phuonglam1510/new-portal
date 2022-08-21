@@ -11,6 +11,7 @@ import {
   PagingContextProps,
   withPaging,
 } from "../../../core/hooks/usePagingProvider";
+import { PaginationQuery } from "../../../../../models/core/PaginationQuery.model";
 
 export class QuotesFilter {
   search: string = "";
@@ -19,6 +20,8 @@ export class QuotesFilter {
   contact_id?: number;
   type?: QuoteType;
   status?: QuoteStatus;
+  date?: string;
+  sale_id?: number;
 }
 
 interface ContextProps extends PagingContextProps {
@@ -42,14 +45,12 @@ const QuoteContext = createContext<ContextProps>({
 
 const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
   const [filter, setFilter] = useState(new QuotesFilter());
-  const { contact_id, type, status, search } = filter;
+  const { search, ...rest } = filter;
   const { page, size } = paging;
   const query = React.useMemo(
     () =>
       qs.stringify({
-        contact_id,
-        type,
-        status,
+        ...rest,
         key: search || undefined,
         page,
         size,
@@ -75,7 +76,7 @@ const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
 
   const updateFilter = (values: Partial<QuotesFilter>) => {
     setFilter({ ...filter, ...values });
-    refetch();
+    setPaging(new PaginationQuery());
   };
 
   useEffect(() => {

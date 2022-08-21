@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { useFormik } from "formik";
 import { FormFieldError } from "./FormFieldError";
 import { NumberHints } from "./NumberHints";
+import { formatMoney } from "../helpers/Number.helper";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -35,6 +36,11 @@ const FormInput: React.FC<Props> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setTimeout(() => setFocused(false), 300)}
         name={name}
+        value={
+          hasNumberHint && !focused
+            ? formatMoney(formik.values[name])
+            : formik.values[name]
+        }
         className={clsx(
           "form-control form-control-solid mb-3 mb-lg-0",
           { "is-invalid": formik.touched[name] && formik.errors[name] },

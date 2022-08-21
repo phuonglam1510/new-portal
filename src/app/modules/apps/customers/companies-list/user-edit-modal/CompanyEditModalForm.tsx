@@ -23,6 +23,7 @@ import { FormDropdown } from "../../../../../components/FormDropdown";
 import { CompanyType } from "../../../../../enums/CompanyType.enum";
 import { toast } from "../../../../../helpers/Toast.helper";
 import { showError } from "../../../../../helpers/Error.helper";
+import { businessTypeOptions } from "../../../../../constants/businessTypeOptions.constant";
 
 type Props = {
   isUserLoading: boolean;
@@ -178,7 +179,11 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
             name="company_address"
             label="Địa chỉ công ty"
           />
-          <FormInput
+          <FormDropdown
+            items={businessTypeOptions.map((businessType) => ({
+              value: businessType,
+              text: businessType,
+            }))}
             formik={formik as any}
             name="business_type"
             label="Ngành nghề"

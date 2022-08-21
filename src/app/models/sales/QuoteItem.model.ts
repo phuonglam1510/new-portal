@@ -17,4 +17,6 @@ export class QuoteItemModel {
   origin_price?: number;
 
   total_selling_price_vat!: number;
+  delivery_status?: string;
+  delivery_date?: string;
 }

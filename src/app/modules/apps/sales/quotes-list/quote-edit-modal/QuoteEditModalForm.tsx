@@ -8,6 +8,8 @@ import { quoteEditSchema } from "./quoteEditSchema";
 import { useQuoteModalContext } from "../core/QuoteModalProvider";
 import { Builder } from "builder-pattern";
 import { formatMoney } from "../../../../../helpers/Number.helper";
+import { FormDatePicker } from "../../../../../components/FormDatePicker";
+import { FormCheckbox } from "../../../../../components/FormCheckbox";
 
 type Props = {
   onSave: (item: QuoteItemModel) => any;
@@ -139,12 +141,12 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
           <FormInput
             formik={formik as any}
             name="net_unit_price_no_vat"
-            label="Đơn giá net trước VAT"
+            label="Đơn giá net trước VAT (Bao gồm COM)"
             optional
             hasNumberHint
           />
           <Input
-            label="Thành tiền giá net trước VAT"
+            label="Thành tiền giá net trước VAT (Bao gồm COM)"
             disabled
             value={formatMoney(total_net_price_without_vat)}
           />
@@ -204,7 +206,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
           <FormInput
             formik={formik as any}
             name="delivery_time"
-            label="Thời gian giao hàng"
+            label="Thời gian dự kiến giao hàng"
             optional
           />
           <FormInput
@@ -212,6 +214,18 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
             name="notes"
             label="Ghi Chú"
             optional
+          />
+          <FormDatePicker
+            key="delivery_date"
+            formik={formik as any}
+            name="delivery_date"
+            label="Ngày giao hàng"
+            optional
+          />
+          <FormCheckbox
+            formik={formik as any}
+            name="delivery_status"
+            label="Đã giao"
           />
         </div>
 

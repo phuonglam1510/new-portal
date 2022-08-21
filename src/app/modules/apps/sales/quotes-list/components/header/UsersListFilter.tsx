@@ -1,18 +1,24 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
 import { KTSVG } from "../../../../../../../_metronic/helpers";
+import { DatePicker } from "../../../../../../components/DatePicker";
 import { Dropdown } from "../../../../../../components/Dropdown";
 import { quoteStatuses } from "../../../../../../constants/quoteStatuses.constant";
 import { quoteTypes } from "../../../../../../constants/quoteTypes.constant";
 import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../../../../../enums/QuoteType.enum";
 import { useContactContext } from "../../../../customers/contacts-list/core/ContactProvider";
+import { useQueryResponseData } from "../../../../user-management/users-list/core/QueryResponseProvider";
 import { QuotesFilter, useQuoteContext } from "../../core/QuoteProvider";
 
 const UsersListFilter = () => {
   const { updateFilter, isLoading } = useQuoteContext();
   const { contacts } = useContactContext();
+  const users = useQueryResponseData();
   const [contactId, setContactId] = useState<number | "">("");
+  const [date, setDate] = useState<string>(moment().toISOString());
+  const [saleId, setSaleId] = useState<number | "">("");
   const [status, setStatus] = useState<QuoteStatus | "">("");
   const [type, setType] = useState<QuoteType | "">("");
 
@@ -24,6 +30,14 @@ const UsersListFilter = () => {
       })) || [],
     [contacts]
   );
+  const userItems = React.useMemo(
+    () =>
+      users?.map((users) => ({
+        text: users.name || "",
+        value: users.id || 0,
+      })) || [],
+    [users]
+  );
 
   useEffect(() => {
     MenuComponent.reinitialization();
@@ -34,6 +48,8 @@ const UsersListFilter = () => {
     setContactId("");
     setType("");
     setStatus("");
+    setSaleId("");
+    setDate(moment().toISOString());
   };
 
   const filterData = () => {
@@ -41,6 +57,8 @@ const UsersListFilter = () => {
       contact_id: contactId || undefined,
       status: status || undefined,
       type: type || undefined,
+      sale_id: saleId || undefined,
+      date: date ? moment(date).format("DD-MM-YYYY") : undefined,
     });
   };
 
@@ -82,6 +100,16 @@ const UsersListFilter = () => {
 
           <div className="mb-10">
             <Dropdown
+              value={saleId}
+              onChange={(value) => setSaleId(Number(value))}
+              optional
+              items={userItems}
+              label="Người tạo"
+            />
+          </div>
+
+          <div className="mb-10">
+            <Dropdown
               value={status}
               onChange={(value: any) => setStatus(value || "")}
               optional
@@ -96,6 +124,15 @@ const UsersListFilter = () => {
               optional
               items={quoteTypes}
               label="Loại đơn hàng"
+            />
+          </div>
+          <div className="mb-10">
+            <DatePicker
+              key="filter_quote_date"
+              value={date}
+              onChange={(value: any) => setDate(value)}
+              optional
+              label="Ngày tạo"
             />
           </div>
 

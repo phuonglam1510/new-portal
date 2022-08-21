@@ -154,7 +154,7 @@ const QuoteDetailHeader: React.FC = () => {
                 }
                 to={`/${Routing.SaleQuotes}/${id}/overview`}
               >
-                Cơ bản
+                Thông tin khách hàng
               </Link>
             </li>
             <li className="nav-item">

@@ -12,6 +12,8 @@ import { QuoteModalProvider } from "./core/QuoteModalProvider";
 import QuoteDetailPage from "../quote-detail/QuoteDetailPage";
 import { QuoteDetailProvider } from "../quote-detail/core/QuoteDetailProvider";
 import { ListViewAddonProvider } from "./core/ListViewAddonProvider";
+import { QueryRequestProvider } from "../../user-management/users-list/core/QueryRequestProvider";
+import { QueryResponseProvider } from "../../user-management/users-list/core/QueryResponseProvider";
 
 const QuoteList = () => {
   return (
@@ -33,9 +35,13 @@ const QuoteListWrapper = () => (
           <QuoteProvider>
             <ListViewProvider>
               <ContactProvider>
-                <ListViewAddonProvider>
-                  <QuoteList />
-                </ListViewAddonProvider>
+                <QueryRequestProvider>
+                  <QueryResponseProvider>
+                    <ListViewAddonProvider>
+                      <QuoteList />
+                    </ListViewAddonProvider>
+                  </QueryResponseProvider>
+                </QueryRequestProvider>
               </ContactProvider>
             </ListViewProvider>
           </QuoteProvider>
@@ -49,7 +55,9 @@ const QuoteListWrapper = () => (
               <QuoteActionProvider>
                 <QuoteDetailProvider>
                   <QuoteModalProvider>
-                    <QuoteDetailPage />
+                    <ListViewAddonProvider>
+                      <QuoteDetailPage />
+                    </ListViewAddonProvider>
                   </QuoteModalProvider>
                 </QuoteDetailProvider>
               </QuoteActionProvider>

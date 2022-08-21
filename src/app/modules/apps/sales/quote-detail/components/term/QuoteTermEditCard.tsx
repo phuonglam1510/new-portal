@@ -7,15 +7,24 @@ import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../../enums/Routing.enum";
 import { QuoteTermModel } from "../../../../../../models/sales/QuoteTermModel";
 import { FormInput } from "../../../../../../components/FormInput";
-import { DatePicker } from "../../../../../../components/DatePicker";
 import { FormDatePicker } from "../../../../../../components/FormDatePicker";
+import { FormDropdown } from "../../../../../../components/FormDropdown";
+import { paymentQuoteTermOptions } from "../../../../../../constants/paymentQuoteTermOptions.constant";
+import { quoteTermConditionOptions } from "../../../../../../constants/quoteTermConditionOptions.constant";
+
+class QuoteTermEditModel extends QuoteTermModel {
+  other_payment_term?: string;
+}
 
 const QuoteTermEditCard: React.FC = () => {
   const { quote, loadQuoteDetail } = useQuoteDetailContext();
   const navigate = useNavigate();
   const { editQuoteTerm, createQuoteTerm } = useQuoteActionContext();
 
-  const handleEditOrCreate = async (values: QuoteTermModel) => {
+  const handleEditOrCreate = async (values: QuoteTermEditModel) => {
+    if (values.payment_term === "Khác") {
+      values.payment_term = values.other_payment_term || values.payment_term;
+    }
     if (quote.quote_term) {
       return editQuoteTerm(quote.id || 0, values);
     }
@@ -23,9 +32,19 @@ const QuoteTermEditCard: React.FC = () => {
   };
 
   const [loading, setLoading] = useState(false);
-  const formik = useFormik<QuoteTermModel>({
-    initialValues: Builder(QuoteTermModel, {
+  const formik = useFormik<QuoteTermEditModel>({
+    initialValues: Builder(QuoteTermEditModel, {
       ...quote.quote_term,
+      payment_term: !paymentQuoteTermOptions.includes(
+        quote?.quote_term?.payment_term || ""
+      )
+        ? "Khác"
+        : quote?.quote_term?.payment_term,
+      other_payment_term: !paymentQuoteTermOptions.includes(
+        quote?.quote_term?.payment_term || ""
+      )
+        ? quote?.quote_term?.payment_term
+        : "",
     }).build(),
     onSubmit: (values) => {
       setLoading(true);
@@ -69,7 +88,11 @@ const QuoteTermEditCard: React.FC = () => {
                   key="quote_effect"
                   optional
                 />
-                <FormInput
+                <FormDropdown
+                  items={quoteTermConditionOptions.map((opt) => ({
+                    value: opt,
+                    text: opt,
+                  }))}
                   formik={formik as any}
                   name="warranty_condition"
                   label="Thời gian và điều kiện bảo hành"
@@ -81,12 +104,24 @@ const QuoteTermEditCard: React.FC = () => {
                   label="Ghi chú"
                   optional
                 />
-                <FormInput
+                <FormDropdown
                   formik={formik as any}
+                  items={paymentQuoteTermOptions.map((opt) => ({
+                    value: opt,
+                    text: opt,
+                  }))}
                   name="payment_term"
                   label="Điều khoản thanh toán"
                   optional
                 />
+                {formik.values.payment_term === "Khác" && (
+                  <FormInput
+                    formik={formik as any}
+                    name="other_payment_term"
+                    label="Nhập điều kiện khác"
+                    optional
+                  />
+                )}
                 <FormInput
                   formik={formik as any}
                   name="bank_info"

@@ -1,8 +1,11 @@
-import clsx from "clsx";
 import React from "react";
+import { Builder } from "builder-pattern";
+import clsx from "clsx";
 import { Link } from "react-router-dom";
 import { QuoteStatus } from "../../../../../enums/QuoteStatus.enum";
 import { FileUploadResponse } from "../../../../../models/core/FileUploadResponse.type";
+import { QuoteModel } from "../../../../../models/sales/Quote.model";
+import { useListViewAddonContext } from "../../quotes-list/core/ListViewAddonProvider";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
@@ -40,19 +43,26 @@ export function Overview() {
     head_signature,
     order_confirmation,
     exportedItemIds,
-    exportedModelNames,
+    quote_items,
   } = quote;
   const { contact_name, contact_email, contact_position, contact_phone } =
     contact || {};
   const { name } = sale || {};
   const isPending = status === QuoteStatus.Wating;
+  const { open } = useListViewAddonContext();
+  const exportedItems = quote_items.filter((item) =>
+    exportedItemIds.includes(item.id)
+  );
+  const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
+    .quote_items(exportedItems)
+    .build();
 
   return (
     <>
       <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
         <div className="card-header cursor-pointer">
           <div className="card-title m-0">
-            <h3 className="fw-bolder m-0">Thông tin báo giá</h3>
+            <h3 className="fw-bolder m-0">Thông tin khách hàng</h3>
           </div>
 
           <Link to="edit" className="btn btn-primary align-self-center">
@@ -66,9 +76,15 @@ export function Overview() {
               text="Models đã xuất báo giá"
               value={
                 <div>
-                  {exportedModelNames.map((name) => (
-                    <span className="badge badge-success mx-1">{name}</span>
-                  ))}
+                  <button
+                    type="button"
+                    className="btn btn-light-primary btn-sm me-3"
+                    data-kt-menu-trigger="click"
+                    data-kt-menu-placement="bottom-end"
+                    onClick={() => open(quoteForDisplayModels)}
+                  >
+                    {exportedItemIds?.length} models
+                  </button>
                 </div>
               }
             />
