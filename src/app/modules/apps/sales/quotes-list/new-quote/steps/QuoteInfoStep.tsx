@@ -3,10 +3,11 @@ import { useFormik } from "formik";
 import { FormDropdown } from "../../../../../../components/FormDropdown";
 import { useContactContext } from "../../../../customers/contacts-list/core/ContactProvider";
 import { useCustomerContext } from "../../../../customers/companies-list/core/CustomerProvider";
-import { FormInput } from "../../../../../../components/FormInput";
 import { FormFileUploader } from "../../../../../../components/FormFileUploader";
 import { quoteTypes } from "../../../../../../constants/quoteTypes.constant";
 import { quoteStatuses } from "../../../../../../constants/quoteStatuses.constant";
+import { shippingPoints } from "../../../../../../constants/shippingPoints.constant";
+import { packageQualityOptions } from "../../../../../../constants/packageQualityOptions.constant";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -64,13 +65,21 @@ const QuoteInfoStep: React.FC<Props> = ({ formik }) => {
           label="Loại đơn hàng"
           optional
         />
-        <FormInput
+        <FormDropdown
+          items={shippingPoints.map((point) => ({
+            value: point,
+            text: point,
+          }))}
           formik={formik as any}
           name="delivery_address"
           label="Địa điểm giao hàng"
           optional
         />
-        <FormInput
+        <FormDropdown
+          items={packageQualityOptions.map((item) => ({
+            value: item,
+            text: item,
+          }))}
           formik={formik as any}
           name="package_quality"
           label="Chất lượng hàng hoá"

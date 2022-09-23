@@ -7,6 +7,7 @@ import { useGlobalContext } from "../../../../core/GlobalProvider";
 import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
 import { useQuoteModalContext } from "../../../quotes-list/core/QuoteModalProvider";
 import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
+import { ExportConfirmModal } from "./ExportConfirmModal";
 import { ModelsImportModal } from "./ModelsImportModal";
 import { ModelsTable } from "./ModelsTable";
 
@@ -27,6 +28,7 @@ export function ModelsView() {
   const { confirm } = useGlobalContext();
   const [ids, setIds] = useState<number[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
+  const [exportVisible, setExportVisible] = useState<boolean>(false);
 
   const onSave = async (newItem: QuoteItemModel) => {
     let done: any = false;
@@ -72,7 +74,8 @@ export function ModelsView() {
     open(new QuoteItemModel(), onSave);
   };
 
-  const onExport = () => {
+  const onExport = (includeSign: boolean) => {
+    setExportVisible(false);
     if (!quote.quote_info) {
       showError(
         "Không thể xuất báo giá vì chưa có thông tin đơn hàng. Vui lòng cập nhật."
@@ -88,7 +91,7 @@ export function ModelsView() {
       );
       return;
     }
-    exportPdf(quote.id || 0, ids).then(() => setIds([]));
+    exportPdf(quote.id || 0, ids, includeSign).then(() => setIds([]));
   };
 
   const onImportDone = async () => {
@@ -107,7 +110,7 @@ export function ModelsView() {
             <button
               type="button"
               className="btn btn-light-primary m-4"
-              onClick={onExport}
+              onClick={() => setExportVisible(true)}
               disabled={loading}
             >
               <KTSVG
@@ -171,6 +174,12 @@ export function ModelsView() {
             onClose={() => setVisible(false)}
             onDone={onImportDone}
             quote={quote}
+          />
+        )}
+        {exportVisible && (
+          <ExportConfirmModal
+            onOk={(answer) => onExport(answer)}
+            onClose={() => setExportVisible(false)}
           />
         )}
       </div>

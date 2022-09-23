@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Routing } from "../../../../../enums/Routing.enum";
 import { QuoteAttachmentsStep } from "./steps/QuoteAttachmentsStep";
 import { toast } from "../../../../../helpers/Toast.helper";
+import { useQuoteContext } from "../core/QuoteProvider";
 
 const NewQuote: FC = () => {
   const stepperRef = useRef<HTMLDivElement | null>(null);
@@ -20,13 +21,9 @@ const NewQuote: FC = () => {
   const [initValues] = useState<QuoteFormModel>(new QuoteFormModel());
   const [isSubmitButton, setSubmitButton] = useState(false);
 
-  const {
-    loading,
-    createQuote,
-    createQuoteItems,
-    createQuoteInfo,
-    createQuoteAttachments,
-  } = useQuoteActionContext();
+  const { refetch } = useQuoteContext();
+  const { loading, createQuote, createQuoteInfo, createQuoteAttachments } =
+    useQuoteActionContext();
 
   const loadStepper = () => {
     stepper.current = StepperComponent.createInsance(
@@ -64,6 +61,7 @@ const NewQuote: FC = () => {
       stepper.current.goNext();
     } else {
       toast(`Tạo báo giá thành công!`);
+      refetch();
       navigate(`/${Routing.SaleQuotes}`);
     }
     actions.setSubmitting(false);

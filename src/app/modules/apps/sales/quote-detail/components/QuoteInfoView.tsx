@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { quoteOrderStatusLabel } from "../../../../../constants/quoteOrderStatusLabel.constant";
 import { OrderStatus } from "../../../../../enums/OrderStatus.enum";
 import { formatMoney } from "../../../../../helpers/Number.helper";
-import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
+import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -17,9 +17,13 @@ const InfoRow = ({ text, value }: { text: string; value: any }) => {
   );
 };
 
-export function QuoteInfoView() {
-  const { quote } = useQuoteDetailContext();
-  const { quote_info } = quote;
+export function QuoteInfoView({
+  readOnly,
+  info,
+}: {
+  readOnly?: boolean;
+  info?: QuoteInfoModel;
+}) {
   const {
     prepay,
     po_number,
@@ -32,7 +36,7 @@ export function QuoteInfoView() {
     extra_cost,
     remain,
     notes,
-  } = quote_info || {};
+  } = info || {};
   const isDone = status === OrderStatus.CompletePayment;
 
   return (
@@ -40,12 +44,16 @@ export function QuoteInfoView() {
       <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
         <div className="card-header cursor-pointer">
           <div className="card-title m-0">
-            <h3 className="fw-bolder m-0">Thông tin đơn hàng</h3>
+            <h3 className="fw-bolder m-0">
+              Thông tin {readOnly ? "báo giá" : "đơn hàng"}
+            </h3>
           </div>
 
-          <Link to="edit" className="btn btn-primary align-self-center">
-            Chỉnh sửa
-          </Link>
+          {!readOnly && (
+            <Link to="edit" className="btn btn-primary align-self-center">
+              Chỉnh sửa
+            </Link>
+          )}
         </div>
 
         <div className="card-body p-9">

@@ -27,7 +27,14 @@ const QuoteDetailHeader: React.FC = () => {
   const location = useLocation();
   const id = params.id as string;
   const { quote } = useQuoteDetailContext();
-  const { quote_info, quote_items, status, contact, quote_term } = quote;
+  const {
+    quote_info,
+    quote_exported_info,
+    quote_items,
+    status,
+    contact,
+    quote_term,
+  } = quote;
   const { total_commission, total_selling_price_vat } = quote_info || {};
   const { quoteEffectText } = quote_term || {};
   const { contact_name, contact_email, contact_position } = contact || {};
@@ -182,6 +189,21 @@ const QuoteDetailHeader: React.FC = () => {
                 Thông tin đơn hàng
               </Link>
             </li>
+            {quote_exported_info && (
+              <li className="nav-item">
+                <Link
+                  className={
+                    `nav-link text-active-primary me-6 ` +
+                    (location.pathname.startsWith(
+                      `/${Routing.SaleQuotes}/${id}/export-info`
+                    ) && "active")
+                  }
+                  to={`/${Routing.SaleQuotes}/${id}/export-info`}
+                >
+                  Thông tin báo giá
+                </Link>
+              </li>
+            )}
             <li className="nav-item">
               <Link
                 className={

@@ -64,7 +64,8 @@ const ContainerLoading = () => {
 };
 
 const QuoteDetailPage: React.FC = () => {
-  const { loadQuoteDetail, loading } = useQuoteDetailContext();
+  const { loadQuoteDetail, loading, quote } = useQuoteDetailContext();
+  const { quote_info, quote_exported_info } = quote;
   const params = useParams();
   const id = params.id as string;
 
@@ -120,7 +121,19 @@ const QuoteDetailPage: React.FC = () => {
             <>
               <QuoteDetailHeader />
               <PageTitle breadcrumbs={accountBreadCrumbs}>Info</PageTitle>
-              <QuoteInfoView />
+              <QuoteInfoView info={quote_info} />
+            </>
+          }
+        />
+        <Route
+          path="export-info"
+          element={
+            <>
+              <QuoteDetailHeader />
+              <PageTitle breadcrumbs={accountBreadCrumbs}>
+                Export Info
+              </PageTitle>
+              <QuoteInfoView info={quote_exported_info} readOnly />
             </>
           }
         />

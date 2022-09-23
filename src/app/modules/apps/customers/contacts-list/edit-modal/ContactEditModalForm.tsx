@@ -13,6 +13,8 @@ import { FormDropdown } from "../../../../../components/FormDropdown";
 import { useCustomerContext } from "../../companies-list/core/CustomerProvider";
 import { showError } from "../../../../../helpers/Error.helper";
 import { toast } from "../../../../../helpers/Toast.helper";
+import { packageQualityOptions } from "../../../../../constants/packageQualityOptions.constant";
+import { contactPositionOptions } from "../../../../../constants/contactPositionOptions.constant";
 
 type Props = {
   isUserLoading: boolean;
@@ -141,7 +143,11 @@ const ContactEditModalForm: FC<Props> = ({
             name="contact_phone"
             label="Số điện thoại"
           />
-          <FormInput
+          <FormDropdown
+            items={contactPositionOptions.map((item) => ({
+              value: item,
+              text: item,
+            }))}
             formik={formik as any}
             name="contact_position"
             label="Chức vụ"

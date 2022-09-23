@@ -32,7 +32,11 @@ import { fileKeyMap, loadAndOpenPdfFile, pickBody } from "./_util";
 class ContextProps {
   loading: boolean = false;
   quote: QuoteModel | null = null;
-  exportPdf!: (quoteId: number, modelIds: number[]) => Promise<boolean>;
+  exportPdf!: (
+    quoteId: number,
+    modelIds: number[],
+    includeSign: boolean
+  ) => Promise<boolean>;
   exportExcel!: (quoteId: number) => Promise<boolean>;
   createQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   editQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
@@ -134,13 +138,14 @@ const QuoteActionProvider: FC = ({ children }) => {
 
   const exportPdf = async (
     quoteId: number,
-    modelIds: number[]
+    modelIds: number[],
+    includeSign: boolean
   ): Promise<boolean> => {
     try {
       setLoading(true);
       const query = modelIds.join(",");
       const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
-      const url = `${baseUrl}/${quoteId}/export/pdf?item_id=${query}`;
+      const url = `${baseUrl}/${quoteId}/export/pdf?item_id=${query}&footer=${includeSign}`;
       await loadAndOpenPdfFile(
         url,
         "application/pdf",

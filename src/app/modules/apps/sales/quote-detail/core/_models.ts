@@ -6,6 +6,7 @@ import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.mo
 
 export class QuoteDetailModel extends QuoteModel {
   quote_info?: QuoteInfoModel;
+  quote_exported_info?: QuoteInfoModel;
   quote_term?: QuoteTermModel;
   sale_signature?: FileUploadResponse;
   order_confirmation?: FileUploadResponse;
