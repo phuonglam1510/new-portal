@@ -60,7 +60,7 @@ const createQuoteItem = (
   quoteId: number,
   body: CreateQuoteItemBody
 ): Promise<QuoteItemModel> => {
-  const { notes, ...rest } = body;
+  const { ...rest } = body;
   return axios
     .post(`${URL}/${quoteId}/item`, rest)
     .then(
@@ -75,7 +75,7 @@ const updateQuoteItem = (
   quoteId: number,
   body: QuoteItemModel
 ): Promise<QuoteItemModel> => {
-  const { id, notes, ...options } = body;
+  const { id, ...options } = body;
   return axios
     .put(`${URL}/${quoteId}/item/${id}`, options)
     .then(
