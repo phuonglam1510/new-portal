@@ -53,6 +53,7 @@ export function Overview() {
   const exportedItems = quote_items.filter((item) =>
     exportedItemIds.includes(item.id)
   );
+
   const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
     .quote_items(exportedItems)
     .build();
@@ -71,24 +72,24 @@ export function Overview() {
         </div>
 
         <div className="card-body p-9">
-          {exportedItemIds.length > 0 && (
-            <InfoRow
-              text="Models đã xuất báo giá"
-              value={
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-light-primary btn-sm me-3"
-                    data-kt-menu-trigger="click"
-                    data-kt-menu-placement="bottom-end"
-                    onClick={() => open(quoteForDisplayModels)}
-                  >
-                    {exportedItemIds?.length} models
-                  </button>
-                </div>
-              }
-            />
-          )}
+          {/*{exportedItemIds.length > 0 && (*/}
+          {/*  <InfoRow*/}
+          {/*    text="Models đã xuất báo giá"*/}
+          {/*    value={*/}
+          {/*      <div>*/}
+          {/*        <button*/}
+          {/*          type="button"*/}
+          {/*          className="btn btn-light-primary btn-sm me-3"*/}
+          {/*          data-kt-menu-trigger="click"*/}
+          {/*          data-kt-menu-placement="bottom-end"*/}
+          {/*          onClick={() => open(quoteForDisplayModels)}*/}
+          {/*        >*/}
+          {/*          {exportedItemIds?.length} models*/}
+          {/*        </button>*/}
+          {/*      </div>*/}
+          {/*    }*/}
+          {/*  />*/}
+          {/*)}*/}
           <InfoRow text="Người liên hệ" value={contact_name} />
           <InfoRow text="Email" value={contact_email} />
           <InfoRow text="Số điện thoại" value={contact_phone} />

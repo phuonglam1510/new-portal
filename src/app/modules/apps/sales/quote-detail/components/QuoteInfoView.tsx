@@ -5,6 +5,9 @@ import { quoteOrderStatusLabel } from "../../../../../constants/quoteOrderStatus
 import { OrderStatus } from "../../../../../enums/OrderStatus.enum";
 import { formatMoney } from "../../../../../helpers/Number.helper";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
+import {Builder} from "builder-pattern";
+import {QuoteModel} from "../../../../../models/sales/Quote.model";
+import {useListViewAddonContext} from "../../quotes-list/core/ListViewAddonProvider";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -20,9 +23,11 @@ const InfoRow = ({ text, value }: { text: string; value: any }) => {
 export function QuoteInfoView({
   readOnly,
   info,
+  quote,
 }: {
   readOnly?: boolean;
   info?: QuoteInfoModel;
+  quote: QuoteModel
 }) {
   const {
     prepay,
@@ -37,7 +42,18 @@ export function QuoteInfoView({
     remain,
     notes,
   } = info || {};
+  const { quote_items,
+    exportedItemIds
+  } = quote;
   const isDone = status === OrderStatus.CompletePayment;
+  const { open } = useListViewAddonContext();
+  const exportedItems = quote_items.filter((item) =>
+      exportedItemIds.includes(item.id)
+  );
+
+  const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
+      .quote_items(exportedItems)
+      .build();
 
   return (
     <>
@@ -57,6 +73,24 @@ export function QuoteInfoView({
         </div>
 
         <div className="card-body p-9">
+          {exportedItemIds.length > 0 && (
+              <InfoRow
+                  text="Models đã xuất báo giá"
+                  value={
+                    <div>
+                      <button
+                          type="button"
+                          className="btn btn-light-primary btn-sm me-3"
+                          data-kt-menu-trigger="click"
+                          data-kt-menu-placement="bottom-end"
+                          onClick={() => open(quoteForDisplayModels)}
+                      >
+                        {exportedItemIds?.length} models
+                      </button>
+                    </div>
+                  }
+              />
+          )}
           <InfoRow text="Số PO" value={po_number || "-"} />
           <InfoRow text="Số hoá đơn" value={invoice_number || "-"} />
           <InfoRow

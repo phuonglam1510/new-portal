@@ -10,7 +10,7 @@ import { FormInput } from "../../../../../../components/FormInput";
 import { FormDatePicker } from "../../../../../../components/FormDatePicker";
 import { FormDropdown } from "../../../../../../components/FormDropdown";
 import { paymentQuoteTermOptions } from "../../../../../../constants/paymentQuoteTermOptions.constant";
-import { quoteTermConditionOptions } from "../../../../../../constants/quoteTermConditionOptions.constant";
+import { quoteTermConditionOptions, QuoteTermVatOptions } from "../../../../../../constants/quoteTermConditionOptions.constant";
 
 class QuoteTermEditModel extends QuoteTermModel {
   other_payment_term?: string;
@@ -61,6 +61,8 @@ const QuoteTermEditCard: React.FC = () => {
     },
   });
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="card mb-5 mb-xl-10">
       <div
@@ -97,6 +99,17 @@ const QuoteTermEditCard: React.FC = () => {
                   name="warranty_condition"
                   label="Thời gian và điều kiện bảo hành"
                   optional
+                />
+                <FormDropdown
+                    items={Object.keys(QuoteTermVatOptions).map((key) => ({
+                      // @ts-ignore
+                      value: QuoteTermVatOptions[key],
+                      text: key,
+                    }))}
+                    formik={formik as any}
+                    name="vat_include"
+                    label="Thuế Vat"
+                    optional
                 />
                 <FormInput
                   formik={formik as any}

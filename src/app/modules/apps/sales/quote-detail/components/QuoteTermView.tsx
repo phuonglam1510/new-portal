@@ -48,7 +48,7 @@ export function QuoteTermView() {
           <InfoRow
             text="Thuế VAT"
             value={
-              vat_include === VaxInclude.Include ? "Bao gồm" : "Không bao gồm"
+              vat_include === VaxInclude.Include ? "Bao gồm VAT" : "Không bao gồm VAT"
             }
           />
           <InfoRow text="Ghi chú" value={trade_condition || "-"} />

@@ -20,4 +20,5 @@ export class QuoteInfoModel {
   total_net_price_no_vat!: number;
 
   total_commission!: number;
+  quote_exported_model?: string
 }

@@ -121,7 +121,7 @@ const QuoteDetailPage: React.FC = () => {
             <>
               <QuoteDetailHeader />
               <PageTitle breadcrumbs={accountBreadCrumbs}>Info</PageTitle>
-              <QuoteInfoView info={quote_info} />
+              <QuoteInfoView info={quote_info} quote={quote} />
             </>
           }
         />
@@ -133,7 +133,7 @@ const QuoteDetailPage: React.FC = () => {
               <PageTitle breadcrumbs={accountBreadCrumbs}>
                 Export Info
               </PageTitle>
-              <QuoteInfoView info={quote_exported_info} readOnly />
+              <QuoteInfoView info={quote_exported_info} quote={quote} readOnly />
             </>
           }
         />
