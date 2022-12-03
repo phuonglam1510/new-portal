@@ -10,7 +10,7 @@ import { FormInput } from "../../../../../components/FormInput";
 import { FormImageUploader } from "../../../../../components/FormImageUploader";
 import { uploadImage } from "../../../core/images/requests";
 import { Builder } from "builder-pattern";
-import { ContactEditableList } from "../components/form/\bContactEditableList";
+import { ContactEditableList } from "../components/form/ContactEditableList";
 import { CompanyFormModel } from "../core/_models";
 import { useContactContext } from "../../contacts-list/core/ContactProvider";
 import {
