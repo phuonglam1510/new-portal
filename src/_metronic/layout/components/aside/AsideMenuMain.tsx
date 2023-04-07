@@ -1,36 +1,37 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
-import { AsideMenuItemWithSub } from "./AsideMenuItemWithSub";
-import { AsideMenuItem } from "./AsideMenuItem";
-import { Routing } from "../../../../app/enums/Routing.enum";
+import {AsideMenuItemWithSub} from "./AsideMenuItemWithSub";
+import {AsideMenuItem} from "./AsideMenuItem";
+import {Routing} from "../../../../app/enums/Routing.enum";
+import {useCurrentUser} from "../../../../app/modules/apps/core/CurrentUserProvider";
+import {UserRole} from "../../../../app/enums/UserRole.enum";
 
 export function AsideMenuMain() {
+    const user = useCurrentUser();
+    const isMonitor = user.role === UserRole.Monitor;
   return (
     <>
-      <AsideMenuItem
-        to="/apps/user-management/users"
-        icon="/media/icons/duotune/general/gen051.svg"
-        title="Quản lý người dùng"
-        fontIcon="bi-layers"
-      />
-      <AsideMenuItemWithSub
-        icon="/media/icons/duotune/general/gen005.svg"
-        fontIcon="bi-layers"
-        to={Routing.Customer}
-        title="Khách hàng"
-      >
-        <AsideMenuItem
-          to={Routing.CustomerCompanies}
-          title="Công ty"
-          hasBullet={true}
-        />
-        <AsideMenuItem
-          to={Routing.CustomerContacts}
-          title="Người liên hệ"
-          hasBullet={true}
-        />
-      </AsideMenuItemWithSub>
-
+        {!isMonitor &&
+            <><AsideMenuItem
+                to="/apps/user-management/users"
+                icon="/media/icons/duotune/general/gen051.svg"
+                title="Quản lý người dùng"
+                fontIcon="bi-layers"/><AsideMenuItemWithSub
+                icon="/media/icons/duotune/general/gen005.svg"
+                fontIcon="bi-layers"
+                to={Routing.Customer}
+                title="Khách hàng"
+            >
+                <AsideMenuItem
+                    to={Routing.CustomerCompanies}
+                    title="Công ty"
+                    hasBullet={true}/>
+                <AsideMenuItem
+                    to={Routing.CustomerContacts}
+                    title="Người liên hệ"
+                    hasBullet={true}/>
+            </AsideMenuItemWithSub></>
+        }
       <AsideMenuItemWithSub
         icon="/media/icons/duotune/ecommerce/ecm001.svg"
         fontIcon="bi-layers"

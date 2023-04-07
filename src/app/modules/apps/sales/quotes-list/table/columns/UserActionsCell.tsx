@@ -1,14 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { FC, useEffect } from "react";
-import { useMutation, useQueryClient } from "react-query";
-import { MenuComponent } from "../../../../../../../_metronic/assets/ts/components";
-import { ID, KTSVG } from "../../../../../../../_metronic/helpers";
-import { useQuoteContext } from "../../core/QuoteProvider";
-import { deleteUser } from "../../core/_requests";
-import { Link } from "react-router-dom";
-import { useGlobalContext } from "../../../../core/GlobalProvider";
-import { toast } from "../../../../../../helpers/Toast.helper";
-import { showError } from "../../../../../../helpers/Error.helper";
+import {FC, useEffect} from "react";
+import {useMutation, useQueryClient} from "react-query";
+import {MenuComponent} from "../../../../../../../_metronic/assets/ts/components";
+import {ID, KTSVG} from "../../../../../../../_metronic/helpers";
+import {useQuoteContext} from "../../core/QuoteProvider";
+import {deleteUser} from "../../core/_requests";
+import {Link} from "react-router-dom";
+import {useGlobalContext} from "../../../../core/GlobalProvider";
+import {toast} from "../../../../../../helpers/Toast.helper";
+import {showError} from "../../../../../../helpers/Error.helper";
+import {useCurrentUser} from "../../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../../enums/UserRole.enum";
 
 type Props = {
   id: ID;
@@ -32,7 +34,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
       showError(error.message);
     },
   });
-
+  const user = useCurrentUser();
   const onDelete = async () => {
     confirm({
       title: "Xoá báo giá",
@@ -49,7 +51,7 @@ const UserActionsCell: FC<Props> = ({ id }) => {
         data-kt-menu-trigger="click"
         data-kt-menu-placement="bottom-end"
       >
-        Actions
+        Thao Tác
         <KTSVG
           path="/media/icons/duotune/arrows/arr072.svg"
           className="svg-icon-5 m-0"
@@ -63,21 +65,23 @@ const UserActionsCell: FC<Props> = ({ id }) => {
         {/* begin::Menu item */}
         <div className="menu-item px-3">
           <Link to={id?.toString() || ""} className="menu-link px-3">
-            Edit
+            Chỉnh Sửa
           </Link>
         </div>
         {/* end::Menu item */}
 
         {/* begin::Menu item */}
-        <div className="menu-item px-3">
-          <a
-            className="menu-link px-3"
-            data-kt-users-table-filter="delete_row"
-            onClick={onDelete}
-          >
-            Delete
-          </a>
-        </div>
+        {user.role !== UserRole.Monitor &&
+            <div className="menu-item px-3">
+              <a
+                  className="menu-link px-3"
+                  data-kt-users-table-filter="delete_row"
+                  onClick={onDelete}
+              >
+                Xóa
+              </a>
+            </div>
+        }
         {/* end::Menu item */}
       </div>
       {/* end::Menu */}

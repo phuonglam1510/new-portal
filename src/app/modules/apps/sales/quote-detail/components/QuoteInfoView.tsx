@@ -1,13 +1,15 @@
 import React from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
-import { quoteOrderStatusLabel } from "../../../../../constants/quoteOrderStatusLabel.constant";
-import { OrderStatus } from "../../../../../enums/OrderStatus.enum";
-import { formatMoney } from "../../../../../helpers/Number.helper";
-import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
+import {Link} from "react-router-dom";
+import {quoteOrderStatusLabel} from "../../../../../constants/quoteOrderStatusLabel.constant";
+import {OrderStatus} from "../../../../../enums/OrderStatus.enum";
+import {formatMoney} from "../../../../../helpers/Number.helper";
+import {QuoteInfoModel} from "../../../../../models/sales/QuoteInfo.model";
 import {Builder} from "builder-pattern";
 import {QuoteModel} from "../../../../../models/sales/Quote.model";
 import {useListViewAddonContext} from "../../quotes-list/core/ListViewAddonProvider";
+import {useCurrentUser} from "../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../enums/UserRole.enum";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -50,7 +52,7 @@ export function QuoteInfoView({
   const exportedItems = quote_items.filter((item) =>
       exportedItemIds.includes(item.id)
   );
-
+  const user = useCurrentUser();
   const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
       .quote_items(exportedItems)
       .build();
@@ -65,7 +67,7 @@ export function QuoteInfoView({
             </h3>
           </div>
 
-          {!readOnly && (
+          {!readOnly && user.role !== UserRole.Monitor && (
             <Link to="edit" className="btn btn-primary align-self-center">
               Chỉnh sửa
             </Link>

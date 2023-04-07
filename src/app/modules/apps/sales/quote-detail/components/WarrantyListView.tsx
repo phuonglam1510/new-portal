@@ -1,13 +1,15 @@
 import clsx from "clsx";
 import moment from "moment";
 import React from "react";
-import { KTSVG } from "../../../../../../_metronic/helpers";
-import { QuoteWarrantyStatus } from "../../../../../enums/QuoteWarrantyStatus.enum";
-import { formatMoney } from "../../../../../helpers/Number.helper";
-import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
-import { useQuoteActionContext } from "../../quotes-list/core/QuoteActionProvider";
-import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
-import { EditWarrantyModal } from "./warranty/EditWarrantyModal";
+import {KTSVG} from "../../../../../../_metronic/helpers";
+import {QuoteWarrantyStatus} from "../../../../../enums/QuoteWarrantyStatus.enum";
+import {formatMoney} from "../../../../../helpers/Number.helper";
+import {QuoteWarrantyModel} from "../../../../../models/sales/QuoteWarranty.model";
+import {useQuoteActionContext} from "../../quotes-list/core/QuoteActionProvider";
+import {useQuoteDetailContext} from "../core/QuoteDetailProvider";
+import {EditWarrantyModal} from "./warranty/EditWarrantyModal";
+import {useCurrentUser} from "../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../enums/UserRole.enum";
 
 interface ItemProps {
   item: QuoteWarrantyModel;
@@ -114,21 +116,22 @@ export function WarrantyListView() {
   const onAdd = () => {
     setVisible(true);
   };
-
+  const user = useCurrentUser();
   return (
     <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
       <div className="card-header cursor-pointer">
         <div className="card-title m-0">
           <h3 className="fw-bolder m-0">Đơn bảo hành</h3>
         </div>
-
-        <button type="button" className="btn btn-primary m-4" onClick={onAdd}>
+        {user.role !== UserRole.Monitor &&
+            < button type="button" className="btn btn-primary m-4" onClick={onAdd}>
           <KTSVG
-            path="/media/icons/duotune/arrows/arr075.svg"
-            className="svg-icon-2"
+          path="/media/icons/duotune/arrows/arr075.svg"
+          className="svg-icon-2"
           />
           Thêm
-        </button>
+          </button>
+        }
       </div>
 
       <div className="card-body p-9">

@@ -1,14 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { KTSVG } from "../../../../../_metronic/helpers";
-import { Link } from "react-router-dom";
+import {KTSVG} from "../../../../../_metronic/helpers";
+import {Link, useParams} from "react-router-dom";
 // import { Dropdown1 } from "../../../../../_metronic/partials";
-import { useLocation } from "react-router";
-import { useParams } from "react-router-dom";
-import { Routing } from "../../../../enums/Routing.enum";
-import { useQuoteDetailContext } from "./core/QuoteDetailProvider";
-import { QuoteStatus } from "../../../../enums/QuoteStatus.enum";
-import { formatMoney } from "../../../../helpers/Number.helper";
+import {useLocation} from "react-router";
+import {Routing} from "../../../../enums/Routing.enum";
+import {useQuoteDetailContext} from "./core/QuoteDetailProvider";
+import {QuoteStatus} from "../../../../enums/QuoteStatus.enum";
+import {formatMoney} from "../../../../helpers/Number.helper";
+import {useCurrentUser} from "../../../apps/core/CurrentUserProvider";
+import {UserRole} from "../../../../enums/UserRole.enum";
 
 const SummaryCard = ({ text, value }: { text: string; value: string }) => {
   return (
@@ -25,6 +26,7 @@ const SummaryCard = ({ text, value }: { text: string; value: string }) => {
 const QuoteDetailHeader: React.FC = () => {
   const params = useParams();
   const location = useLocation();
+  const user = useCurrentUser();
   const id = params.id as string;
   const { quote } = useQuoteDetailContext();
   const {
@@ -100,7 +102,7 @@ const QuoteDetailHeader: React.FC = () => {
                   </a>
                 </div>
               </div>
-
+              { user.role !== UserRole.Monitor &&
               <div className="d-flex my-4">
                 <a
                   href="#"
@@ -112,13 +114,14 @@ const QuoteDetailHeader: React.FC = () => {
                     className="svg-icon-3 d-none"
                   />
 
-                  <span className="indicator-label">Xoá</span>
+                  <span className="indicator-label">Xóa</span>
                   <span className="indicator-progress">
                     Please wait...
                     <span className="spinner-border spinner-border-sm align-middle ms-2"></span>
                   </span>
                 </a>
               </div>
+              }
             </div>
 
             <div className="d-flex flex-wrap flex-stack">

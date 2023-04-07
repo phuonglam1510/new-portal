@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { KTSVG } from "../../../../../../../_metronic/helpers";
-import { showError } from "../../../../../../helpers/Error.helper";
-import { toast } from "../../../../../../helpers/Toast.helper";
-import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
-import { useGlobalContext } from "../../../../core/GlobalProvider";
-import { useQuoteActionContext } from "../../../quotes-list/core/QuoteActionProvider";
-import { useQuoteModalContext } from "../../../quotes-list/core/QuoteModalProvider";
-import { useQuoteDetailContext } from "../../core/QuoteDetailProvider";
-import { ExportConfirmModal } from "./ExportConfirmModal";
-import { ModelsImportModal } from "./ModelsImportModal";
-import { ModelsTable } from "./ModelsTable";
+import React, {useState} from "react";
+import {KTSVG} from "../../../../../../../_metronic/helpers";
+import {showError} from "../../../../../../helpers/Error.helper";
+import {toast} from "../../../../../../helpers/Toast.helper";
+import {QuoteItemModel} from "../../../../../../models/sales/QuoteItem.model";
+import {useGlobalContext} from "../../../../core/GlobalProvider";
+import {useQuoteActionContext} from "../../../quotes-list/core/QuoteActionProvider";
+import {useQuoteModalContext} from "../../../quotes-list/core/QuoteModalProvider";
+import {useQuoteDetailContext} from "../../core/QuoteDetailProvider";
+import {ExportConfirmModal} from "./ExportConfirmModal";
+import {ModelsImportModal} from "./ModelsImportModal";
+import {ModelsTable} from "./ModelsTable";
+import {useCurrentUser} from "../../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../../enums/UserRole.enum";
 
 let editIndex: number | null = null;
 
@@ -97,7 +99,7 @@ export function ModelsView() {
   const onImportDone = async () => {
     loadQuoteDetail(quote.id?.toString() || "");
   };
-
+  const user = useCurrentUser();
   return (
     <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
       <div className="card-header cursor-pointer">
@@ -124,6 +126,7 @@ export function ModelsView() {
           </div>
         ) : (
           <div className="d-flex align-items-center">
+            { user.role !== UserRole.Monitor &&
             <button
               type="button"
               className="btn btn-light-success m-4"
@@ -134,7 +137,7 @@ export function ModelsView() {
                 className="svg-icon-2"
               />
               Import
-            </button>
+            </button>}
             <button
               type="button"
               className="btn btn-light-primary m-4"
@@ -146,17 +149,18 @@ export function ModelsView() {
               />
               {loading ? "Đang xuất file Excel..." : `Export`}
             </button>
-            <button
-              type="button"
-              className="btn btn-primary m-4"
-              onClick={onAdd}
-            >
-              <KTSVG
-                path="/media/icons/duotune/arrows/arr075.svg"
-                className="svg-icon-2"
-              />
-              Thêm
-            </button>
+            { user.role !== UserRole.Monitor &&
+                <button
+                    type="button"
+                    className="btn btn-primary m-4"
+                    onClick={onAdd}
+                >
+                  <KTSVG
+                      path="/media/icons/duotune/arrows/arr075.svg"
+                      className="svg-icon-2"
+                  />
+                  Thêm
+                </button>}
           </div>
         )}
       </div>

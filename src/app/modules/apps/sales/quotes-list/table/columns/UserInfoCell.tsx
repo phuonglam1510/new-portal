@@ -13,9 +13,9 @@ const UserInfoCell: FC<Props> = ({ quote }) => (
     {/* begin:: Avatar */}
     <div className="d-flex flex-column">
       <Link to={`/${Routing.SaleQuotes}/${quote.id}`}>
-        <a className="text-gray-800 text-hover-primary mb-1">
+        <span className="text-gray-800 text-hover-primary mb-1">
           {quote.contact?.company?.company_name}
-        </a>
+        </span>
       </Link>
       <span>{quote.contact?.contact_name}</span>
     </div>

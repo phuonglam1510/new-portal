@@ -18,6 +18,7 @@ export class QuotesFilter {
   sort: string = "";
   order?: "asc" | "desc" = "asc";
   contact_id?: number;
+  company_id?: number;
   type?: QuoteType;
   status?: QuoteStatus;
   date?: string;

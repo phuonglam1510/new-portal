@@ -11,7 +11,7 @@ export class QuoteItemModel {
   unit_price_no_vat?: number;
   commission?: number;
   corporate_tax?: number;
-  vat?: number;
+  vat: number = 10;
   delivery_time?: Date;
   notes: string = "";
   origin_price?: number;

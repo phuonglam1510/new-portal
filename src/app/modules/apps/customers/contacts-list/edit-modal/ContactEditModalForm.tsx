@@ -13,7 +13,6 @@ import { FormDropdown } from "../../../../../components/FormDropdown";
 import { useCustomerContext } from "../../companies-list/core/CustomerProvider";
 import { showError } from "../../../../../helpers/Error.helper";
 import { toast } from "../../../../../helpers/Toast.helper";
-import { packageQualityOptions } from "../../../../../constants/packageQualityOptions.constant";
 import { contactPositionOptions } from "../../../../../constants/contactPositionOptions.constant";
 
 type Props = {

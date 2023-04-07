@@ -1,12 +1,14 @@
 import React from "react";
-import { Builder } from "builder-pattern";
+import {Builder} from "builder-pattern";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
-import { QuoteStatus } from "../../../../../enums/QuoteStatus.enum";
-import { FileUploadResponse } from "../../../../../models/core/FileUploadResponse.type";
-import { QuoteModel } from "../../../../../models/sales/Quote.model";
-import { useListViewAddonContext } from "../../quotes-list/core/ListViewAddonProvider";
-import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
+import {Link} from "react-router-dom";
+import {QuoteStatus} from "../../../../../enums/QuoteStatus.enum";
+import {FileUploadResponse} from "../../../../../models/core/FileUploadResponse.type";
+import {QuoteModel} from "../../../../../models/sales/Quote.model";
+import {useListViewAddonContext} from "../../quotes-list/core/ListViewAddonProvider";
+import {useQuoteDetailContext} from "../core/QuoteDetailProvider";
+import {useCurrentUser} from "../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../enums/UserRole.enum";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -45,7 +47,7 @@ export function Overview() {
     exportedItemIds,
     quote_items,
   } = quote;
-  const { contact_name, contact_email, contact_position, contact_phone } =
+  const { contact_name, contact_email, contact_position, contact_phone, company } =
     contact || {};
   const { name } = sale || {};
   const isPending = status === QuoteStatus.Wating;
@@ -53,7 +55,7 @@ export function Overview() {
   const exportedItems = quote_items.filter((item) =>
     exportedItemIds.includes(item.id)
   );
-
+  const user = useCurrentUser();
   const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
     .quote_items(exportedItems)
     .build();
@@ -65,10 +67,11 @@ export function Overview() {
           <div className="card-title m-0">
             <h3 className="fw-bolder m-0">Thông tin khách hàng</h3>
           </div>
-
-          <Link to="edit" className="btn btn-primary align-self-center">
-            Chỉnh sửa
-          </Link>
+          {user.role !== UserRole.Monitor &&
+              <Link to="edit" className="btn btn-primary align-self-center">
+                Chỉnh sửa
+              </Link>
+          }
         </div>
 
         <div className="card-body p-9">
@@ -90,11 +93,18 @@ export function Overview() {
           {/*    }*/}
           {/*  />*/}
           {/*)}*/}
-          <InfoRow text="Người liên hệ" value={contact_name} />
-          <InfoRow text="Email" value={contact_email} />
-          <InfoRow text="Số điện thoại" value={contact_phone} />
-          <InfoRow text="Chức vụ" value={contact_position} />
+          {user.role !== UserRole.Monitor &&
+              <>
+                <InfoRow text="Người liên hệ" value={contact_name}/>
+                <InfoRow text="Email" value={contact_email}/>
+                <InfoRow text="Số điện thoại" value={contact_phone}/>
+                <InfoRow text="Chức vụ" value={contact_position}/>
+              </>
+          }
 
+          { user.role == UserRole.Monitor &&
+              <InfoRow text="Tên Công Ty" value={company.company_name}/>
+          }
           <InfoRow
             text="Trạng thái"
             value={

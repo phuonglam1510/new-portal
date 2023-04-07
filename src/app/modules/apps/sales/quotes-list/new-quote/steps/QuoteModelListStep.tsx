@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import { KTSVG } from "../../../../../../../_metronic/helpers";
-import { QuoteItemModel } from "../../../../../../models/sales/QuoteItem.model";
-import { useQuoteModalContext } from "../../core/QuoteModalProvider";
-import { FormFieldError } from "../../../../../../components/FormFieldError";
-import { ModelsImportModal } from "../../../quote-detail/components/models/ModelsImportModal";
-import { Builder } from "builder-pattern";
-import { QuoteDetailModel } from "../../../quote-detail/core/_models";
-import { useQuoteActionContext } from "../../core/QuoteActionProvider";
-import { ModelsTable } from "../../../quote-detail/components/models/ModelsTable";
-import { QuoteModel } from "../../../../../../models/sales/Quote.model";
+import React, {useState} from "react";
+import {useFormik} from "formik";
+import {KTSVG} from "../../../../../../../_metronic/helpers";
+import {QuoteItemModel} from "../../../../../../models/sales/QuoteItem.model";
+import {useQuoteModalContext} from "../../core/QuoteModalProvider";
+import {FormFieldError} from "../../../../../../components/FormFieldError";
+import {ModelsImportModal} from "../../../quote-detail/components/models/ModelsImportModal";
+import {Builder} from "builder-pattern";
+import {QuoteDetailModel} from "../../../quote-detail/core/_models";
+import {useQuoteActionContext} from "../../core/QuoteActionProvider";
+import {ModelsTable} from "../../../quote-detail/components/models/ModelsTable";
+import {QuoteModel} from "../../../../../../models/sales/Quote.model";
+import {useCurrentUser} from "../../../../core/CurrentUserProvider";
+import {UserRole} from "../../../../../../enums/UserRole.enum";
 
 interface Props {
   formik: ReturnType<typeof useFormik>;
@@ -83,6 +85,7 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
     formik.setFieldValue("models", [...models, ...newModels]);
   };
 
+  const user = useCurrentUser();
   return (
     <div className="d-flex flex-column flex-root">
       <div
@@ -102,13 +105,13 @@ const QuoteModelListStep: React.FC<Props> = ({ formik }) => {
             />
             Import
           </button>
-          <button type="button" className="btn btn-primary" onClick={onAdd}>
+          { user.role !== UserRole.Monitor && <button type="button" className="btn btn-primary" onClick={onAdd}>
             <KTSVG
-              path="/media/icons/duotune/arrows/arr075.svg"
-              className="svg-icon-2"
+                path="/media/icons/duotune/arrows/arr075.svg"
+                className="svg-icon-2"
             />
             Thêm
-          </button>
+          </button>}
         </div>
       </div>
 

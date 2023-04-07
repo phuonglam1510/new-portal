@@ -33,7 +33,10 @@ export class User {
     if (this.role === UserRole.Sale) {
       return "Sale";
     }
-    return "Nhân viên";
+    if (this.role === UserRole.Staff) {
+      return "Manager"
+    }
+    return "Monitor";
   }
 
   public get joinAt(): string {

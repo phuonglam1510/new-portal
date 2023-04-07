@@ -13,7 +13,6 @@ export class QuoteInfoModel {
   notes?: string;
   extra_cost?: number;
   remain?: number;
-
   total_selling_price_vat!: number;
   total_selling_price_no_vat!: number;
   total_net_unit_price_no_vat!: number;

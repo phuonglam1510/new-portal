@@ -34,7 +34,7 @@ const QuoteEditModalForm: React.FC<Props> = ({ onSave }) => {
     quantity,
     net_unit_price_no_vat,
     unit_price_no_vat,
-    vat = 8,
+    vat = 10,
     corporate_tax = 20,
     commission = 10,
     origin_price = 0,

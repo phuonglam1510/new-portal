@@ -34,15 +34,17 @@ const QuoteListWrapper = () => (
         element={
           <QuoteProvider>
             <ListViewProvider>
-              <ContactProvider>
-                <QueryRequestProvider>
-                  <QueryResponseProvider>
-                    <ListViewAddonProvider>
-                      <QuoteList />
-                    </ListViewAddonProvider>
-                  </QueryResponseProvider>
-                </QueryRequestProvider>
-              </ContactProvider>
+              <CustomerProvider>
+                <ContactProvider>
+                  <QueryRequestProvider>
+                    <QueryResponseProvider>
+                      <ListViewAddonProvider>
+                        <QuoteList />
+                      </ListViewAddonProvider>
+                    </QueryResponseProvider>
+                  </QueryRequestProvider>
+                </ContactProvider>
+              </CustomerProvider>
             </ListViewProvider>
           </QuoteProvider>
         }

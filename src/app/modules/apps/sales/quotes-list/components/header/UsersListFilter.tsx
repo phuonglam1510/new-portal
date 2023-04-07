@@ -8,6 +8,7 @@ import { quoteStatuses } from "../../../../../../constants/quoteStatuses.constan
 import { quoteTypes } from "../../../../../../constants/quoteTypes.constant";
 import { QuoteStatus } from "../../../../../../enums/QuoteStatus.enum";
 import { QuoteType } from "../../../../../../enums/QuoteType.enum";
+import { useCustomerContext, CustomerProvider } from "../../../../customers/companies-list/core/CustomerProvider";
 import { useContactContext } from "../../../../customers/contacts-list/core/ContactProvider";
 import { useQueryResponseData } from "../../../../user-management/users-list/core/QueryResponseProvider";
 import { QuotesFilter, useQuoteContext } from "../../core/QuoteProvider";
@@ -15,7 +16,9 @@ import { QuotesFilter, useQuoteContext } from "../../core/QuoteProvider";
 const UsersListFilter = () => {
   const { updateFilter, isLoading } = useQuoteContext();
   const { contacts } = useContactContext();
+  const { companies } = useCustomerContext();
   const users = useQueryResponseData();
+  const [companyId, setCompanyId] = useState<number | "">("");
   const [contactId, setContactId] = useState<number | "">("");
   const [date, setDate] = useState<string>(moment().toISOString());
   const [saleId, setSaleId] = useState<number | "">("");
@@ -30,6 +33,17 @@ const UsersListFilter = () => {
       })) || [],
     [contacts]
   );
+
+
+  const companyItems = React.useMemo(
+      () =>
+          companies?.map((company) => ({
+            text: company.company_name,
+            value: company.id || 0,
+          })) || [],
+      [companies]
+  );
+
   const userItems = React.useMemo(
     () =>
       users?.map((users) => ({
@@ -46,6 +60,7 @@ const UsersListFilter = () => {
   const resetData = () => {
     updateFilter(new QuotesFilter());
     setContactId("");
+    setCompanyId("");
     setType("");
     setStatus("");
     setSaleId("");
@@ -54,11 +69,11 @@ const UsersListFilter = () => {
 
   const filterData = () => {
     updateFilter({
+      company_id: companyId || undefined,
       contact_id: contactId || undefined,
       status: status || undefined,
       type: type || undefined,
       sale_id: saleId || undefined,
-      date: date ? moment(date).format("DD-MM-YYYY") : undefined,
     });
   };
 
@@ -90,11 +105,11 @@ const UsersListFilter = () => {
         <div className="px-7 py-5" data-kt-user-table-filter="form">
           <div className="mb-10">
             <Dropdown
-              value={contactId}
-              onChange={(value) => setContactId(Number(value))}
+              value={companyId}
+              onChange={(value) => setCompanyId(Number(value))}
               optional
-              items={constactItems}
-              label="Người liên hệ"
+              items={companyItems}
+              label="Tên Công Ty"
             />
           </div>
 
@@ -126,15 +141,15 @@ const UsersListFilter = () => {
               label="Loại đơn hàng"
             />
           </div>
-          <div className="mb-10">
-            <DatePicker
-              key="filter_quote_date"
-              value={date}
-              onChange={(value: any) => setDate(value)}
-              optional
-              label="Ngày tạo"
-            />
-          </div>
+          {/*<div className="mb-10">*/}
+          {/*  <DatePicker*/}
+          {/*    key="filter_quote_date"*/}
+          {/*    value={date}*/}
+          {/*    onChange={(value: any) => setDate(value)}*/}
+          {/*    optional*/}
+          {/*    label="Ngày tạo"*/}
+          {/*  />*/}
+          {/*</div>*/}
 
           <div className="d-flex justify-content-end">
             <button

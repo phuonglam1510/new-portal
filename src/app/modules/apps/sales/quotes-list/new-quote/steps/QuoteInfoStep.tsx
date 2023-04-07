@@ -17,7 +17,8 @@ const QuoteInfoStep: React.FC<Props> = ({ formik }) => {
   const { contacts } = useContactContext();
   const { companies } = useCustomerContext();
   const companyId = formik.values.company_id;
-
+  formik.values.package_quality = "Mới 100%";
+  formik.values.delivery_address = "Kho khách hàng";
   const contactItems = React.useMemo(
     () =>
       companyId

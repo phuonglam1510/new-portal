@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { VaxInclude } from "../../../../../enums/VaxInclude.enum";
 import { useQuoteDetailContext } from "../core/QuoteDetailProvider";
+import {UserRole} from "../../../../../enums/UserRole.enum";
+import {useCurrentUser} from "../../../core/CurrentUserProvider";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -25,7 +27,7 @@ export function QuoteTermView() {
     trade_condition,
     vat_include,
   } = quote_term || {};
-
+  const user = useCurrentUser();
   return (
     <>
       <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">
@@ -33,10 +35,11 @@ export function QuoteTermView() {
           <div className="card-title m-0">
             <h3 className="fw-bolder m-0">Điều Khoản & Bảo Hành</h3>
           </div>
-
-          <Link to="edit" className="btn btn-primary align-self-center">
+          {user.role !== UserRole.Monitor &&
+              < Link to="edit" className="btn btn-primary align-self-center">
             Chỉnh sửa
-          </Link>
+            </Link>
+          }
         </div>
 
         <div className="card-body p-9">

@@ -16,6 +16,7 @@ export class QuoteFormModel extends QuoteModel {
   models: QuoteItemModel[] = [];
   info: QuoteInfoFormModel = new QuoteInfoFormModel();
   attachments: File[] | FileUploadResponse[] = [];
+  package_quality?: string
 }
 
 export const quoteCreationSchemas = [
