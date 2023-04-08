@@ -1,6 +1,8 @@
-import { Route, Routes, Outlet, Navigate } from "react-router-dom";
-import { PageLink, PageTitle } from "../../../../_metronic/layout/core";
-import { UsersListWrapper } from "./users-list/UsersList";
+import {Navigate, Outlet, Route, Routes} from "react-router-dom";
+import {PageLink, PageTitle} from "../../../../_metronic/layout/core";
+import {UsersListWrapper} from "./users-list/UsersList";
+import {useCurrentUser} from "../core/CurrentUserProvider";
+import {UserRole} from "../../../enums/UserRole.enum";
 
 const usersBreadcrumbs: Array<PageLink> = [
   {
@@ -18,6 +20,11 @@ const usersBreadcrumbs: Array<PageLink> = [
 ];
 
 const UsersPage = () => {
+  const user = useCurrentUser();
+  if (user.role === UserRole.Monitor) {
+    // @ts-ignore
+    window.location = "/apps/sales/quotes";
+  }
   return (
     <Routes>
       <Route element={<Outlet />}>
