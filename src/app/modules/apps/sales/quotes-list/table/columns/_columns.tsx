@@ -113,16 +113,16 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       </div>
     ),
   },
-  {
-    Header: (props) => (
-      <UserCustomHeader
-        tableProps={props}
-        title="Chất lượng hàng hoá"
-        className="min-w-125px"
-      />
-    ),
-    accessor: "package_quality",
-  },
+  // {
+  //   Header: (props) => (
+  //     <UserCustomHeader
+  //       tableProps={props}
+  //       title="Chất lượng hàng hoá"
+  //       className="min-w-125px"
+  //     />
+  //   ),
+  //   accessor: "package_quality",
+  // },
   {
     Header: (props) => (
       <UserCustomHeader

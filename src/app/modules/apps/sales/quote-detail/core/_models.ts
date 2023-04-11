@@ -3,10 +3,11 @@ import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuoteInfoModel } from "../../../../../models/sales/QuoteInfo.model";
 import { QuoteTermModel } from "../../../../../models/sales/QuoteTermModel";
 import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
+import {QuoteExportedInfoModel} from "../../../../../models/sales/QuoteExportedInfo.model";
 
 export class QuoteDetailModel extends QuoteModel {
   quote_info?: QuoteInfoModel;
-  quote_exported_info?: QuoteInfoModel;
+  quote_exported_info?: QuoteExportedInfoModel;
   quote_term?: QuoteTermModel;
   sale_signature?: FileUploadResponse;
   order_confirmation?: FileUploadResponse;

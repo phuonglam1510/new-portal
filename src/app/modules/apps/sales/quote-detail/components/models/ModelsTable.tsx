@@ -24,7 +24,10 @@ export const ModelsTable: React.FC<Props> = ({
 }) => {
   const { quote_items } = quote;
   const isAllSelected = selection.length === quote_items.length;
-
+  if (quote.quote_exported_info && quote.quote_exported_info.quote_exported_model) {
+    selection = JSON.parse(quote.quote_exported_info.quote_exported_model);
+    selection = selection?.map(select => parseInt(select as unknown as string));
+  }
   return (
     <div className="table-responsive">
       <table className="table table-row-dashed table-row-gray-200 align-middle gs-0 gy-4">

@@ -44,7 +44,7 @@ const editUserSchema = Yup.object().shape({
   type: Yup.string().required("Type is required"),
 });
 
-const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
+const   CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
   const { setItemIdForUpdate, itemIdForUpdate } = useListView();
   const { refetchCompanies } = useCustomerContext();
   const { contacts, refetch } = useContactContext();
@@ -125,12 +125,12 @@ const CompanyEditModalForm: FC<Props> = ({ company, isUserLoading }) => {
         }
         await handleContacts(values);
         toast("Cập nhật khách hàng thành công!");
+        cancel(true);
       } catch (ex: any) {
         console.error(ex);
         showError(ex.message);
       } finally {
-        setSubmitting(true);
-        cancel(true);
+        // setSubmitting(true);
       }
     },
   });

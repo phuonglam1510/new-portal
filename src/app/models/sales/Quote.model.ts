@@ -4,6 +4,7 @@ import { QuoteType } from "../../enums/QuoteType.enum";
 import { UserModel } from "../../modules/auth/models/UserModel";
 import { ContactModel } from "../customers/Contact.class";
 import { QuoteItemModel } from "./QuoteItem.model";
+import { QuoteExportedInfoModel } from "./QuoteExportedInfo.model";
 
 export class QuoteModel {
   id?: number;
@@ -17,7 +18,7 @@ export class QuoteModel {
   deliver_record_id?: number;
   status: QuoteStatus = QuoteStatus.Wating;
   quote_exported_model?: string;
-
+  quote_exported_info?: QuoteExportedInfoModel;
   created_at: string = "";
 
   sale_id: number = 0;

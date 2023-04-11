@@ -8,6 +8,7 @@ import { Overview } from "./components/Overview";
 import { QuoteOverviewEditCard } from "./components/overview/QuoteOverviewEditCard";
 import { QuoteAttachmentsView } from "./components/QuoteAttachmentsView";
 import { QuoteInfoView } from "./components/QuoteInfoView";
+import { QuoteExportedInfoView } from "./components/QuoteExportedInfoView";
 import { QuoteTermView } from "./components/QuoteTermView";
 import { QuoteTermEditCard } from "./components/term/QuoteTermEditCard";
 import { WarrantyListView } from "./components/WarrantyListView";
@@ -88,7 +89,7 @@ const QuoteDetailPage: React.FC = () => {
           element={
             <>
               <QuoteDetailHeader />
-              <PageTitle breadcrumbs={accountBreadCrumbs}>Overview</PageTitle>
+              <PageTitle breadcrumbs={accountBreadCrumbs}>Tổng Quan</PageTitle>
               <Overview />
             </>
           }
@@ -120,7 +121,7 @@ const QuoteDetailPage: React.FC = () => {
           element={
             <>
               <QuoteDetailHeader />
-              <PageTitle breadcrumbs={accountBreadCrumbs}>Info</PageTitle>
+              <PageTitle breadcrumbs={accountBreadCrumbs}>PO</PageTitle>
               <QuoteInfoView info={quote_info} quote={quote} />
             </>
           }
@@ -131,9 +132,9 @@ const QuoteDetailPage: React.FC = () => {
             <>
               <QuoteDetailHeader />
               <PageTitle breadcrumbs={accountBreadCrumbs}>
-                Export Info
+                Export PO
               </PageTitle>
-              <QuoteInfoView info={quote_exported_info} quote={quote} readOnly />
+              <QuoteExportedInfoView info={quote_exported_info} quote={quote} readOnly />
             </>
           }
         />
