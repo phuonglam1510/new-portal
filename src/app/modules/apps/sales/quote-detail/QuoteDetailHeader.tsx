@@ -179,7 +179,6 @@ const QuoteDetailHeader: React.FC = () => {
                 Models báo giá
               </Link>
             </li>
-            {!quote_exported_info &&
                 <li className="nav-item">
                   <Link
                       className={
@@ -193,7 +192,6 @@ const QuoteDetailHeader: React.FC = () => {
                     Thông tin đơn hàng
                   </Link>
                 </li>
-            }
             {quote_exported_info && (
               <li className="nav-item">
                 <Link
@@ -205,7 +203,7 @@ const QuoteDetailHeader: React.FC = () => {
                   }
                   to={`/${Routing.SaleQuotes}/${id}/export-info`}
                 >
-                  Thông tin báo giá
+                  Thông tin PO
                 </Link>
               </li>
             )}
