@@ -189,10 +189,10 @@ const QuoteDetailHeader: React.FC = () => {
                       }
                       to={`/${Routing.SaleQuotes}/${id}/info`}
                   >
-                    Thông tin đơn hàng
+                    Thông tin báo giá
                   </Link>
                 </li>
-            {quote_exported_info && (
+            {quote_exported_info && quote_exported_info.po_number != null && (
               <li className="nav-item">
                 <Link
                   className={

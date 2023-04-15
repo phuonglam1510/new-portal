@@ -130,7 +130,7 @@ const NewQuote: FC = () => {
             </div>
 
             <div className="stepper-item" data-kt-stepper-element="nav">
-              <h3 className="stepper-title">Thông tin đơn hàng</h3>
+              <h3 className="stepper-title">Thông tin báo giá</h3>
             </div>
             <div className="stepper-item" data-kt-stepper-element="nav">
               <h3 className="stepper-title">Chứng từ đi kèm</h3>

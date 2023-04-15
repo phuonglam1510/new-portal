@@ -20,4 +20,5 @@ export class QuoteExportedInfoModel {
 
     total_commission!: number;
     quote_exported_model?: string
+    updated_at!: Date;
 }

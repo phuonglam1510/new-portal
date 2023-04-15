@@ -19,4 +19,7 @@ export class QuoteItemModel {
   total_selling_price_vat!: number;
   delivery_status?: string;
   delivery_date?: string;
+  up?: number;
+  total_commission?: number;
+  commission_price?: number;
 }

@@ -31,7 +31,7 @@ export function QuoteInfoView({
   info?: QuoteInfoModel;
   quote: QuoteModel
 }) {
-  const {
+  let {
     prepay,
     po_number,
     status,
@@ -43,9 +43,11 @@ export function QuoteInfoView({
     extra_cost,
     remain,
     notes,
+    bill_date,
   } = info || {};
+
   const { quote_items,
-    exportedItemIds
+    exportedItemIds,
   } = quote;
   const isDone = status === OrderStatus.CompletePayment;
   const { open } = useListViewAddonContext();
@@ -57,6 +59,12 @@ export function QuoteInfoView({
       .quote_items(exportedItems)
       .build();
 
+  const formatDate = (date: Date|undefined) => {
+    if (date) {
+      date = new Date(date)
+      return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+    }
+  }
   return (
     <>
       <div className="card mb-5 mb-xl-10" id="kt_profile_details_view">

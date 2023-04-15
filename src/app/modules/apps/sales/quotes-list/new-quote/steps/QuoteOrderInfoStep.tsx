@@ -28,13 +28,13 @@ const QuoteOrderInfoStep: React.FC<Props> = ({ formik }) => {
         <FormInput
           formik={formik as any}
           name="info.bill_date"
-          label="Ngày giao hàng"
+          label="Ngày hóa đơn"
           optional
         />
         <FormInput
           formik={formik as any}
           name="info.delivery_date"
-          label="Ngày hoá đơn"
+          label="Ngày giao hàng"
           optional
         />
         <FormInput

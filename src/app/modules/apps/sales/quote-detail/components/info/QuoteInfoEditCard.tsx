@@ -33,7 +33,6 @@ const QuoteInfoEditCard: React.FC = () => {
     validationSchema: quoteCreationSchemas[2],
     onSubmit: (values) => {
       setLoading(true);
-      console.log(values);
       formik.setSubmitting(true);
       handleEditOrCreate(values)
         .then(() => {
@@ -49,7 +48,6 @@ const QuoteInfoEditCard: React.FC = () => {
   });
 
   console.log(formik.errors);
-
   return (
     <div className="card mb-5 mb-xl-10">
       <div
