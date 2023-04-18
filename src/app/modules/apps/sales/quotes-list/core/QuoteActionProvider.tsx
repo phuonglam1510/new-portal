@@ -37,6 +37,14 @@ class ContextProps {
     modelIds: number[],
     includeSign: boolean
   ) => Promise<boolean>;
+  exportWarranty!: (
+      quoteId: number,
+      modelIds: number[]
+  ) => Promise<boolean>;
+  exportDelivery!: (
+      quoteId: number,
+      modelIds: number[]
+  ) => Promise<boolean>;
   exportExcel!: (quoteId: number) => Promise<boolean>;
   createQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
   editQuote!: (quoteBody: QuoteFormModel) => Promise<QuoteModel | boolean>;
@@ -459,6 +467,49 @@ const QuoteActionProvider: FC = ({ children }) => {
     }
   };
 
+  const exportWarranty = async (
+      quoteId: number,
+      modelIds: number[]
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const query = modelIds.join(",");
+      const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
+      const url = `${baseUrl}/${quoteId}/warranty/export?item_id=${query}`;
+      await loadAndOpenPdfFile(
+          url,
+          "application/pdf",
+          `giaybaohanhg_#${quoteId}.pdf`
+      );
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+  const exportDelivery = async (
+      quoteId: number,
+      modelIds: number[]
+  ): Promise<boolean> => {
+    try {
+      setLoading(true);
+      const query = modelIds.join(",");
+      const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
+      const url = `${baseUrl}/${quoteId}/warranty/export/delivery?item_id=${query}`;
+      await loadAndOpenPdfFile(
+          url,
+          "application/pdf",
+          `bienbangiaohang_#${quoteId}.pdf`
+      );
+      return true;
+    } catch (error) {
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <QuoteActionContext.Provider
       value={{
@@ -482,6 +533,8 @@ const QuoteActionProvider: FC = ({ children }) => {
         importFile,
         exportExcel,
         quote,
+        exportWarranty,
+        exportDelivery,
       }}
     >
       {children}

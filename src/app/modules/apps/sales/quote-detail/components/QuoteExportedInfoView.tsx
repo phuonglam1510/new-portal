@@ -81,7 +81,6 @@ export function QuoteExportedInfoView({
     if (item.total_commission) {
       totalCommission += parseInt(String(item.total_commission));
     }
-
   }
 
   return (
