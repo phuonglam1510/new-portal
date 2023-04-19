@@ -11,6 +11,7 @@ import {useListViewAddonContext} from "../../quotes-list/core/ListViewAddonProvi
 import {useCurrentUser} from "../../../core/CurrentUserProvider";
 import {UserRole} from "../../../../../enums/UserRole.enum";
 import {QuoteExportedInfoModel} from "../../../../../models/sales/QuoteExportedInfo.model";
+import {ExportedModelTable} from "./models/ExportedModelTable";
 
 const InfoRow = ({ text, value }: { text: string; value: any }) => {
   return (
@@ -165,6 +166,17 @@ export function QuoteExportedInfoView({
           />
 
           <InfoRow text="Ghi chú" value={notes || "-"} />
+          {
+            quote.export_history.length > 0 &&
+              <div className="d-flex flex-wrap">
+                <div className="border border-gray-300 border-dashed rounded py-3 px-4 me-6 mb-3">
+                  <ExportedModelTable histories={quote.export_history} type="delivery"/>
+                </div>
+                <div className="border border-gray-300 border-dashed rounded py-3 px-4 me-6 mb-3">
+                  <ExportedModelTable histories={quote.export_history} type="warranty"/>
+                </div>
+              </div>
+          }
         </div>
       </div>
     </>

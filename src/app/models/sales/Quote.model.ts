@@ -5,6 +5,7 @@ import { UserModel } from "../../modules/auth/models/UserModel";
 import { ContactModel } from "../customers/Contact.class";
 import { QuoteItemModel } from "./QuoteItem.model";
 import { QuoteExportedInfoModel } from "./QuoteExportedInfo.model";
+import { ExportHistoryModel } from "./ExportHistoryModel.model";
 
 export class QuoteModel {
   id?: number;
@@ -28,6 +29,7 @@ export class QuoteModel {
 
   contact: ContactModel = new ContactModel();
 
+  export_history: ExportHistoryModel[] = [];
   public get saleName(): string {
     return this.sale?.name || "";
   }
