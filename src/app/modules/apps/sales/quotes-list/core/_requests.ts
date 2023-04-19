@@ -14,6 +14,7 @@ import { QuoteTermModel } from "../../../../../models/sales/QuoteTermModel";
 import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.model";
 import { UpdateQuoteBody } from "../../../../../models/sales/UpdateQuoteBody.model";
 import { QuoteQueryResponse } from "./_models";
+import {LateDeliveryModel} from "../../../../../models/sales/LateDelivery.model";
 
 const API_URL = process.env.REACT_APP_THEME_API_URL;
 const URL = `${API_URL}/quote`;
@@ -271,6 +272,12 @@ const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
   return axios.all(requests).then(() => {});
 };
 
+const getLateDelivery = (): Promise<{data: LateDeliveryModel[], message: string}> => {
+  return axios
+      .get(`${URL}/status/delivery`)
+      .then((d: AxiosResponse<{data: LateDeliveryModel[], message: string}>) => d.data);
+};
+
 export {
   getQuotes,
   deleteSelectedUsers,
@@ -293,4 +300,5 @@ export {
   updateQuoteTerm,
   importModelsFile,
   deleteQuoteItem,
+  getLateDelivery,
 };

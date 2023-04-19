@@ -1,6 +1,10 @@
 import { KTSVG } from "../../../../../_metronic/helpers";
 import { formatMoney } from "../../../../helpers/Number.helper";
 import { QuoteItemModel } from "../../../../models/sales/QuoteItem.model";
+import {quoteOrderStatusLabel} from "../../../../constants/quoteOrderStatusLabel.constant";
+import clsx from "clsx";
+import {OrderStatus} from "../../../../enums/OrderStatus.enum";
+import React from "react";
 
 interface ItemProps {
   item: QuoteItemModel;
@@ -11,6 +15,7 @@ interface ItemProps {
   selected?: boolean;
   showSelection?: boolean;
   hideActions?: boolean;
+  isExportedTable?:boolean;
 }
 
 export const QuoteRowItem: React.FC<ItemProps> = ({
@@ -22,6 +27,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
   selected,
   showSelection,
   hideActions,
+  isExportedTable= false,
 }) => {
   const {
     asking_price_model,
@@ -34,6 +40,7 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
     commission,
     total_selling_price_vat,
     inter,
+    current_delivery_status
   } = item;
   return (
     <tr>
@@ -58,6 +65,17 @@ export const QuoteRowItem: React.FC<ItemProps> = ({
         </a>
         <span className="text-muted fw-bold d-block">{quotation_model}</span>
       </td>
+        {
+            isExportedTable && <td className="text-muted fw-bold">
+                <span
+                    className={clsx(
+                        "badge",
+                        current_delivery_status == OrderStatus.DeliveryNotYetDue ? "badge-success" : "badge-warning"
+                    )}
+                >
+                        {quoteOrderStatusLabel[current_delivery_status]}
+                    </span></td>
+        }
       <td className="text-muted fw-bold">{manufacturer}</td>
       <td className="text-muted fw-bold">{inter}</td>
       <td className="text-muted fw-bold">

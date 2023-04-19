@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useTable, ColumnInstance, Row } from "react-table";
 import { CustomHeaderColumn } from "./columns/CustomHeaderColumn";
 import { CustomRow } from "./columns/CustomRow";
@@ -8,20 +8,43 @@ import { KTCardBody } from "../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../core/QuoteProvider";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuotesListPagination } from "../components/pagination/QuotesListPagination";
+import {useListViewAddonContext} from "../core/ListViewAddonProvider";
+import {useListLateDeliveryContext} from "../core/ListLateDeliveryProvider";
 
 const QuotesTable = () => {
   const { companies, isLoading } = useQuoteContext();
   const data = useMemo(() => companies, [companies]);
   const columns = useMemo(() => usersColumns, []);
+
   const { getTableProps, getTableBodyProps, headers, rows, prepareRow } =
     useTable({
       columns,
       data,
     });
-
+    const { delivery, openDelivery } = useListLateDeliveryContext();
   return (
     <KTCardBody className="py-4">
       <div className="table-responsive">
+        <div className="notice">
+            <button
+                type="button"
+                className="btn btn-light-danger btn-sm me-3"
+                data-kt-menu-trigger="click"
+                data-kt-menu-placement="bottom-end"
+                onClick={() => openDelivery()}
+            >
+                Trẽ hạn giao hàng { delivery.length > 0 ? `(${delivery.length})` : ""    }
+            </button>
+            {/*<button*/}
+            {/*    type="button"*/}
+            {/*    className="btn btn-light-primary btn-sm me-3"*/}
+            {/*    data-kt-menu-trigger="click"*/}
+            {/*    data-kt-menu-placement="bottom-end"*/}
+            {/*    onClick={() => open()}*/}
+            {/*>*/}
+            {/*    models*/}
+            {/*</button>*/}
+        </div>
         <table
           id="kt_table_users"
           className="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"

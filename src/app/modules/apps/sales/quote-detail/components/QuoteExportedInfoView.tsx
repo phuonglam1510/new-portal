@@ -51,12 +51,11 @@ export function QuoteExportedInfoView({
   const { quote_items,
     exportedItemIds
   } = quote;
-  const isDone = status === OrderStatus.CompletePayment;
   const { open } = useListViewAddonContext();
   const exportedItems = quote_items.filter((item) =>
       exportedItemIds.includes(item.id)
   );
-  const user = useCurrentUser();
+
   const quoteForDisplayModels = Builder(QuoteModel, { ...quote })
       .quote_items(exportedItems)
       .build();
@@ -93,12 +92,6 @@ export function QuoteExportedInfoView({
               Thông tin {readOnly ? "báo giá" : "đơn hàng"}
             </h3>
           </div>
-
-          {!readOnly && user.role !== UserRole.Monitor && (
-            <Link to="edit" className="btn btn-primary align-self-center">
-              Chỉnh sửa
-            </Link>
-          )}
         </div>
 
         <div className="card-body p-9">
@@ -151,29 +144,15 @@ export function QuoteExportedInfoView({
           <InfoRow text="Trả trước" value={prepay ? prepay + "%" : "-"} />
           <InfoRow text="Còn lại" value={formatMoney(remain)} />
 
-          <InfoRow
-            text="Trạng thái"
-            value={
-              <span
-                className={clsx(
-                  "badge",
-                  isDone ? "badge-success" : "badge-warning"
-                )}
-              >
-                {quoteOrderStatusLabel[status || OrderStatus.DeliveryNotYetDue]}
-              </span>
-            }
-          />
-
           <InfoRow text="Ghi chú" value={notes || "-"} />
           {
             quote.export_history.length > 0 &&
               <div className="d-flex flex-wrap">
                 <div className="border border-gray-300 border-dashed rounded py-3 px-4 me-6 mb-3">
-                  <ExportedModelTable histories={quote.export_history} type="delivery"/>
+                  <ExportedModelTable histories={quote.export_history} type="delivery" poDate={updated_at}/>
                 </div>
                 <div className="border border-gray-300 border-dashed rounded py-3 px-4 me-6 mb-3">
-                  <ExportedModelTable histories={quote.export_history} type="warranty"/>
+                  <ExportedModelTable histories={quote.export_history} type="warranty" poDate={updated_at}/>
                 </div>
               </div>
           }

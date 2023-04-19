@@ -12,7 +12,7 @@ export class QuoteItemModel {
   commission?: number;
   corporate_tax?: number;
   vat: number = 10;
-  delivery_time?: Date;
+  delivery_time?: string;
   notes: string = "";
   origin_price?: number;
 
@@ -22,4 +22,5 @@ export class QuoteItemModel {
   up?: number;
   total_commission?: number;
   commission_price?: number;
+  current_delivery_status: string = "";
 }

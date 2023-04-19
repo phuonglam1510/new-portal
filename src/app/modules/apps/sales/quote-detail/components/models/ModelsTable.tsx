@@ -11,6 +11,7 @@ type Props = {
   selection?: number[];
   onSelectionChange?: (value: number[]) => any;
   hideActions?: boolean;
+  isExportedTable?: boolean;
 };
 
 export const ModelsTable: React.FC<Props> = ({
@@ -21,8 +22,9 @@ export const ModelsTable: React.FC<Props> = ({
   onSelectionChange = () => true,
   hideActions,
   hideSelections,
+  isExportedTable =  false,
 }) => {
-  const { quote_items } = quote;
+  const { quote_items, quote_exported_info, export_history } = quote;
   const isAllSelected = selection.length === quote_items.length;
   // if (quote.quote_exported_info && quote.quote_exported_info.quote_exported_model) {
   //   selection = JSON.parse(quote.quote_exported_info.quote_exported_model);
@@ -50,6 +52,9 @@ export const ModelsTable: React.FC<Props> = ({
               </th>
             )}
             <th className="p-2 min-w-120px">Model</th>
+            {
+              isExportedTable && <th className="p-2 min-w-120px">Trạng Thái</th>
+            }
             <th className="p-2 min-w-100px">Hãng sản xuất</th>
             <th className="p-2 min-w-100px">Inter</th>
             <th className="p-2 min-w-110px">Số lượng</th>
@@ -77,6 +82,7 @@ export const ModelsTable: React.FC<Props> = ({
               onRemove={() => onRemove(index)}
               onEdit={() => onEdit(index)}
               hideActions={hideActions}
+              isExportedTable={isExportedTable}
             />
           ))}
         </tbody>

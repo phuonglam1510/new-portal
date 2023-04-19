@@ -123,7 +123,7 @@ const QuoteModelsModal: React.FC<Props> = ({ quote, onClose}) => {
             </div>
             <div className="modal-body scroll-y">
               {isExportedInfo ?
-                  <ModelsTable quote={quote} hideActions selection={ids} onSelectionChange={setIds}/> :
+                  <ModelsTable quote={quote} hideActions selection={ids} onSelectionChange={setIds} isExportedTable={isExportedInfo}/> :
                   <ModelsTable quote={quote} hideActions hideSelections /> }
             </div>
           </div>
