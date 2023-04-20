@@ -16,6 +16,7 @@ import { QueryRequestProvider } from "../../user-management/users-list/core/Quer
 import { QueryResponseProvider } from "../../user-management/users-list/core/QueryResponseProvider";
 import { ListLateDeliveryProvider } from "./core/ListLateDeliveryProvider"
 import { ListLateQuoteProvider } from "./core/ListLateQuoteProvider"
+import { PercentQuoteProvider } from "./core/PercentQuoteProvider";
 
 const QuoteList = () => {
   return (
@@ -42,7 +43,11 @@ const QuoteListWrapper = () => (
                     <QueryResponseProvider>
                       <ListViewAddonProvider>
                         <ListLateDeliveryProvider>
-                          <QuoteList />
+                          <ListLateQuoteProvider>
+                            <PercentQuoteProvider>
+                              <QuoteList />
+                            </PercentQuoteProvider>
+                          </ListLateQuoteProvider>
                         </ListLateDeliveryProvider>
                       </ListViewAddonProvider>
                     </QueryResponseProvider>

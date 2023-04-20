@@ -1,24 +1,24 @@
 import React, {useEffect} from "react";
-import {LateDeliveryModel} from "../../../../../../models/sales/LateDelivery.model";
 import moment from "moment";
 import {KTSVG} from "../../../../../../../_metronic/helpers";
 import {Link} from "react-router-dom";
+import {LateQuoteModel} from "../../../../../../models/sales/LateQuote.model";
 interface Props {
-    delivery: LateDeliveryModel[];
+    quotes: LateQuoteModel[];
     onClose: () => void;
 }
 
-const InfoRow = ({item_id, quote_id, po_number, item_model, due_date}:{item_id: number, quote_id: number, po_number: string, item_model: string, due_date: string}) => {
+const InfoRow = ({ quote_id, due_date }:{ quote_id: number, due_date: Date|string }) => {
     return (
         <div className="d-flex align-items-center bg-light-danger rounded p-2 mb-2">
-            <Link to={`${quote_id}/export-info`} className="fw-bold text-gray-800 text-hover-primary fs-6 p-2">
-                Báo Giá #{quote_id} - PO# {po_number} - {item_model} gần tới hạn giao hàng ({moment(due_date).format("DD/MM/YYYY")}).
+            <Link to={`${quote_id}/info`} className="fw-bold text-gray-800 text-hover-primary fs-6 p-2">
+                Báo Giá #{quote_id} - Chưa cập nhật giá - Hạn chót ({moment(due_date).format("DD/MM/YYYY")}).
             </Link>
         </div>
     );
 };
 
-const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
+const LateQuoteModal: React.FC<Props> = ({ quotes, onClose}) => {
     useEffect(() => {
         document.body.classList.add("modal-open");
         return () => {
@@ -39,7 +39,7 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
                     <div className="modal-content">
                         <div className="modal-header">
                             {/* begin::Modal title */}
-                            <h2 className="fw-bolder">Danh Sách PO Trễ Hạn Giao Hàng</h2>
+                            <h2 className="fw-bolder">Danh Sách Chưa Cập Nhật Giá</h2>
                             <div
                                 className="btn btn-icon btn-sm btn-active-icon-primary"
                                 data-kt-users-modal-action="close"
@@ -54,13 +54,9 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
                             {/* end::Close */}
                         </div>
                         <div className="modal-body scroll-y">
-                            {delivery.map((item, i) => <InfoRow
-                                item_id={item.item_id}
+                            {quotes.map((item, i) => <InfoRow
                                 quote_id={item.quote_id}
-                                po_number={item.po_number}
-                                item_model={item.item_model}
                                 due_date={item.due_date}
-                                key={item.item_id}
                             />)}
 
                         </div>
@@ -72,4 +68,4 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
     )
 }
 
-export default LateDeliveryModal;
+export default LateQuoteModal;

@@ -1,36 +1,30 @@
 import React, {useEffect} from "react";
-import {LateDeliveryModel} from "../../../../../../models/sales/LateDelivery.model";
-import moment from "moment";
 import {KTSVG} from "../../../../../../../_metronic/helpers";
-import {Link} from "react-router-dom";
+import {QuoteModel} from "../../../../../../models/sales/Quote.model";
+import {Dropdown, DropdownItemProps} from "../../../../../../components/Dropdown";
+
 interface Props {
-    delivery: LateDeliveryModel[];
+    quote: QuoteModel;
     onClose: () => void;
+    onUpdate: (value: number) => void;
 }
 
-const InfoRow = ({item_id, quote_id, po_number, item_model, due_date}:{item_id: number, quote_id: number, po_number: string, item_model: string, due_date: string}) => {
-    return (
-        <div className="d-flex align-items-center bg-light-danger rounded p-2 mb-2">
-            <Link to={`${quote_id}/export-info`} className="fw-bold text-gray-800 text-hover-primary fs-6 p-2">
-                Báo Giá #{quote_id} - PO# {po_number} - {item_model} gần tới hạn giao hàng ({moment(due_date).format("DD/MM/YYYY")}).
-            </Link>
-        </div>
-    );
-};
-
-const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
+const PercentPOModal: React.FC<Props> = ({ quote, onClose, onUpdate }) => {
     useEffect(() => {
         document.body.classList.add("modal-open");
         return () => {
             document.body.classList.remove("modal-open");
         };
     }, []);
-
+    const options = [];
+    for (let i = 0; i <= 100; i = i + 10) {
+        options.push(<option value={i} key={i}>{i}%</option>)
+    }
     return (
         <>
             <div
                 className="modal fade show d-block"
-                id="kt_modal_add_user"
+                id="kt_modal_update_percent"
                 role="dialog"
                 tabIndex={-1}
                 aria-modal="true"
@@ -38,8 +32,7 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
                 <div className="modal-dialog modal-dialog-centered mw-950px">
                     <div className="modal-content">
                         <div className="modal-header">
-                            {/* begin::Modal title */}
-                            <h2 className="fw-bolder">Danh Sách PO Trễ Hạn Giao Hàng</h2>
+                            <h2 className="fw-bolder">Cập nhật % chốt PO cho báo giá #{quote.id}</h2>
                             <div
                                 className="btn btn-icon btn-sm btn-active-icon-primary"
                                 data-kt-users-modal-action="close"
@@ -51,18 +44,11 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
                                     className="svg-icon-1"
                                 />
                             </div>
-                            {/* end::Close */}
                         </div>
                         <div className="modal-body scroll-y">
-                            {delivery.map((item, i) => <InfoRow
-                                item_id={item.item_id}
-                                quote_id={item.quote_id}
-                                po_number={item.po_number}
-                                item_model={item.item_model}
-                                due_date={item.due_date}
-                                key={item.item_id}
-                            />)}
-
+                            <select className="form-control" value={quote.possible_percent} onChange={(event) => { onUpdate(Number(event.target.value))}}>
+                                { options }
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -72,4 +58,4 @@ const LateDeliveryModal: React.FC<Props> = ({ delivery, onClose}) => {
     )
 }
 
-export default LateDeliveryModal;
+export default PercentPOModal;

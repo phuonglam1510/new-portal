@@ -28,8 +28,12 @@ export class QuoteModel {
   quote_items: QuoteItemModel[] = [];
 
   contact: ContactModel = new ContactModel();
+  of_current_user: boolean = false;
+  possible_percent: number = 0;
 
   export_history: ExportHistoryModel[] = [];
+  callback: ((data: any) => void) | undefined;
+
   public get saleName(): string {
     return this.sale?.name || "";
   }
@@ -45,11 +49,23 @@ export class QuoteModel {
   }
 
   public get statusName(): string {
-    return this.status === QuoteStatus.Wating
-      ? "Chờ báo giá"
-      : this.status === QuoteStatus.Sold
-      ? "Bán hàng"
-      : "Đã báo giá";
+    let status: string = "Chờ báo giá";
+    switch (this.status) {
+      case QuoteStatus.Wating:
+        status = "Chờ báo giá";
+        break;
+      case QuoteStatus.Sold:
+        status = "Bán hàng";
+        break;
+      case QuoteStatus.Quoted:
+        status = "Đã báo giá";
+        break;
+      case QuoteStatus.UNPRICEABLE:
+        status = "Không thể báo giá";
+        break;
+    }
+
+    return status;
   }
 
   public get typeName(): string {

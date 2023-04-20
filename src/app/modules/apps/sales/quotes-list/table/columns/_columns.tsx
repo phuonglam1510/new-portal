@@ -1,6 +1,6 @@
 import { Column } from "react-table";
 import clsx from "clsx";
-import { UserInfoCell } from "./UserInfoCell";
+import { UserInfoCell, UsePercentCell } from "./UserInfoCell";
 import { UserActionsCell } from "./UserActionsCell";
 import { UserSelectionCell } from "./UserSelectionCell";
 import { UserCustomHeader } from "./UserCustomHeader";
@@ -12,12 +12,45 @@ import { Link } from "react-router-dom";
 import { Routing } from "../../../../../../enums/Routing.enum";
 import { QuoteModelsCell } from "./QuoteModelsCell";
 
+const getBadgeInfo = (status: string) => {
+  let className: string = "badge-success";
+  switch (status) {
+    case QuoteStatus.Wating:
+      className = "badge-warning";
+      break;
+    case QuoteStatus.Sold:
+      className = "badge-success";
+      break;
+    case QuoteStatus.Quoted:
+      className = "badge-info";
+      break;
+    case QuoteStatus.UNPRICEABLE:
+      className = "badge-danger";
+      break;
+  }
+
+  return className;
+}
+
 const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
   {
     Header: (props) => <UserSelectionHeader tableProps={props} />,
     id: "selection",
     Cell: ({ ...props }) => (
       <UserSelectionCell id={props.data[props.row.index].id} />
+    ),
+  },
+  {
+    Header: (props) => (
+        <UserCustomHeader
+            tableProps={props}
+            title="% Chốt PO"
+            className="min-w-100px"
+        />
+    ),
+    id: "of_current_user",
+    Cell: ({ ...props }) => (
+        <UsePercentCell quote={props.data[props.row.index]} />
     ),
   },
   {
@@ -47,11 +80,7 @@ const usersColumns: ReadonlyArray<Column<QuoteModel>> = [
       <div
         className={clsx(
           "badge",
-          data[row.index].status === QuoteStatus.Wating
-            ? "badge-warning"
-            : data[row.index].status === QuoteStatus.Sold
-            ? "badge-info"
-            : "badge-success"
+            getBadgeInfo(data[row.index].status)
         )}
       >
         {data[row.index].statusName}

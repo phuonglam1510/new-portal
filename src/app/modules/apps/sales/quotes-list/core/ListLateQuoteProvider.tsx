@@ -1,39 +1,49 @@
 import { FC, createContext, useContext, useState } from "react";
-import { QuoteModel } from "../../../../../models/sales/Quote.model";
-import { QuoteModelsModal } from "../components/modal/QuoteModelsModal";
+import { LateQuoteModel } from "../../../../../models/sales/LateQuote.model";
+import { useQuery } from "react-query";
+import { getLatePrice } from "./_requests";
+import LateQuoteModal from "../components/modal/LateQuoteModel";
 
 class ContextProps {
-    lateQuote?: any;
-  openLateQuote: (item: QuoteModel) => void = () => true;
+  quotes: LateQuoteModel[]|[] = [];
+  openLateQuote: () => void = () => true;
   close: () => void = () => true;
 }
 
-const ListViewAddonContext = createContext<ContextProps>(new ContextProps());
+const ListLateQuoteContext = createContext<ContextProps>(new ContextProps());
 
 const ListLateQuoteProvider: FC = ({ children }) => {
-  const [lateQuote, setLateQuote] = useState<QuoteModel | undefined>();
+  const [quotes, SetQuote] = useState<LateQuoteModel[] | []>([]);
 
-  const openLateQuote = (item: QuoteModel) => {
-      setLateQuote(item);
-  };
+    const [show, setShow] = useState<Boolean>(false);
+    const openLateQuote = () => {
+        setShow(true);
+    };
 
-  const close = () => {
-      setLateQuote(undefined);
-  };
+    const close = () => {
+        setShow(false);
+    };
+    useQuery(`late-quote-price`,
+        () => {
+            return getLatePrice().then((res) => {
+                SetQuote(res.data)
 
+                return res.data;
+            });
+        });
   return (
-    <ListViewAddonContext.Provider
+    <ListLateQuoteContext.Provider
       value={{
-        lateQuote,
+        quotes,
         openLateQuote,
         close,
       }}
     >
       {children}
-      {lateQuote && <QuoteModelsModal quote={lateQuote} onClose={close} />}
-    </ListViewAddonContext.Provider>
+      {quotes.length > 0 && show && <LateQuoteModal quotes={quotes} onClose={close} />}
+    </ListLateQuoteContext.Provider>
   );
 };
 
-const useListLateQuoteContext = () => useContext(ListViewAddonContext);
+const useListLateQuoteContext = () => useContext(ListLateQuoteContext);
 export { ListLateQuoteProvider, useListLateQuoteContext };

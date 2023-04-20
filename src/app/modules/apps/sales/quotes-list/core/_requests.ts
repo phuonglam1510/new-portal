@@ -15,6 +15,7 @@ import { QuoteWarrantyModel } from "../../../../../models/sales/QuoteWarranty.mo
 import { UpdateQuoteBody } from "../../../../../models/sales/UpdateQuoteBody.model";
 import { QuoteQueryResponse } from "./_models";
 import {LateDeliveryModel} from "../../../../../models/sales/LateDelivery.model";
+import {LateQuoteModel} from "../../../../../models/sales/LateQuote.model";
 
 const API_URL = process.env.REACT_APP_THEME_API_URL;
 const URL = `${API_URL}/quote`;
@@ -278,6 +279,20 @@ const getLateDelivery = (): Promise<{data: LateDeliveryModel[], message: string}
       .then((d: AxiosResponse<{data: LateDeliveryModel[], message: string}>) => d.data);
 };
 
+const getLatePrice = (): Promise<{data: LateQuoteModel[], message: string}> => {
+  return axios
+      .get(`${URL}/status/po`)
+      .then((d: AxiosResponse<{data: LateQuoteModel[], message: string}>) => d.data);
+};
+const updateQuotePercentPO = ({id, percent}: {id: number; percent: number}): Promise<QuoteModel> => {
+  return axios
+      .put(`${URL}/${id}/percent/po`, { possible_percent: percent})
+      .then(
+          (response: AxiosResponse<GenericResponse<QuoteModel>>) => response.data
+      )
+      .then((response: GenericResponse<QuoteModel>) => response.data);
+};
+
 export {
   getQuotes,
   deleteSelectedUsers,
@@ -301,4 +316,6 @@ export {
   importModelsFile,
   deleteQuoteItem,
   getLateDelivery,
+  getLatePrice,
+  updateQuotePercentPO,
 };

@@ -8,20 +8,25 @@ import { KTCardBody } from "../../../../../../_metronic/helpers";
 import { useQuoteContext } from "../core/QuoteProvider";
 import { QuoteModel } from "../../../../../models/sales/Quote.model";
 import { QuotesListPagination } from "../components/pagination/QuotesListPagination";
-import {useListViewAddonContext} from "../core/ListViewAddonProvider";
 import {useListLateDeliveryContext} from "../core/ListLateDeliveryProvider";
+import {useListLateQuoteContext} from "../core/ListLateQuoteProvider";
+import {usePercentQuoteContext} from "../core/PercentQuoteProvider";
 
 const QuotesTable = () => {
   const { companies, isLoading } = useQuoteContext();
   const data = useMemo(() => companies, [companies]);
   const columns = useMemo(() => usersColumns, []);
-
+  const { openPercentQuote } = usePercentQuoteContext();
   const { getTableProps, getTableBodyProps, headers, rows, prepareRow } =
     useTable({
       columns,
       data,
     });
+    for (let row of rows) {
+        row.original.callback = openPercentQuote;
+    }
     const { delivery, openDelivery } = useListLateDeliveryContext();
+    const { quotes, openLateQuote } = useListLateQuoteContext();
   return (
     <KTCardBody className="py-4">
       <div className="table-responsive">
@@ -33,17 +38,17 @@ const QuotesTable = () => {
                 data-kt-menu-placement="bottom-end"
                 onClick={() => openDelivery()}
             >
-                Trẽ hạn giao hàng { delivery.length > 0 ? `(${delivery.length})` : ""    }
+                Trẽ Hạn Giao Hàng { delivery.length > 0 ? `(${delivery.length})` : "" }
             </button>
-            {/*<button*/}
-            {/*    type="button"*/}
-            {/*    className="btn btn-light-primary btn-sm me-3"*/}
-            {/*    data-kt-menu-trigger="click"*/}
-            {/*    data-kt-menu-placement="bottom-end"*/}
-            {/*    onClick={() => open()}*/}
-            {/*>*/}
-            {/*    models*/}
-            {/*</button>*/}
+            <button
+                type="button"
+                className="btn btn-light-primary btn-sm me-3"
+                data-kt-menu-trigger="click"
+                data-kt-menu-placement="bottom-end"
+                onClick={() => openLateQuote()}
+            >
+                Chưa Cập Nhật Giá { quotes.length > 0 ? `(${quotes.length})` : "" }
+            </button>
         </div>
         <table
           id="kt_table_users"
