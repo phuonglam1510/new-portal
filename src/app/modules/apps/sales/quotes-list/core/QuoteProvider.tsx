@@ -12,6 +12,7 @@ import {
   withPaging,
 } from "../../../core/hooks/usePagingProvider";
 import { PaginationQuery } from "../../../../../models/core/PaginationQuery.model";
+import {loadAndOpenPdfFile} from "./_util";
 
 export class QuotesFilter {
   search: string = "";
@@ -32,6 +33,8 @@ interface ContextProps extends PagingContextProps {
   query: string;
   updateFilter: (values: Partial<QuotesFilter>) => any;
   filter: QuotesFilter;
+  exportManufacturerExcel: () => Promise<boolean>;
+  loading: boolean;
 }
 
 const QuoteContext = createContext<ContextProps>({
@@ -42,6 +45,8 @@ const QuoteContext = createContext<ContextProps>({
   query: "",
   filter: new QuotesFilter(),
   ...initialPagingContext,
+    exportManufacturerExcel: () => new Promise(resolve => true),
+    loading: false,
 });
 
 const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
@@ -84,10 +89,30 @@ const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
     refetch();
   }, [paging.size, paging.page]);
 
+    const [loading, setLoading] = useState(false);
+    const exportManufacturerExcel = async(): Promise<boolean> => {
+        try {
+            setLoading(true);
+            const baseUrl = `${process.env.REACT_APP_THEME_API_URL}/quote`;
+            const url = `${baseUrl}/export/manufacturer`;
+            await loadAndOpenPdfFile(
+                url,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "ManufacturerReport.xlsx"
+            );
+            return true;
+        } catch (error) {
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
   return (
     <QuoteContext.Provider
       value={{
         isLoading: isFetching,
+          loading,
         refetch,
         query,
         companies,
@@ -95,6 +120,7 @@ const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
         filter,
         setPaging,
         paging,
+          exportManufacturerExcel,
       }}
     >
       {children}

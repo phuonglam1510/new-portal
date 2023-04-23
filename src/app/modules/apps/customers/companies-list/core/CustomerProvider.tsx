@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import qs from "qs";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
 import { getCompanies } from "./_requests";
+import {loadAndOpenPdfFile} from "../../../sales/quotes-list/core/_util";
 
 export class CompaniesFilter {
   search: string = "";
@@ -18,6 +19,8 @@ interface ContextProps {
   query: string;
   updateFilter: (values: Partial<CompaniesFilter>) => any;
   filter: CompaniesFilter;
+    exportCompanyReport: () => Promise<boolean>;
+    loading: boolean;
 }
 
 const CustomerContext = createContext<ContextProps>({
@@ -27,6 +30,8 @@ const CustomerContext = createContext<ContextProps>({
   isLoading: false,
   query: "",
   filter: new CompaniesFilter(),
+    exportCompanyReport: () => new Promise(resolve => true),
+    loading: false,
 });
 
 const CustomerProvider: FC = ({ children }) => {
@@ -55,7 +60,24 @@ const CustomerProvider: FC = ({ children }) => {
     setFilter({ ...filter, ...values });
     refetch();
   };
-
+    const [loading, setLoading] = useState(false);
+    const exportCompanyReport = async(): Promise<boolean> => {
+        try {
+            setLoading(true);
+            const baseUrl = `${process.env.REACT_APP_THEME_API_URL}`;
+            const url = `${baseUrl}/company/export`;
+            await loadAndOpenPdfFile(
+                url,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "CompanyReport.xlsx"
+            );
+            return true;
+        } catch (error) {
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
   return (
     <CustomerContext.Provider
       value={{
@@ -65,6 +87,8 @@ const CustomerProvider: FC = ({ children }) => {
         companies,
         updateFilter,
         filter,
+          loading,
+          exportCompanyReport
       }}
     >
       {children}
