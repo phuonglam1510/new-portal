@@ -45,7 +45,11 @@ export function AsideMenuMain() {
         />
         {/* <AsideMenuItem to={Routing.SaleQuotes} title="CSKH" hasBullet={true} /> */}
       </AsideMenuItemWithSub>
-
+        <AsideMenuItem
+            icon="/media/icons/duotune/finance/fin002.svg"
+            to={Routing.CustomerService}
+            title="Chăm sóc khách hàng"
+        />
       {/* <AsideMenuSubHeader title="Crafted" />
       <AsideMenuItemWithSub
         to='/crafted/pages'

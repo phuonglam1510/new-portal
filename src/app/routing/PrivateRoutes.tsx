@@ -13,6 +13,9 @@ const PrivateRoutes = () => {
   const CustomersContainerPage = lazy(
     () => import("../modules/apps/customers/CustomersContainerPage")
   );
+    const CustomerServiceContainerPage = lazy(
+        () => import("../modules/apps/customer-service/CustomerServicePage")
+    );
   const ProfilePage = lazy(() => import("../modules/profile/ProfilePage"));
   const AccountPage = lazy(() => import("../modules/accounts/AccountPage"));
   const ChatPage = lazy(() => import("../modules/apps/chat/ChatPage"));
@@ -69,6 +72,14 @@ const PrivateRoutes = () => {
             </SuspensedView>
           }
         />
+      <Route
+          path="apps/customer-service/*"
+          element={
+              <SuspensedView>
+                  <CustomerServiceContainerPage />
+              </SuspensedView>
+          }
+      />
         <Route
           path="apps/customers/*"
           element={

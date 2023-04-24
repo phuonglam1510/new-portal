@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 
 export interface FileUploaderProps {
   label: string;
@@ -13,13 +13,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   disabled = false,
   value,
 }) => {
-  const [localImage, setLocalImage] = useState("");
-  const imageUrl = useMemo(() => {
-    if (typeof value === "string") {
-      return value;
-    }
-    return null;
-  }, [value]);
+  // const [localImage, setLocalImage] = useState("");
+  // const imageUrl = useMemo(() => {
+  //   if (typeof value === "string") {
+  //     return value;
+  //   }
+  //   return null;
+  // }, [value]);
 
   return (
     <>
