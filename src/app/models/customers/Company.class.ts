@@ -1,5 +1,6 @@
 import { CompanyType } from "../../enums/CompanyType.enum";
 import { FileUploadResponse } from "../core/FileUploadResponse.type";
+import {UserModel} from "../../modules/auth/models/UserModel";
 
 export class CompanyModel {
   id?: number;
@@ -12,6 +13,7 @@ export class CompanyModel {
   "created_at": Date;
   "updated_at": Date;
   type: CompanyType = CompanyType.Company;
+  sales?: UserModel;
 
   public get logoUrl(): string {
     return this.logo?.file_url || "";

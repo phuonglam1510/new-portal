@@ -15,14 +15,16 @@ const UsersListHeader = () => {
       <div className='card-toolbar'>
           {
               !isLoading &&
-              <button
-                  type="button"
-                  className="btn btn-primary me-5"
-                  disabled={loading}
-                  onClick={() => exportCompanyReport()}
-              >
-                  Xuất Báo Cáo Công Ty
-              </button>
+              <>
+                  <button
+                      type="button"
+                      className="btn btn-primary me-5"
+                      disabled={loading}
+                      onClick={() => exportCompanyReport()}
+                  >
+                      Xuất Báo Cáo Công Ty
+                  </button>
+              </>
           }
         {/* begin::Group actions */}
         {selected.length > 0 ? <UsersListGrouping /> : <UsersListToolbar />}

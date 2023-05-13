@@ -5,6 +5,7 @@ import { UserSelectionCell } from "./UserSelectionCell";
 import { UserCustomHeader } from "./UserCustomHeader";
 import { UserSelectionHeader } from "./UserSelectionHeader";
 import { CompanyModel } from "../../../../../../models/customers/Company.class";
+import clsx from "clsx";
 
 const usersColumns: ReadonlyArray<Column<CompanyModel>> = [
   {
@@ -46,6 +47,21 @@ const usersColumns: ReadonlyArray<Column<CompanyModel>> = [
       />
     ),
     accessor: "business_type",
+  },
+  {
+    Header: (props) => (
+        <UserCustomHeader
+            tableProps={props}
+            title="Người Tạo"
+            className="min-w-125px"
+        />
+    ),
+    accessor: "sales",
+    Cell: ({ data, row }) => (
+        <div>
+          <strong>{data[row.index].sales?.name}</strong>
+        </div>
+    ),
   },
   {
     Header: (props) => (

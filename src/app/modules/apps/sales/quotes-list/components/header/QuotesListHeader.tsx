@@ -8,7 +8,7 @@ import {UserRole} from "../../../../../../enums/UserRole.enum";
 
 const QuotesListHeader = () => {
   const { selected } = useListView();
-  const { loading, exportManufacturerExcel } = useQuoteContext();
+  const { loading, exportManufacturerExcel, runSaleReport } = useQuoteContext();
   const user = useCurrentUser();
 
   return (
@@ -19,14 +19,24 @@ const QuotesListHeader = () => {
       <div className="card-toolbar">
           {
               [UserRole.SuperAdmin, UserRole.ServiceManager, UserRole.Monitor].includes(user.role) &&
-              <button
-                  type="button"
-                  className="btn btn-primary me-5"
-                  disabled={loading}
-                  onClick={() => exportManufacturerExcel()}
-              >
-                  Báo Cáo Hãng SX
-              </button>
+              <>
+                  <button
+                      type="button"
+                      className="btn btn-info me-5"
+                      disabled={loading}
+                      onClick={() => runSaleReport()}
+                  >
+                      Báo Cáo Bán Hàng
+                  </button>
+                  <button
+                      type="button"
+                      className="btn btn-primary me-5"
+                      disabled={loading}
+                      onClick={() => exportManufacturerExcel()}
+                  >
+                      Báo Cáo Hãng SX
+                  </button>
+              </>
           }
         {/* begin::Group actions */}
         {selected.length > 0 ? <UsersListGrouping /> : <UsersListToolbar />}

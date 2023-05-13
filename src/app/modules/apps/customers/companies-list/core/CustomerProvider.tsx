@@ -5,6 +5,7 @@ import qs from "qs";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
 import { getCompanies } from "./_requests";
 import {loadAndOpenPdfFile} from "../../../sales/quotes-list/core/_util";
+import {runSaleReportAPI} from "../../../customer-service/service-list/core/_requests";
 
 export class CompaniesFilter {
   search: string = "";
@@ -88,7 +89,7 @@ const CustomerProvider: FC = ({ children }) => {
         updateFilter,
         filter,
           loading,
-          exportCompanyReport
+          exportCompanyReport,
       }}
     >
       {children}

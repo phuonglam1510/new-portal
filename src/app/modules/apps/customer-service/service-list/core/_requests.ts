@@ -55,10 +55,18 @@ const deleteCustomerService = (id: ID[]): Promise<boolean> => {
         .delete(`${CUSTOMER_URL}/${id[0]}?id=${id.join(",")}`)
         .then((d: AxiosResponse<boolean>) => d.data);
 }
+
+const runSaleReportAPI = (url: string): Promise<GenericResponse> => {
+    return axios
+        .get(`${url}`)
+        .then((d: AxiosResponse<GenericResponse>) => d.data);
+};
+
 export {
     getCustomerServices,
     deleteCustomerService,
     getCustomerServiceById,
     createCustomerService,
-    updateCustomerService
+    updateCustomerService,
+    runSaleReportAPI
 }

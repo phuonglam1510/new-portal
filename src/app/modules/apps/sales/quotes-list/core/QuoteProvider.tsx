@@ -13,6 +13,7 @@ import {
 } from "../../../core/hooks/usePagingProvider";
 import { PaginationQuery } from "../../../../../models/core/PaginationQuery.model";
 import {loadAndOpenPdfFile} from "./_util";
+import {runSaleReportAPI} from "../../../customer-service/service-list/core/_requests";
 
 export class QuotesFilter {
   search: string = "";
@@ -34,6 +35,7 @@ interface ContextProps extends PagingContextProps {
   updateFilter: (values: Partial<QuotesFilter>) => any;
   filter: QuotesFilter;
   exportManufacturerExcel: () => Promise<boolean>;
+    runSaleReport: () => Promise<boolean>;
   loading: boolean;
 }
 
@@ -46,6 +48,7 @@ const QuoteContext = createContext<ContextProps>({
   filter: new QuotesFilter(),
   ...initialPagingContext,
     exportManufacturerExcel: () => new Promise(resolve => true),
+    runSaleReport: () => new Promise(resolve => true),
     loading: false,
 });
 
@@ -107,7 +110,20 @@ const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
             setLoading(false);
         }
     }
+    const runSaleReport =  async(): Promise<boolean> => {
+        try {
+            setLoading(true);
+            const baseUrl = `${process.env.REACT_APP_THEME_API_URL}`;
+            const url = `${baseUrl}/quote/sale/report`;
+            await runSaleReportAPI(url);
 
+            return true;
+        } catch (error) {
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
   return (
     <QuoteContext.Provider
       value={{
@@ -121,6 +137,7 @@ const QuoteProvider = withPaging(({ children, setPaging, paging }: any) => {
         setPaging,
         paging,
           exportManufacturerExcel,
+          runSaleReport
       }}
     >
       {children}

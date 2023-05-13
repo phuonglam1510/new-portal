@@ -31,7 +31,7 @@ const UserInfoCell: FC<Props> = ({ company }) => (
       <a href="#" className="text-gray-800 text-hover-primary mb-1">
         {company.company_name}
       </a>
-      <span>{company.company_address}</span>
+      {/*<span>{company.company_address}</span>*/}
     </div>
   </div>
 );
