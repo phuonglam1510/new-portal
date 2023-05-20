@@ -62,7 +62,8 @@ const NewQuote: FC = () => {
     } else {
       toast(`Tạo báo giá thành công!`);
       refetch();
-      navigate(`/${Routing.SaleQuotes}`);
+      // @ts-ignore
+      window.location = `/${Routing.SaleQuotes}`;
     }
     actions.setSubmitting(false);
   };

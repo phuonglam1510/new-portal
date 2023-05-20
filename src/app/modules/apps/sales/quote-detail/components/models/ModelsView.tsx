@@ -47,7 +47,7 @@ export function ModelsView() {
           newItem.asking_price_model
         } thành công!`
       );
-      loadQuoteDetail(quote.id?.toString() || "");
+      await loadQuoteDetail(quote.id?.toString() || "");
       editIndex = null;
       close();
     }
@@ -65,8 +65,8 @@ export function ModelsView() {
       title: "Xoá model",
       message: `Bạn có chắc muốn xoá model ${item.asking_price_model} không?`,
       onOk: () =>
-        removeQuoteItem(quote.id || 0, item.id).then(() => {
-          loadQuoteDetail(quote.id?.toString() || "");
+        removeQuoteItem(quote.id || 0, item.id).then(async () => {
+          await loadQuoteDetail(quote.id?.toString() || "");
           toast(`Xoá model ${item.asking_price_model} thành công!`);
         }),
     });
@@ -97,7 +97,7 @@ export function ModelsView() {
   };
 
   const onImportDone = async () => {
-    loadQuoteDetail(quote.id?.toString() || "");
+    await loadQuoteDetail(quote.id?.toString() || "");
   };
   const user = useCurrentUser();
   return (

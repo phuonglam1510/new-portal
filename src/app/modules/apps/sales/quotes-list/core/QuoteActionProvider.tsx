@@ -228,11 +228,12 @@ const QuoteActionProvider: FC = ({ children }) => {
 
       await Promise.all(
         quoteForm.models.map((item) =>
-          item.id
+          item.id != undefined
             ? updateQuoteItem(quote?.id || 0, item)
             : createQuoteItemAPI(quote?.id || 0, item)
         )
       );
+
       return quote || false;
     } catch (error: any) {
       console.error(error);
