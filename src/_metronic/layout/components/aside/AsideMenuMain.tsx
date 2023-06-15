@@ -9,6 +9,8 @@ import {UserRole} from "../../../../app/enums/UserRole.enum";
 export function AsideMenuMain() {
     const user = useCurrentUser();
     const isMonitor = user.role === UserRole.Monitor;
+    const isAdmin = user.role === UserRole.SuperAdmin;
+
   return (
     <>
         {!isMonitor &&
@@ -30,6 +32,10 @@ export function AsideMenuMain() {
                     to={Routing.CustomerContacts}
                     title="Người liên hệ"
                     hasBullet={true}/>
+                { isAdmin && <AsideMenuItem
+                    to={Routing.CustomerSendMail}
+                    title="Email Marketing"
+                    hasBullet={true}/> }
             </AsideMenuItemWithSub></>
         }
       <AsideMenuItemWithSub

@@ -5,6 +5,7 @@ import { GenericResponse } from "../../../../../models/core/GenericResponse.type
 import { ID } from "../../../../../models/core/ID.type";
 import { CompanyModel } from "../../../../../models/customers/Company.class";
 import { CompanyQueryResponse } from "./_models";
+import {SendMailModel} from "../../../../../models/customers/SendMail.class";
 
 const API_URL = process.env.REACT_APP_THEME_API_URL;
 const COMPANIES_URL = `${API_URL}/company`;
@@ -59,6 +60,16 @@ const deleteSelectedUsers = (userIds: Array<ID>): Promise<void> => {
   return axios.all(requests).then(() => {});
 };
 
+const sendMail = (data: SendMailModel): Promise<SendMailModel> => {
+  return axios
+      .post(COMPANIES_URL + '/email', data)
+      .then(
+          (response: AxiosResponse<GenericResponse<SendMailModel>>) => response.data
+      )
+      .then((response: GenericResponse<SendMailModel>) => response.data)
+      .catch(handleAxiosError);
+};
+
 export {
   getCompanies,
   deleteSelectedUsers,
@@ -66,4 +77,5 @@ export {
   updateCompany,
   createCompany,
   getCompanyById,
+  sendMail,
 };
