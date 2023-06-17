@@ -14,10 +14,6 @@ import {useGlobalContext} from "../../../core/GlobalProvider";
 import {Routing} from "../../../../../enums/Routing.enum";
 
 const SendEmailForm = () => {
-    const [userForEdit] = useState<SendMailModel>(
-        Builder(SendMailModel, new SendMailModel()).build()
-    );
-
     let data: Record<string, any> = {
         type: null,
         subject: null,
@@ -53,7 +49,7 @@ const SendEmailForm = () => {
 
                         toast(`Đã gửi mail thành công đến danh sách liên hệ thuộc ${data.type}`)
                         // @ts-ignore
-                        window.location = `/${Routing.CustomerCompaniesg}`;
+                        window.location = `/${Routing.CustomerCompanies}`;
                     } catch (e) {
                         showError("Không thể gửi email, vui lòng thử lại sau");
                     }

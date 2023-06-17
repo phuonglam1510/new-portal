@@ -3,6 +3,7 @@ import { PageLink, PageTitle } from "../../../../_metronic/layout/core";
 import { CompanyListWrapper } from "./companies-list/CompaniesList";
 import { ContactListWrapper } from "./contacts-list/ContactList";
 import { EmailMarketingWrapper } from "./email-marketing/EmailMarketing";
+import { ExportContactWrapper } from "./contact-export/ExportContact";
 
 const usersBreadcrumbs: Array<PageLink> = [
   {
@@ -47,6 +48,22 @@ const emailMarketingBreadcrumbs: Array<PageLink> = [
     isActive: false,
   },
 ];
+
+const exportContactBreadcrumbs: Array<PageLink> = [
+    {
+        title: "Báo Cáo Danh Sách Người Liên Hệ",
+        path: "/apps/customers/export-contact",
+        isSeparator: false,
+        isActive: false,
+    },
+    {
+        title: "",
+        path: "",
+        isSeparator: true,
+        isActive: false,
+    },
+];
+
 const moduleTitle = "Quản lý khách hàng";
 
 const CustomersContainerPage = () => {
@@ -83,7 +100,7 @@ const CustomersContainerPage = () => {
             path="mail"
             element={
               <>
-                <PageTitle breadcrumbs={contactsBreadcrumbs}>
+                <PageTitle breadcrumbs={exportContactBreadcrumbs}>
                   {moduleTitle}
                 </PageTitle>
                 <EmailMarketingWrapper />
@@ -91,6 +108,19 @@ const CustomersContainerPage = () => {
             }
         />
       </Route>
+        <Route element={<Outlet />}>
+            <Route
+                path="export-contact"
+                element={
+                    <>
+                        <PageTitle breadcrumbs={exportContactBreadcrumbs}>
+                            {moduleTitle}
+                        </PageTitle>
+                        <ExportContactWrapper />
+                    </>
+                }
+            />
+        </Route>
       <Route index element={<Navigate to="/apps/customers/companies" />} />
     </Routes>
   );

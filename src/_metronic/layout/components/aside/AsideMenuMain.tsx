@@ -36,6 +36,11 @@ export function AsideMenuMain() {
                     to={Routing.CustomerSendMail}
                     title="Email Marketing"
                     hasBullet={true}/> }
+                { isAdmin && <AsideMenuItem
+                    to={Routing.CustomerContactExport}
+                    title="Báo Cáo Người Liên Hệ"
+                    hasBullet={true}/> }
+
             </AsideMenuItemWithSub></>
         }
       <AsideMenuItemWithSub

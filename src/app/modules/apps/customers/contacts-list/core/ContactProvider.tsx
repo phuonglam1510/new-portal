@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { ContactModel } from "../../../../../models/customers/Contact.class";
 import { getContacts } from "./_requests";
 import qs from "qs";
+import {loadAndOpenPdfFile} from "../../../sales/quotes-list/core/_util";
 
 export class ContactFilter {
   search: string = "";
@@ -16,6 +17,7 @@ interface ContextProps {
   isLoading: boolean;
   query: string;
   updateFilter: (values: Partial<ContactFilter>) => any;
+    exportContactReport: (companyId: string) => Promise<boolean>;
   filter: ContactFilter;
 }
 
@@ -25,6 +27,7 @@ const CustomerContext = createContext<ContextProps>({
   updateFilter: () => {},
   isLoading: false,
   query: "",
+    exportContactReport: (companyId: string) => new Promise(resolve => true),
   filter: new ContactFilter(),
 });
 
@@ -53,6 +56,21 @@ const ContactProvider: FC = ({ children }) => {
     refetch();
   };
 
+    const exportContactReport = async(companyId: string): Promise<boolean> => {
+        try {
+            const baseUrl = `${process.env.REACT_APP_THEME_API_URL}`;
+            const url = `${baseUrl}/company/${companyId}/contact-export`;
+            await loadAndOpenPdfFile(
+                url,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "ContactReport.xlsx"
+            );
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
   return (
     <CustomerContext.Provider
       value={{
@@ -61,6 +79,7 @@ const ContactProvider: FC = ({ children }) => {
         query,
         contacts,
         updateFilter,
+          exportContactReport,
         filter,
       }}
     >
