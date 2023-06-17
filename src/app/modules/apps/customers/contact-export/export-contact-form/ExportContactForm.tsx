@@ -21,7 +21,7 @@ const ExportContactForm = () => {
     }
 
     const { companies, isLoading, loading, exportCompanyReport } = useCustomerContext();
-    const { exportContactReport } = useContactContext();
+    const { exportContactReport, exportAllContactReport } = useContactContext();
     const [ companyId, setCompanyId ] = useState();
 
     const companyItems = React.useMemo(() => {
@@ -50,6 +50,13 @@ const ExportContactForm = () => {
         }
     }
 
+    const exportAllContact = async () => {
+        const status = await exportAllContactReport();
+        if (status) {
+            toast("Đã xuất file liên hệ thành công.")
+        }
+    }
+
     return(
         <>
         <KTCardBody className="py-4">
@@ -63,14 +70,26 @@ const ExportContactForm = () => {
                         {
                             !isLoading &&
                             <>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary me-5"
-                                    disabled={loading}
-                                    onClick={() => exportCompanyReport()}
-                                >
-                                    Xuất Báo Cáo
-                                </button>
+                                <>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary me-5"
+                                        disabled={loading}
+                                        onClick={() => exportCompanyReport()}
+                                    >
+                                        Xuất Toàn Bộ Công Ty
+                                    </button>
+                                </>
+                                <>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary me-5"
+                                        disabled={loading}
+                                        onClick={() => exportAllContact()}
+                                    >
+                                        Xuất Toàn Bộ Người Liên Hệ
+                                    </button>
+                                </>
                             </>
                         }
                     </div>
@@ -96,7 +115,7 @@ const ExportContactForm = () => {
                             disabled={loading}
                             onClick={() => exportContact()}
                         >
-                            Xuất Báo Cáo
+                            Xuất Người Liên Hệ Theo Công Ty
                         </button>
                     </div>
                 </div>

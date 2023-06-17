@@ -17,6 +17,7 @@ interface ContextProps {
   isLoading: boolean;
   query: string;
   updateFilter: (values: Partial<ContactFilter>) => any;
+    exportAllContactReport: () => Promise<boolean>;
     exportContactReport: (companyId: string) => Promise<boolean>;
   filter: ContactFilter;
 }
@@ -27,6 +28,7 @@ const CustomerContext = createContext<ContextProps>({
   updateFilter: () => {},
   isLoading: false,
   query: "",
+    exportAllContactReport: () => new Promise(resolve => true),
     exportContactReport: (companyId: string) => new Promise(resolve => true),
   filter: new ContactFilter(),
 });
@@ -70,7 +72,20 @@ const ContactProvider: FC = ({ children }) => {
             return false;
         }
     }
-
+    const exportAllContactReport = async(): Promise<boolean> => {
+        try {
+            const baseUrl = `${process.env.REACT_APP_THEME_API_URL}`;
+            const url = `${baseUrl}/company/contact-export`;
+            await loadAndOpenPdfFile(
+                url,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "AllContactReport.xlsx"
+            );
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
   return (
     <CustomerContext.Provider
       value={{
@@ -80,6 +95,7 @@ const ContactProvider: FC = ({ children }) => {
         contacts,
         updateFilter,
           exportContactReport,
+          exportAllContactReport,
         filter,
       }}
     >
